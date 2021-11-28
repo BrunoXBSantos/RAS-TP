@@ -32,7 +32,7 @@ namespace API.Services
 
                 IRequestHandler httpClientRequestHandler = new HttpClientRequestHandler();
 
-                var response = httpClientRequestHandler.Get(WeatherConstants.url);
+                var response = httpClientRequestHandler.Get(GithubConstants.url);
 
                 var r = response + "\n " + $"Worker printing number: {number}";
                 this.betsUpdated.setBets(r);

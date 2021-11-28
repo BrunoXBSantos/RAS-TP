@@ -24,9 +24,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("api/getAllBets")]
+        [Route("api/listBets")]
         [AllowAnonymous]
-        public string GetAllBets()
+        public string listBets()
         {
             //o namespace ToListAsync é != do que o ToList
             // obter results de 1 tarefa 
