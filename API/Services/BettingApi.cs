@@ -25,17 +25,17 @@ namespace API.Services
 
         public async Task GetBetsAll(CancellationToken cancellationToken)
         {
+            IRequestHandler httpClientRequestHandler = new HttpClientRequestHandler();
+
             while (!cancellationToken.IsCancellationRequested)
             {
                 Interlocked.Increment(ref number);
                 _logger.LogInformation($"Worker printing number: {number}");
 
-                IRequestHandler httpClientRequestHandler = new HttpClientRequestHandler();
-
-                var response = httpClientRequestHandler.Get(GithubConstants.url);
+                var response = await httpClientRequestHandler.Get(BettingApiConstants.url);
 
                 var r = response + "\n " + $"Worker printing number: {number}";
-                this.betsUpdated.setBets(r);
+                this.betsUpdated.setBets(response);
 
                 await Task.Delay(1000 * 10);
 

@@ -1,14 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using API.Data;
-using API.Entities;
-using API.Entities.Bet;
 using API.Interfaces;
-using Microsoft.AspNetCore.Authorization;
+using API.Model.Football;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -25,12 +19,11 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("api/listBets")]
-        [AllowAnonymous]
-        public string listBets()
+        public ICollection<Event> listBets()
         {
             //o namespace ToListAsync é != do que o ToList
             // obter results de 1 tarefa 
-            return this.betsUpdated.getBets();
+            return  this.betsUpdated.getBets();
         }
         
     }

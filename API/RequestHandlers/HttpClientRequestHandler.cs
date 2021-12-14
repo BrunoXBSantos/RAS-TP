@@ -1,25 +1,30 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using API.Model.Football;
+using System.Text.Json;
+using System.Net.Http.Headers;
+//using Newtonsoft.Json;
+using System.Collections.Generic;
 using API.Constants;
 
 namespace API.RequestHandlers
 {
     public class HttpClientRequestHandler: IRequestHandler
     {
-        public string Get(string url)
+        public async Task<ListEventAll> Get(string url)
         {
-            var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Accept.Clear();
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+            // client.DefaultRequestHeaders.Accept.Add(
+            //     new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+            // client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
 
-            httpClient.DefaultRequestHeaders.Add(BettingApiConstants.UserAgent, BettingApiConstants.UserAgentValue);
+            client.DefaultRequestHeaders.Add(BettingApiConstants.UserAgent, BettingApiConstants.UserAgentValue);
+            
+            var streamTask = client.GetStreamAsync(url);
+            ListEventAll events = await JsonSerializer.DeserializeAsync<ListEventAll>(await streamTask);
 
-            //return await httpClient.GetStreamAsync(url);
-            var response = httpClient.GetStringAsync(new Uri(url)).Result;
-            return response;
+            return events;
         }
     }
 }
