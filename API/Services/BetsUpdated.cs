@@ -25,7 +25,6 @@ namespace API.Services
             this.events = this.update(listEventAll);
         }
 
-
         public ICollection<Event> update (ListEventAll listEventAll){
             ICollection<Event> events = new List<Event>();
             // var num = listEventAll.listEventsAll.Count();
@@ -33,11 +32,9 @@ namespace API.Services
             //     foreach(Events _events in listEventAll.listEventsAll){
             //         events.Add(_events._event);
             // }
-
             foreach(Events _events in listEventAll.listEventsAll){
                     events.Add(_events._event);
             }
-
             return events;
         }
 
