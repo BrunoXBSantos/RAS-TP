@@ -20,10 +20,22 @@ public class DataContext : IdentityDbContext<
     {
     }
 
-    public DbSet<Event> Events{ get; set; }
+    #region EventDB
+    public DbSet<EventDB> Events{ get; set; }
+    public DbSet<EventType> EventType{ get; set; }
+    public DbSet<Sport> Sports{ get; set; }
+    #endregion
 
     #region Users
-    public DbSet<AppUser> DB_AppUser { get; set; }
+    public DbSet<AppUser> AppUser { get; set; }
     #endregion
+
+    #region Bet
+    public DbSet<Bet> Bet { get; set; }
+    public DbSet<BetState> BetState { get; set; }
+    #endregion
+
+    // #region EventDB
+    // #endregion
 
 }

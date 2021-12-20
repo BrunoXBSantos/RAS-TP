@@ -20,10 +20,6 @@ public class AppUser : IdentityUser<int>
     // User Contact
     public string Contact { get; set; }
 
-    // User Profile Image
-    public byte[] ProfileImage { get; set; }
-
-    // User Observations
-    public string Observations { get; set; }
+    public ICollection<Bet> bets {get; set;}
 
 }

@@ -1,0 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace API.Model
+{
+    public class BetState
+    {
+        public int Id { get; set; }
+        public string description { get; set; }
+
+        public ICollection<Bet> bets { get; set; }
+    }
+}
