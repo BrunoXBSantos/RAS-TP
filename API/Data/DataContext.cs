@@ -27,7 +27,7 @@ public class DataContext : IdentityDbContext<
     #endregion
 
     #region Users
-    public DbSet<AppUser> AppUser { get; set; }
+    public DbSet<AppUser> DB_AppUser { get; set; }
     #endregion
 
     #region Bet
