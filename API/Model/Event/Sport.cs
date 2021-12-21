@@ -10,5 +10,11 @@ namespace API.Model
         public int Id { get; set; }
         public string Description { get; set; }
         public ICollection<EventDB> events { get; set; }
+    
+        // Type (coletivo ou indivudual)
+        public SportType sportType { get; set; }
+        public int? sportType_Id { get; set; }
+
+
     }
 }
