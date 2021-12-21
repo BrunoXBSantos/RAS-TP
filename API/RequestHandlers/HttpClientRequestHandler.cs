@@ -1,10 +1,6 @@
-using System.Net.Http;
-using System.Threading.Tasks;
 using API.Model.Football;
 using System.Text.Json;
-using System.Net.Http.Headers;
 //using Newtonsoft.Json;
-using System.Collections.Generic;
 using API.Constants;
 
 namespace API.RequestHandlers
