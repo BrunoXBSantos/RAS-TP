@@ -76,6 +76,10 @@ public class DataContext : IdentityDbContext<
     #endregion
 
     #region Users
+    public DbSet<SportType> DB_SportType { get; set; }
+    #endregion
+
+    #region Users
     public DbSet<AppUser> DB_AppUser { get; set; }
     #endregion
 

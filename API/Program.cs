@@ -1,15 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using API.BackgroundTask;
 using API.Data;
-using Microsoft.AspNetCore.Hosting;
+using API.Model;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace API
 {
@@ -23,10 +16,10 @@ namespace API
             try 
             {
                 var context = services.GetRequiredService<DataContext>();
-                // var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                var UserManager = services.GetRequiredService<UserManager<AppUser>>();
                 // var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
                 await context.Database.MigrateAsync();
-                // await Seed.SeedUsers(userManager, roleManager);
+                await Seeder.Seed(UserManager/*, RoleManager*/, context);
             }
             catch (Exception ex)
             {

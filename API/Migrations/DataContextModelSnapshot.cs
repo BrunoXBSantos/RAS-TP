@@ -114,7 +114,7 @@ namespace API.Migrations
 
                     b.HasIndex("betStateId");
 
-                    b.ToTable("Bet");
+                    b.ToTable("DB_Bet");
                 });
 
             modelBuilder.Entity("API.Model.BetState", b =>
@@ -123,12 +123,12 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("description")
+                    b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.ToTable("BetState");
+                    b.ToTable("DB_BetState");
                 });
 
             modelBuilder.Entity("API.Model.EventDB", b =>
@@ -164,7 +164,7 @@ namespace API.Migrations
 
                     b.HasIndex("sportId");
 
-                    b.ToTable("Events");
+                    b.ToTable("DB_Events");
                 });
 
             modelBuilder.Entity("API.Model.EventType", b =>
@@ -178,7 +178,7 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EventType");
+                    b.ToTable("DB_EventType");
                 });
 
             modelBuilder.Entity("API.Model.Sport", b =>
@@ -190,9 +190,28 @@ namespace API.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("sportType_Id")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Sports");
+                    b.HasIndex("sportType_Id");
+
+                    b.ToTable("DB_Sports");
+                });
+
+            modelBuilder.Entity("API.Model.SportType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DB_SportType");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
@@ -324,16 +343,19 @@ namespace API.Migrations
             modelBuilder.Entity("API.Model.Bet", b =>
                 {
                     b.HasOne("API.Model.EventDB", "_event")
-                        .WithMany()
-                        .HasForeignKey("_eventId");
+                        .WithMany("bets")
+                        .HasForeignKey("_eventId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("API.Model.AppUser", "appUser")
                         .WithMany("bets")
-                        .HasForeignKey("appUserId");
+                        .HasForeignKey("appUserId")
+                        .OnDelete(DeleteBehavior.ClientCascade);
 
                     b.HasOne("API.Model.BetState", "betState")
                         .WithMany("bets")
-                        .HasForeignKey("betStateId");
+                        .HasForeignKey("betStateId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("_event");
 
@@ -347,18 +369,28 @@ namespace API.Migrations
                     b.HasOne("API.Model.EventType", "eventType")
                         .WithMany("events")
                         .HasForeignKey("eventTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("API.Model.Sport", "sport")
                         .WithMany("events")
                         .HasForeignKey("sportId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("eventType");
 
                     b.Navigation("sport");
+                });
+
+            modelBuilder.Entity("API.Model.Sport", b =>
+                {
+                    b.HasOne("API.Model.SportType", "sportType")
+                        .WithMany("sports")
+                        .HasForeignKey("sportType_Id")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("sportType");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -422,6 +454,11 @@ namespace API.Migrations
                     b.Navigation("bets");
                 });
 
+            modelBuilder.Entity("API.Model.EventDB", b =>
+                {
+                    b.Navigation("bets");
+                });
+
             modelBuilder.Entity("API.Model.EventType", b =>
                 {
                     b.Navigation("events");
@@ -430,6 +467,11 @@ namespace API.Migrations
             modelBuilder.Entity("API.Model.Sport", b =>
                 {
                     b.Navigation("events");
+                });
+
+            modelBuilder.Entity("API.Model.SportType", b =>
+                {
+                    b.Navigation("sports");
                 });
 #pragma warning restore 612, 618
         }

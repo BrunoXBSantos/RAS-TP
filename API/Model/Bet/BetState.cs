@@ -8,7 +8,7 @@ namespace API.Model
     public class BetState
     {
         public int Id { get; set; }
-        public string description { get; set; }
+        public string Description { get; set; }
 
         public ICollection<Bet> bets { get; set; }
     }

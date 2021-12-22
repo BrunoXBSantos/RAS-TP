@@ -11,61 +11,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211220161940_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20211221235235_teste")]
+    partial class teste
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
-
-            modelBuilder.Entity("API.Entities.Bet.Event", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("result_oddId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("sport")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("team1")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("team2")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("type")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("result_oddId");
-
-                    b.ToTable("Events");
-                });
-
-            modelBuilder.Entity("API.Entities.Bet.Result_odd", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<float>("away")
-                        .HasColumnType("REAL");
-
-                    b.Property<float>("home")
-                        .HasColumnType("REAL");
-
-                    b.Property<float>("tie")
-                        .HasColumnType("REAL");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Result_odd");
-                });
 
             modelBuilder.Entity("API.Model.AppUser", b =>
                 {
@@ -107,9 +59,6 @@ namespace API.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Observations")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("PasswordHash")
                         .HasColumnType("TEXT");
 
@@ -118,9 +67,6 @@ namespace API.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("INTEGER");
-
-                    b.Property<byte[]>("ProfileImage")
-                        .HasColumnType("BLOB");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
@@ -142,6 +88,132 @@ namespace API.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("API.Model.Bet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("_eventId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("appUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("betStateId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<float>("value")
+                        .HasColumnType("REAL");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("_eventId");
+
+                    b.HasIndex("appUserId");
+
+                    b.HasIndex("betStateId");
+
+                    b.ToTable("DB_Bet");
+                });
+
+            modelBuilder.Entity("API.Model.BetState", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DB_BetState");
+                });
+
+            modelBuilder.Entity("API.Model.EventDB", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<float>("Away_Odd")
+                        .HasColumnType("REAL");
+
+                    b.Property<float>("Home_Odd")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("Team1")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Team2")
+                        .HasColumnType("TEXT");
+
+                    b.Property<float>("Tie_Odd")
+                        .HasColumnType("REAL");
+
+                    b.Property<int>("eventTypeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("sportId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("eventTypeId");
+
+                    b.HasIndex("sportId");
+
+                    b.ToTable("DB_Events");
+                });
+
+            modelBuilder.Entity("API.Model.EventType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DB_EventType");
+                });
+
+            modelBuilder.Entity("API.Model.Sport", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("sportType_Id")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("sportType_Id");
+
+                    b.ToTable("DB_Sports");
+                });
+
+            modelBuilder.Entity("API.Model.SportType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DB_SportType");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
@@ -270,13 +342,57 @@ namespace API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("API.Entities.Bet.Event", b =>
+            modelBuilder.Entity("API.Model.Bet", b =>
                 {
-                    b.HasOne("API.Entities.Bet.Result_odd", "result_odd")
-                        .WithMany()
-                        .HasForeignKey("result_oddId");
+                    b.HasOne("API.Model.EventDB", "_event")
+                        .WithMany("bets")
+                        .HasForeignKey("_eventId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
-                    b.Navigation("result_odd");
+                    b.HasOne("API.Model.AppUser", "appUser")
+                        .WithMany("bets")
+                        .HasForeignKey("appUserId")
+                        .OnDelete(DeleteBehavior.ClientCascade);
+
+                    b.HasOne("API.Model.BetState", "betState")
+                        .WithMany("bets")
+                        .HasForeignKey("betStateId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("_event");
+
+                    b.Navigation("appUser");
+
+                    b.Navigation("betState");
+                });
+
+            modelBuilder.Entity("API.Model.EventDB", b =>
+                {
+                    b.HasOne("API.Model.EventType", "eventType")
+                        .WithMany("events")
+                        .HasForeignKey("eventTypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("API.Model.Sport", "sport")
+                        .WithMany("events")
+                        .HasForeignKey("sportId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("eventType");
+
+                    b.Navigation("sport");
+                });
+
+            modelBuilder.Entity("API.Model.Sport", b =>
+                {
+                    b.HasOne("API.Model.SportType", "sportType")
+                        .WithMany("sports")
+                        .HasForeignKey("sportType_Id")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("sportType");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -328,6 +444,36 @@ namespace API.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("API.Model.AppUser", b =>
+                {
+                    b.Navigation("bets");
+                });
+
+            modelBuilder.Entity("API.Model.BetState", b =>
+                {
+                    b.Navigation("bets");
+                });
+
+            modelBuilder.Entity("API.Model.EventDB", b =>
+                {
+                    b.Navigation("bets");
+                });
+
+            modelBuilder.Entity("API.Model.EventType", b =>
+                {
+                    b.Navigation("events");
+                });
+
+            modelBuilder.Entity("API.Model.Sport", b =>
+                {
+                    b.Navigation("events");
+                });
+
+            modelBuilder.Entity("API.Model.SportType", b =>
+                {
+                    b.Navigation("sports");
                 });
 #pragma warning restore 612, 618
         }
