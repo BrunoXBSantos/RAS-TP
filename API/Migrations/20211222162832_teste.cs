@@ -66,6 +66,19 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DB_EventState",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Description = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DB_EventState", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DB_EventType",
                 columns: table => new
                 {
@@ -228,11 +241,17 @@ namespace API.Migrations
                     Tie_Odd = table.Column<float>(type: "REAL", nullable: false),
                     Away_Odd = table.Column<float>(type: "REAL", nullable: false),
                     eventTypeId = table.Column<int>(type: "INTEGER", nullable: false),
-                    sportId = table.Column<int>(type: "INTEGER", nullable: false)
+                    sportId = table.Column<int>(type: "INTEGER", nullable: false),
+                    eventStateId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DB_Events", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DB_Events_DB_EventState_eventStateId",
+                        column: x => x.eventStateId,
+                        principalTable: "DB_EventState",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_DB_Events_DB_EventType_eventTypeId",
                         column: x => x.eventTypeId,
@@ -329,6 +348,11 @@ namespace API.Migrations
                 column: "betStateId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DB_Events_eventStateId",
+                table: "DB_Events",
+                column: "eventStateId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DB_Events_eventTypeId",
                 table: "DB_Events",
                 column: "eventTypeId");
@@ -375,6 +399,9 @@ namespace API.Migrations
 
             migrationBuilder.DropTable(
                 name: "DB_Events");
+
+            migrationBuilder.DropTable(
+                name: "DB_EventState");
 
             migrationBuilder.DropTable(
                 name: "DB_EventType");

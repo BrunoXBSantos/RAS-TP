@@ -19,7 +19,7 @@ public class Seeder
         //await Seed_Warnings_State(_context);
 
         #region Bet Secondary Tables
-        await Seed_Tables<BetState>(_context, _context.DB_BetState, "Data/Seed/Bet_State/Bet_State.data.json");
+        await Seed_Tables<EventState>(_context, _context.DB_EventState, "Data/Seed/Event_State/Event_State.data.json");
         #endregion
 
         #region Event Secondary Tables

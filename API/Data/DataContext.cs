@@ -57,6 +57,13 @@ public class DataContext : IdentityDbContext<
             .WithMany(s => s.events)
             .HasForeignKey(fk => fk.sportId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        // EventState
+        builder.Entity<EventDB>()
+            .HasOne(e => e.eventState)
+            .WithMany(s => s.events)
+            .HasForeignKey(fk => fk.eventStateId)
+            .OnDelete(DeleteBehavior.NoAction);
         #endregion
 
         #region Sport
@@ -71,11 +78,12 @@ public class DataContext : IdentityDbContext<
 
     #region EventDB
     public DbSet<EventDB> DB_Events{ get; set; }
+    public DbSet<EventState> DB_EventState { get; set; }
     public DbSet<EventType> DB_EventType{ get; set; }
     public DbSet<Sport> DB_Sports{ get; set; }
     #endregion
 
-    #region Users
+    #region Sport
     public DbSet<SportType> DB_SportType { get; set; }
     #endregion
 

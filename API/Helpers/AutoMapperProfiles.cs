@@ -32,6 +32,9 @@ namespace API.Helpers
             CreateMap<AppUser, MemberDto>();
             CreateMap<MemberDto, AppUser>();
             #endregion
+
+            #region Warning Level
+            #endregion
             
         }
     }

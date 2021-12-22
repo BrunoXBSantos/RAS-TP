@@ -32,10 +32,13 @@ namespace API.Extensions
             return Services;
         }
 
+        /*Nao posso injetar um scope em um singleton, mas o contraio sim*/
+
         public static IServiceCollection AddInterfacesScopes(this IServiceCollection Services)
         {
             //? Services.AddScoped<Interface Class,Main Class>();
             Services.AddScoped<IAppUserRepository, AppUserRepository>();
+            Services.AddScoped<IEventRepository, EventRepository>();
             Services.AddScoped<ITokenService, TokenService>();
 
 
