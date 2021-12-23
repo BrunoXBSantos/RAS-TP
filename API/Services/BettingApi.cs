@@ -66,25 +66,27 @@ public class BettingApi : IBettingApi
                 eventDB.Tie_Odd = _events._event.result_odd.tie;
                 eventDB.Away_Odd = _events._event.result_odd.away;
 
-                if(_events._event.sport.Equals("Soccer"))
+                if(_events._event.sport.Equals("soccer"))
                     eventDB.sportId = 1;
-                else if(_events._event.sport.Equals("Chess"))
+                else if(_events._event.sport.Equals("chess"))
                     eventDB.sportId = 2;
                 
-                if(_events._event.type.Equals("Full Time"))
+                if(_events._event.type.Equals("full time"))
                     eventDB.eventTypeId = 1;
 
                 var check = await _eventRepository.checkEvent(eventDB.eventTypeId, eventDB.sportId, eventDB.Team1, eventDB.Team2);
 
-                if(check)
-                    _eventRepository.Update(eventDB);
-                else {
-                    eventDB.eventStateId = 2;
-                    _eventRepository.AddEvent(eventDB);
+                if(check){
+                    // _eventRepository.Update(eventDB);
+                    // if (await _eventRepository.SaveAllAsync()) 
+                    //     _logger.LogInformation("Error to update event!");
                 }
-
-                if (await _eventRepository.SaveAllAsync()) 
-                    _logger.LogInformation("Error to update event!");
+                else {
+                    eventDB.eventStateId = 1;
+                    _eventRepository.AddEvent(eventDB);
+                    if (await _eventRepository.SaveAllAsync()) 
+                        _logger.LogInformation("Error to update event!");
+                }
             }
         }
 
