@@ -1,7 +1,7 @@
-using API.Model.Football;
 using System.Text.Json;
 //using Newtonsoft.Json;
 using API.Constants;
+using API.Model;
 
 namespace API.RequestHandlers
 {

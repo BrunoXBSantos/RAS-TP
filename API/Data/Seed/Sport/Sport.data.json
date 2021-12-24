@@ -1,8 +1,10 @@
 [
   {
-    "Description": "Soccer"
+    "Description": "Soccer",
+    "sportType_Id": 2
   },
   {
-    "Description": "Chess"
+    "Description": "Chess",
+    "sportType_Id": 1
   }
 ]

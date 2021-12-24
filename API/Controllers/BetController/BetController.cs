@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using API.Data;
+using API.DTOs;
 using API.Interfaces;
-using API.Model.Football;
+using API.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -19,7 +20,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("api/listBets")]
-        public ICollection<Event> listBets()
+        public ICollection<EventBettingApi> listBets()
         {
             //o namespace ToListAsync é != do que o ToList
             // obter results de 1 tarefa 

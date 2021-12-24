@@ -23,6 +23,10 @@ namespace API.Model
         public Sport sport { get; set; }
         public int sportId { get; set; }
 
+        // Table EventState
+        public EventState eventState { get; set; }
+        public int eventStateId { get; set; }
+
         // Table Bet
         public ICollection<Bet> bets { get; set; }
 

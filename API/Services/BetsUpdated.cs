@@ -1,21 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using API.Interfaces;
-using API.Model.Football;
+using API.Model;
 
 namespace API.Services
 {
     public class BetsUpdated : IBetsUpdated
     {
-        private ICollection<Event> events;
+        private ICollection<EventBettingApi> events;
         public BetsUpdated()
         {
             this.events = null;
         }
 
-        public ICollection<Event> getBets()
+        public ICollection<EventBettingApi> getBets()
         {
             return this.events;
         }
@@ -25,14 +21,14 @@ namespace API.Services
             this.events = this.update(listEventAll);
         }
 
-        public ICollection<Event> update (ListEventAll listEventAll){
-            ICollection<Event> events = new List<Event>();
+        public ICollection<EventBettingApi> update (ListEventAll listEventAll){
+            ICollection<EventBettingApi> events = new List<EventBettingApi>();
             // var num = listEventAll.listEventsAll.Count();
             // for(int i = 0; i < num; i++){
             //     foreach(Events _events in listEventAll.listEventsAll){
             //         events.Add(_events._event);
             // }
-            foreach(Events _events in listEventAll.listEventsAll){
+            foreach(EventsBettingApi _events in listEventAll.listEventsAll){
                     events.Add(_events._event);
             }
             return events;

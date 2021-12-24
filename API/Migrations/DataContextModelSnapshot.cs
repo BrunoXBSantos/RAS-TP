@@ -152,6 +152,9 @@ namespace API.Migrations
                     b.Property<float>("Tie_Odd")
                         .HasColumnType("REAL");
 
+                    b.Property<int>("eventStateId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("eventTypeId")
                         .HasColumnType("INTEGER");
 
@@ -160,11 +163,27 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("eventStateId");
+
                     b.HasIndex("eventTypeId");
 
                     b.HasIndex("sportId");
 
                     b.ToTable("DB_Events");
+                });
+
+            modelBuilder.Entity("API.Model.EventState", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DB_EventState");
                 });
 
             modelBuilder.Entity("API.Model.EventType", b =>
@@ -366,6 +385,12 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Model.EventDB", b =>
                 {
+                    b.HasOne("API.Model.EventState", "eventState")
+                        .WithMany("events")
+                        .HasForeignKey("eventStateId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("API.Model.EventType", "eventType")
                         .WithMany("events")
                         .HasForeignKey("eventTypeId")
@@ -377,6 +402,8 @@ namespace API.Migrations
                         .HasForeignKey("sportId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("eventState");
 
                     b.Navigation("eventType");
 
@@ -457,6 +484,11 @@ namespace API.Migrations
             modelBuilder.Entity("API.Model.EventDB", b =>
                 {
                     b.Navigation("bets");
+                });
+
+            modelBuilder.Entity("API.Model.EventState", b =>
+                {
+                    b.Navigation("events");
                 });
 
             modelBuilder.Entity("API.Model.EventType", b =>
