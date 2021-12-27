@@ -15,17 +15,13 @@ public class BettingApi : IBettingApi
 {
     private readonly ILogger<BettingApi> _logger;
     // classe que contem as apostas 
-    private readonly IBetsUpdated betsUpdated;
-    //private IEventRepository _eventRepository;
     private readonly IServiceProvider _provider;
 
     private int number = 0;
-    public BettingApi(ILogger<BettingApi> logger, IBetsUpdated betsUpdated,
-            /*IEventRepository eventRepository*/
+    public BettingApi(ILogger<BettingApi> logger,
             IServiceProvider provider)
     {
         _logger = logger;
-        this.betsUpdated = betsUpdated;
         _provider = provider;
     }
 
@@ -46,9 +42,6 @@ public class BettingApi : IBettingApi
 
             var r = response + "\n " + $"Worker printing number: {number}";
             _logger.LogInformation(r);
-            this.betsUpdated.setBets(response);
-
-
         }
     }
 

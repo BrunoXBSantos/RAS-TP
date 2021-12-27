@@ -1,9 +1,10 @@
 using API.Model;
 using AutoMapper;
-using API.DTOs;
-using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using API.Interfaces;
+using AutoMapper.QueryableExtensions;
+using API.DTOs;
+using API.Helpers;
 
 namespace API.Data;
 public class EventRepository : IEventRepository
@@ -21,6 +22,48 @@ public class EventRepository : IEventRepository
     public void AddEvent(EventDB _event)
     {
         _context.DB_Events.Add(_event);
+    }
+
+    // get a ServerEmptyDTO by id
+    public async Task<EventDisplayDto> GetEventAsync(int id)
+    {
+        return await _context.DB_Events
+            .Where(x => x.Id == id)
+            .ProjectTo<EventDisplayDto>(_mapper.ConfigurationProvider)
+            .SingleOrDefaultAsync();
+    }
+
+    // get a event detailed by id
+    public async Task<EventSimpleDto> GetEventDetailAsync(int id)
+    {
+        var a = await _context.DB_Events
+            .Where(x => x.Id == id)
+            // .Include(s => s.Warnings)
+            // .Include(s => s.Comments)
+            .ProjectTo<EventSimpleDto>(_mapper.ConfigurationProvider)
+            .SingleOrDefaultAsync();
+        return a;
+    }
+
+    // get a state de um evento
+    public async Task<int> GetEventStateByIdAsync(int id)
+    {
+        var _event = await _context.DB_Events
+            .Where(x => x.Id == id)
+            .SingleOrDefaultAsync();
+        return _event.eventStateId;
+    }
+
+    // get EventDisplayDto list by paging
+    public async Task<PagedList<EventDisplayDto>> GetEventsAsync(EventParams eventParams)
+    {
+        var query = _context.DB_Events
+            .ProjectTo<EventDisplayDto>(_mapper.ConfigurationProvider)
+            .AsNoTracking()
+            .AsQueryable();
+
+        return await PagedList<EventDisplayDto>.CreateAsync(query, 
+                eventParams.PageNumber, eventParams.PageSize,eventParams.FilterOptions2);
     }
 
     public void Update(EventDB _event)
@@ -52,6 +95,12 @@ public class EventRepository : IEventRepository
         ));
 
         return check;
+    }
+
+    // checkEventExistByIdAsync id exist
+    public async Task<Boolean> checkEventExistByIdAsync(int id){
+        return await _context.DB_Events
+            .AnyAsync(s => s.Id == id);
     }
 
     public async Task<bool> SaveAllAsync()

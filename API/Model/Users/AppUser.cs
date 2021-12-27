@@ -19,6 +19,7 @@ public class AppUser : IdentityUser<int>
 
     // User Contact
     public string Contact { get; set; }
+    public float Balance { get; set; }
 
     public ICollection<Bet> bets {get; set;}
 

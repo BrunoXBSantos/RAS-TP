@@ -31,6 +31,8 @@ public interface IAppUserRepository
     //         void Delete(Utilizador utilizador);
 
     //Functions
+
+    public Task<bool> checkBalanceById(int id, float balanceBet);
     Task<bool> SaveAllAsync();
     
 }

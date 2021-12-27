@@ -33,7 +33,23 @@ namespace API.Helpers
             CreateMap<MemberDto, AppUser>();
             #endregion
 
-            #region Warning Level
+            #region Event
+            CreateMap<EventDB, EventSimpleDto>();
+            CreateMap<EventState, EventStateEmptyDto>();
+            CreateMap<EventType, EventTypeEmptyDto>();
+            CreateMap<EventDB, EventDisplayDto>()
+                .ForMember(e => e.sport, ex => ex.MapFrom(e => e.sport.Description))
+                .ForMember(eD => eD.state, ex => ex.MapFrom(e => e.eventState.Description))
+                .ForMember(eD => eD.type, ex => ex.MapFrom(e => e.eventType.Description));
+            #endregion
+
+            #region Bet
+            CreateMap<Bet, BetEmptyDto>();
+            CreateMap<CreateBetDTO, Bet>();
+            #endregion
+
+            #region Sport
+            CreateMap<Sport, SportEmptyDto>();
             #endregion
             
         }

@@ -39,6 +39,7 @@ namespace API.Extensions
             //? Services.AddScoped<Interface Class,Main Class>();
             Services.AddScoped<IAppUserRepository, AppUserRepository>();
             Services.AddScoped<IEventRepository, EventRepository>();
+            Services.AddScoped<IBetRepository, BetRepository>();
             Services.AddScoped<ITokenService, TokenService>();
 
 
