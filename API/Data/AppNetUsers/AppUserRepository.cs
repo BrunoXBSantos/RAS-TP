@@ -77,6 +77,20 @@ public class AppUserRepository : IAppUserRepository
         return await _context.DB_AppUser.SingleOrDefaultAsync(x => x.UserName == UserName);
     }
 
+    // Verifica se o saldo permite efetuar uma aposta de "balanceBet"
+    public async Task<bool> checkBalanceById(int id, float balanceBet){
+        var user = await _context.DB_AppUser
+            .Where(x => x.Id == id)
+            .SingleOrDefaultAsync();
+        return (user.Balance >= balanceBet);
+
+    }
+
+    public async Task<bool> checkUserExistByIdAsync(string id){
+        return await _context.DB_AppUser
+            .AnyAsync(user => user.Id == int.Parse(id));
+    }
+
     //Update
     public void UpdateUser(AppUser appUser)
     {

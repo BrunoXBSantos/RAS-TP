@@ -9,8 +9,8 @@ namespace API.DTOs
     public class RegisterDto
 {
     [Required]
-    public string name { get; set; }
-    public string contact { get; set; }
+    public string Name { get; set; }
+    public string Contact { get; set; }
     public string PhoneNumber { get; set; }
 
     //IdentityUser Fields

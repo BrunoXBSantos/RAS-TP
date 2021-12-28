@@ -19,6 +19,10 @@ public class Seeder
         //await Seed_Warnings_State(_context);
 
         #region Bet Secondary Tables
+        await Seed_Tables<BetState>(_context, _context.DB_BetState, "Data/Seed/Bet_State/Bet_State.data.json");
+        #endregion
+
+        #region Bet Secondary Tables
         await Seed_Tables<EventState>(_context, _context.DB_EventState, "Data/Seed/Event_State/Event_State.data.json");
         #endregion
 
@@ -52,29 +56,6 @@ public class Seeder
         await _context.SaveChangesAsync();
     }
 
-    // public static async Task Seed_Warning(DataContext _context, string FilePath)
-    // {
-    //     if (await _context.DB_Warning.AnyAsync()) return;
-    //     var Data_Extended = JsonSerializer.Deserialize<List<Warning>>(await System.IO.File.ReadAllTextAsync(FilePath));
-    //     if (Data_Extended == null) return;
-    //     Random rnd = new Random();
-    //     foreach (Warning record in Data_Extended)
-    //     {
-    //         Attachment att_temp = await _context.DB_Attachment.FindAsync(rnd.Next(1,10));
-    //         // https://entityframework.net/knowledge-base/16981277/entity-framework-adding-item-to-icollection-error
-    //         record.Attachments = new Collection<Attachment>();
-    //         record.Attachments.Add(att_temp);
-
-    //         record.ActiveUser = _context.DB_AppUser.FirstOrDefault(w => w.Id == record.ActiveUserId);
-    //         record.State = _context.DB_Warning_State.FirstOrDefault(w => w.Id == record.StateId);
-    //         record.Level = _context.DB_Warning_Level.FirstOrDefault(w => w.Id == record.LevelId);
-    //         record.Type = _context.DB_Warning_Type.FirstOrDefault(w => w.Id == record.TypeId);
-    //         record.Server = _context.DB_Server.FirstOrDefault(w => w.Id == record.ServerId);
-
-    //         await _context.DB_Warning.AddAsync(record);
-    //     }
-    //     await _context.SaveChangesAsync();
-    // }
     public static async Task SeedUsers(UserManager<AppUser> userManager, DataContext _context)
     {
         if (await userManager.Users.AnyAsync()) return;

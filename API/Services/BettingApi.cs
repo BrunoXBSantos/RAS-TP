@@ -15,17 +15,13 @@ public class BettingApi : IBettingApi
 {
     private readonly ILogger<BettingApi> _logger;
     // classe que contem as apostas 
-    private readonly IBetsUpdated betsUpdated;
-    //private IEventRepository _eventRepository;
     private readonly IServiceProvider _provider;
 
     private int number = 0;
-    public BettingApi(ILogger<BettingApi> logger, IBetsUpdated betsUpdated,
-            /*IEventRepository eventRepository*/
+    public BettingApi(ILogger<BettingApi> logger,
             IServiceProvider provider)
     {
         _logger = logger;
-        this.betsUpdated = betsUpdated;
         _provider = provider;
     }
 
@@ -35,7 +31,6 @@ public class BettingApi : IBettingApi
 
         while (!cancellationToken.IsCancellationRequested)
         {   
-            await Task.Delay(1000 * 10);
 
             Interlocked.Increment(ref number);
             _logger.LogInformation($"Worker printing number: {number}");
@@ -43,12 +38,8 @@ public class BettingApi : IBettingApi
             var response = await httpClientRequestHandler.Get(BettingApiConstants.url);
 
             await updateDB_Events(response, _logger);
-
-            var r = response + "\n " + $"Worker printing number: {number}";
-            _logger.LogInformation(r);
-            this.betsUpdated.setBets(response);
-
-
+            
+            await Task.Delay(1000 * 10);
         }
     }
 
@@ -81,14 +72,19 @@ public class BettingApi : IBettingApi
                     // if (await _eventRepository.SaveAllAsync()) 
                     //     _logger.LogInformation("Error to update event!");
                 }
-                else {
+                else { // se o evento nao existir na base de dados
                     eventDB.eventStateId = 1;
                     _eventRepository.AddEvent(eventDB);
-                    if (await _eventRepository.SaveAllAsync()) 
+                    if (!(await _eventRepository.SaveAllAsync())) 
                         _logger.LogInformation("Error to update event!");
+                    
+                    // crio um eventObservable deste evento, que vai receber os observers que fazem as apostas aqui
+                    var eventObservable = new EventObservable(eventDB.Id);
+                
+                    var observables = scope.ServiceProvider.GetRequiredService<IObservables>();
+                    observables.AddEventObservable(eventObservable);
                 }
             }
         }
-
     }
 }
