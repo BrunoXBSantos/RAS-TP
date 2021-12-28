@@ -66,32 +66,46 @@ namespace API.Model
             Coin c = new Coin(type);
             switch(type){
                 case 1:
-                    c.value = value;
-                    this.eur -= value;
+                    if(this.eur >= value){
+                        c.value = value;
+                        this.eur -= value;
+                    }
                     break;
                 case 2:
-                    c = new USD(value);
-                    this.usd -= value;
+                    if(this.usd >= value){
+                        c = new USD(value);
+                        this.usd -= value;
+                    }
                     break;
                 case 3:
-                    c = new GBP(value);
-                    this.gbp -= value;
+                    if(this.gbp >= value){
+                        c = new GBP(value);
+                        this.gbp -= value;
+                    }
                     break;
                 case 4:
-                    c = new CNH(value);
-                    this.cnh -= value;
+                    if(this.cnh >= value){
+                        c = new CNH(value);
+                        this.cnh -= value;
+                    }
                     break;
                 case 5:
-                    c = new JPY(value);
-                    this.jpy -= value;
+                    if(this.jpy >= value){
+                        c = new JPY(value);
+                        this.jpy -= value;
+                    }   
                     break;
                 case 6:
-                    c = new ADA(value);
-                    this.ada -= value;
+                    if(this.ada >= value){
+                        c = new ADA(value);
+                        this.ada -= value;
+                    }
                     break;
                 case 7:
-                    c = new BTC(value);
-                    this.btc -= value;
+                    if(this.btc >= value){
+                        c = new BTC(value);
+                        this.btc -= value;
+                    }
                     break;
                 default:
                     break;
