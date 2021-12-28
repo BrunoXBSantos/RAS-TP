@@ -31,6 +31,8 @@ namespace API.Helpers
 
             CreateMap<AppUser, MemberDto>();
             CreateMap<MemberDto, AppUser>();
+
+            CreateMap<AppUser, ChargeBalanceDTO>();
             #endregion
 
             #region Event

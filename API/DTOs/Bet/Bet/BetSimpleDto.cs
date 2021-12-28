@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.DTOs;
-public class BetSimpleDto
+public class BetSimpleDto : BetEmptyDto
 {
     public UserDto appUser { get; set; }
     public BetStateEmptyDto betState { get; set; }

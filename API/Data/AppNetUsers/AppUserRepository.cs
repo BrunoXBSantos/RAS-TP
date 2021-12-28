@@ -86,6 +86,11 @@ public class AppUserRepository : IAppUserRepository
 
     }
 
+    public async Task<bool> checkUserExistByIdAsync(string id){
+        return await _context.DB_AppUser
+            .AnyAsync(user => user.Id == int.Parse(id));
+    }
+
     //Update
     public void UpdateUser(AppUser appUser)
     {

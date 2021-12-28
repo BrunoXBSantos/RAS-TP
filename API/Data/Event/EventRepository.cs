@@ -7,6 +7,7 @@ using API.DTOs;
 using API.Helpers;
 
 namespace API.Data;
+
 public class EventRepository : IEventRepository
 {
     private readonly DataContext _context;
@@ -52,6 +53,17 @@ public class EventRepository : IEventRepository
             .Where(x => x.Id == id)
             .SingleOrDefaultAsync();
         return _event.eventStateId;
+    }
+
+    // get events with state is open
+    public async Task<List<EventSimpleDto>> GetEventsOpen()
+    {
+        var _events = await _context.DB_Events
+            .Where(x => x.eventStateId == 1)
+            .ProjectTo<EventSimpleDto>(_mapper.ConfigurationProvider)
+            .ToListAsync();
+
+        return _events;
     }
 
     // get EventDisplayDto list by paging

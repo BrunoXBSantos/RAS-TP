@@ -18,7 +18,7 @@ public interface IEventRepository
     public Task<EventSimpleDto> GetEventDetailAsync(int id);
 
     public Task<PagedList<EventDisplayDto>> GetEventsAsync(EventParams eventParams);
-
+    public Task<List<EventSimpleDto>> GetEventsOpen();
 
     Task<bool> checkEvent(int type, int sport, string team1, string team2);
     public Task<Boolean> checkEventExistByIdAsync(int id);

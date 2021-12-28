@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Model;
-public class EventNotification
-{
-    private string description;
 
-    public EventNotification(string description)
+// É o que é enviado para os observers
+namespace API.Model;
+public class Notification
+{
+    public string description { get; set; }
+
+    public Notification(string description)
     {
         this.description = description;
     }
-
     
     
 }

@@ -61,30 +61,6 @@ public class AppUserController : BaseApiController
     }
 
     //Update
-    [Authorize(Policy = "Admin")]
-    [HttpPut("edit-roles/{username}")]
-    public async Task<ActionResult> EditRoles(string username, [FromQuery] string roles)
-    {
-        var selectedRoles = roles.Split(",").ToArray();
-
-        var user = await _userManager.FindByNameAsync(username);
-
-        if (user == null) return NotFound("Could not find user");
-
-        var userRoles = await _userManager.GetRolesAsync(user);
-
-        var result = await _userManager.AddToRolesAsync(user, selectedRoles.Except(userRoles));
-
-        if (!result.Succeeded) return BadRequest("Failed to add to roles");
-
-        result = await _userManager.RemoveFromRolesAsync(user, userRoles.Except(selectedRoles));
-
-        if (!result.Succeeded) return BadRequest("Failed to remove from roles");
-
-        return Ok(await _userManager.GetRolesAsync(user));
-    }
-
-    //Update
 
     //[Authorize]
     [HttpPut, DisableRequestSizeLimit]
@@ -102,6 +78,25 @@ public class AppUserController : BaseApiController
             }
         }
         return BadRequest("User " + userUpdateDto?.UserName + " not updated");
+    }
+
+    //[Authorize]
+    [HttpPut("ChargeBalance/{Username}")]
+    public async Task<ActionResult> ChargeBalance(ChargeBalanceDTO chargeBalanceDTO)
+    {
+        AppUser user = await _appUserRepository.GetUserByUsernameAsync(chargeBalanceDTO.UserName);
+        if (user != null)
+        {
+
+            user.Balance += chargeBalanceDTO.Balance;
+            _appUserRepository.UpdateUser(user);
+            if (await _appUserRepository.SaveAllAsync())
+            {
+                _mapper.Map(user, chargeBalanceDTO);
+                return Ok(chargeBalanceDTO);
+            }
+        }
+        return BadRequest("User " + chargeBalanceDTO.UserName + " not updated");
     }
     //[Authorize]
     [HttpPut("switchPW/{username}")]
