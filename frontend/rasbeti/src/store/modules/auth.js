@@ -27,9 +27,11 @@ const actions = {
   [AUTH_REQUEST]: ({ commit, dispatch }, user) => {
     return new Promise((resolve, reject) => {
       commit(AUTH_REQUEST)
+      console.log(user)
       // eslint-disable-next-line camelcase
-      axios({ url: api_url + '/api/auth/login', data: user, method: 'POST' })
+      axios({ url: api_url + '/api/Account/login', data: user, method: 'POST' })
         .then(resp => {
+          console.log(resp)
           var token = resp.data.token
           localStorage.setItem('user-token', token)
 

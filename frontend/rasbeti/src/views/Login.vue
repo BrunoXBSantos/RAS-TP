@@ -9,14 +9,14 @@
             <p class="title has-text-centered">Welcome</p>
             <form class="login" @submit.prevent="login">
               <div class="field">
-                <label class="label">Email</label>
+                <label class="label">Username</label>
                 <div class="control">
                   <input
                     class="input"
-                    type="email"
-                    placeholder="email@example.com"
+                    type="username"
+                    placeholder="username"
                     required
-                    v-model="email"
+                    v-model="username"
                   />
                 </div>
               </div>
@@ -63,7 +63,7 @@ export default {
   },
   data () {
     return {
-      email: '',
+      username: '',
       password: '',
       loaded: 0
     }
@@ -76,9 +76,10 @@ export default {
   },
   methods: {
     login: function () {
-      const { email, password } = this
+      const { username, password } = this
       this.loaded++
-      this.$store.dispatch(AUTH_REQUEST, { email, password }).then(resp => {
+      this.$store.dispatch(AUTH_REQUEST, { username, password }).then(resp => {
+        console.log('FIZ LOGIN!')
         if (resp === 'admin') {
           this.$router.push('/admin')
         } else if (resp === 'user') {
