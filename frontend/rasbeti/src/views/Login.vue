@@ -54,6 +54,7 @@
 <script>
 import { AUTH_REQUEST } from '@/store/actions/auth'
 import DefaultNavbar from '@/components/DefaultNavbar'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'Login',
@@ -67,11 +68,24 @@ export default {
       loaded: 0
     }
   },
+  computed: {
+    ...mapGetters(['authStatus']),
+    ...mapState({
+      error: (state) => `${state.auth.status}`
+    })
+  },
   methods: {
     login: function () {
       const { email, password } = this
       this.loaded++
-      this.$store.dispatch(AUTH_REQUEST, { email, password }).then((resp) => {
+      this.$store.dispatch(AUTH_REQUEST, { email, password }).then(resp => {
+        if (resp === 'admin') {
+          this.$router.push('/admin')
+        } else if (resp === 'user') {
+          this.$router.push('/user')
+        } else {
+          this.$router.push('/404')
+        }
       })
     }
   }
