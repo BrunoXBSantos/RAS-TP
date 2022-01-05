@@ -20,7 +20,7 @@ namespace API.Extensions
             Services = AddInterfacesScopes(Services);
 
             Services.AddSingleton<IBettingApi, BettingApi>();
-            Services.AddSingleton<IBetsUpdated, BetsUpdated>();
+            Services.AddSingleton<IObservables, Observables>();
             Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             Services.AddDbContext<DataContext>(options =>
             {
@@ -32,10 +32,14 @@ namespace API.Extensions
             return Services;
         }
 
+        /*Nao posso injetar um scope em um singleton, mas o contraio sim*/
+
         public static IServiceCollection AddInterfacesScopes(this IServiceCollection Services)
         {
             //? Services.AddScoped<Interface Class,Main Class>();
             Services.AddScoped<IAppUserRepository, AppUserRepository>();
+            Services.AddScoped<IEventRepository, EventRepository>();
+            Services.AddScoped<IBetRepository, BetRepository>();
             Services.AddScoped<ITokenService, TokenService>();
 
 
