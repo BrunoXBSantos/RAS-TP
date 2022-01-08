@@ -79,13 +79,12 @@ export default {
       const { username, password } = this
       this.loaded++
       this.$store.dispatch(AUTH_REQUEST, { username, password }).then(resp => {
-        console.log('FIZ LOGIN!')
         if (resp === 'admin') {
-          this.$router.push('/admin')
+          this.$router.push({ path: '/admin' })
         } else if (resp === 'user') {
-          this.$router.push('/user')
+          this.$router.push({ path: '/user' })
         } else {
-          this.$router.push('/404')
+          this.$router.push({ path: '/404' })
         }
       })
     }

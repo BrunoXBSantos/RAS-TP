@@ -35,7 +35,11 @@ const ifAuthenticatedAdmin = (to, from, next) => {
 }
 
 const ifAuthenticatedUser = (to, from, next) => {
-  if (store.getters.isAuthenticated) {
+  console.log('Testing if Authenticated User')
+  console.log(localStorage.getItem('user-token'))
+  console.log(!store.getters.isAuthenticated)
+  console.log(store.getters.isUser)
+  if (!store.getters.isAuthenticated) {
     if (store.getters.isUser) {
       next()
     } else {
@@ -81,21 +85,9 @@ export default new Router({
       beforeEnter: ifAuthenticatedAdmin
     },
     {
-      name: 'Admin Profile',
-      path: '/admin/profile',
-      component: () => import('@/views/AdminProfile'),
-      beforeEnter: ifAuthenticatedAdmin
-    },
-    {
       name: 'LoggedUser',
       path: '/user',
       component: () => import('@/views/LoggedUser'),
-      beforeEnter: ifAuthenticatedUser
-    },
-    {
-      name: 'User Profile',
-      path: '/user/profile',
-      component: () => import('@/views/UserProfile'),
       beforeEnter: ifAuthenticatedUser
     },
     {

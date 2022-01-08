@@ -7,7 +7,7 @@ import {
 import { USER_REQUEST } from '@/store/actions/user'
 import axios from 'axios'
 // eslint-disable-next-line camelcase
-import jwt_decode from 'jwt-decode'
+// import jwt_decode from 'jwt-decode'
 // eslint-disable-next-line camelcase
 import { url as api_url } from '@/assets/scripts/api'
 
@@ -32,15 +32,13 @@ const actions = {
       axios({ url: api_url + '/api/Account/login', data: user, method: 'POST' })
         .then(resp => {
           console.log(resp)
-          var token = resp.data.token
+          var token = resp.data.id
           localStorage.setItem('user-token', token)
-
           axios.defaults.headers.common.Authorization = `Bearer ${token}`
-
           commit(AUTH_SUCCESS, resp)
-          var decoded = jwt_decode(token)
-          dispatch(USER_REQUEST, { type: decoded.user.type, name: decoded.user.name, email: decoded.user.email, id: decoded.user.id })
-          resolve(decoded.user.type)
+          // var decoded = jwt_decode(token)
+          dispatch(USER_REQUEST, { type: 'user', name: resp.data.name, email: resp.data.email, id: resp.data.id })
+          resolve('user')
         })
         .catch(err => {
           commit(AUTH_ERROR, err)

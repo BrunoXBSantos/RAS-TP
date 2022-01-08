@@ -4,7 +4,7 @@ import { url } from './api'
 export const myLoginRoutine = user => new Promise((resolve, reject) => {
   axios({ url: url + '/api/Account/login', data: user, method: 'POST' })
     .then(resp => {
-      const token = resp.data.token
+      const token = resp.data.id
       localStorage.setItem('user-token', token) // store the token in localstorage
       resolve(resp)
     })
