@@ -28,6 +28,8 @@ const actions = {
     resp.name = token.name
     resp.email = token.email
     resp.id = token.id
+    console.log('Teste User Request:')
+    console.log(resp)
     console.log('user request ' + JSON.stringify(state))
     commit(USER_SUCCESS, resp)
     console.log('after user sucess ' + JSON.stringify(state))

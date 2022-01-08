@@ -27,6 +27,7 @@ const actions = {
   [AUTH_REQUEST]: ({ commit, dispatch }, user) => {
     return new Promise((resolve, reject) => {
       commit(AUTH_REQUEST)
+      console.log('AUTH_REQUEST: user data package:')
       console.log(user)
       // eslint-disable-next-line camelcase
       axios({ url: api_url + '/api/Account/login', data: user, method: 'POST' })

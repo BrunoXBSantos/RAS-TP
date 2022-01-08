@@ -6,7 +6,7 @@
       <div class="column is-half">
         <div class="card" id="logincard">
           <div class="card-content">
-            <p class="title has-text-centered">Welcome</p>
+            <p class="title has-text-centered">Login</p>
             <form class="login" @submit.prevent="login">
               <div class="field">
                 <label class="label">Username</label>
