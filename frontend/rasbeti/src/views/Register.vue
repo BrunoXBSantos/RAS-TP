@@ -99,6 +99,11 @@
               </div>
               </div>
               <div class="column">
+
+              <div id="message" v-if="error != ''">
+                <p class="help is-danger">Invalid Credentials!</p>
+              </div>
+
               <div class="has-text-centered">
                     <button class="button is-danger" type="submit">
                 <strong>Register</strong>
@@ -132,7 +137,8 @@ export default {
       contact: '',
       phone: '',
       name: '',
-      email: ''
+      email: '',
+      error: ''
     }
   },
   methods: {
@@ -140,6 +146,16 @@ export default {
       const { username, password, contact, phone, name, email } = this
       // eslint-disable-next-line camelcase
       axios({ url: api_url + '/api/Account/register', data: { name, contact, phone, username, email, password }, method: 'POST' })
+        .then(resp => {
+          console.log('Teste Register Sucess:')
+          console.log(resp)
+          this.$router.push({ path: '/' })
+        })
+        .catch(err => {
+          console.log('Teste Register Error:')
+          console.log(err)
+          this.error = err
+        })
     }
   }
 }
