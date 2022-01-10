@@ -22,8 +22,8 @@ strong {
   position: fixed;
   bottom: 0;
   width: 100%;
-  min-height: 6vh;
-  max-height: 4%;
+  min-height: 8vh;
+  max-height: 5%;
   padding: 1% 0;
   background-color: #a4031f;
   color: white;

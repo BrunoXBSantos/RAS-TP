@@ -32,8 +32,8 @@ export default {
 .navbar {
   position: fixed;
   width: 100%;
-  min-height: 6vh;
-  max-height: 4%;
+  min-height: 8vh;
+  max-height: 5%;
   background-color: #a4031f;
 }
 </style>
