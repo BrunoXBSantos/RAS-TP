@@ -109,7 +109,7 @@ public class BetController : BaseApiController
     /// /// <response code="200">Returns list of comments</response>
     /// <response code="400">If the item is null</response>
     [HttpGet("User={idUser}")]
-    public async Task<ActionResult<IEnumerable<BetEmptyDto>>> GetBetsEmptyByUserId([FromQuery]BetParams betParams, string idUser)
+    public async Task<ActionResult<IEnumerable<BetSimpleDto>>> GetBetsEmptyByUserId([FromQuery]BetParams betParams, string idUser)
     {   
         // verifica se o server existe
         if(!(await _appUserRepository.checkUserExistByIdAsync(idUser)))

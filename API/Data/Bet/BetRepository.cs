@@ -22,6 +22,18 @@ public class BetRepository : IBetRepository
         _context = context;
     }
 
+    #region CREATE
+    #endregion
+
+    #region READ
+    #endregion
+
+    #region UPDATE
+    #endregion
+
+    #region DELETE
+    #endregion
+
     // add a bet to the DB
     public void AddBet(Bet bet)
     {

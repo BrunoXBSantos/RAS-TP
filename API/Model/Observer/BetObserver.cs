@@ -9,6 +9,8 @@ public class BetObserver : IObserver<Notification>
     public int betId { get; set; }
     public int eventId { get; set; }
     public int userId { get; set; }
+    public int port { get; set; }
+    public string Ip { get; set; }
 
     private IDisposable cancellation;
 
@@ -31,8 +33,7 @@ public class BetObserver : IObserver<Notification>
 
     public void OnNext(Notification value)
     {
-        Console.WriteLine("NOTIFICACAO A ENVIAR PARA O FRONTEND" + value.description);
-        throw new NotImplementedException();
+        Console.WriteLine("NOTIFICACAO A ENVIAR PARA O FRONTEND: " + value.description);
     }
 
     public virtual void Subscribe(EventObservable eventObservable)

@@ -28,6 +28,7 @@ public class Observables : IObservables
         this.eventObservables.Add(eventObservable);
     }
 
+    // Obter o EventObserble do respetivo eventId
     public EventObservable GetEventObservableByIdEvent(int idEvent){
         EventObservable eventObservable = null;
         eventObservable = this.eventObservables.Find(e => e.idEvent == idEvent);
