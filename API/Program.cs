@@ -1,5 +1,6 @@
 using API.BackgroundTask;
 using API.Data;
+using API.Entities;
 using API.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -17,9 +18,10 @@ namespace API
             {
                 var context = services.GetRequiredService<DataContext>();
                 var UserManager = services.GetRequiredService<UserManager<AppUser>>();
-                // var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
+                var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
                 await context.Database.MigrateAsync();
-                await Seeder.Seed(UserManager/*, RoleManager*/, context);
+                //await Seeder.Seed(UserManager/*, RoleManager*/, context);
+                await Seeder.Seed(UserManager, roleManager, context);
             }
             catch (Exception ex)
             {

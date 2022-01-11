@@ -1,14 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using API.Constants;
-using API.Data;
 using API.Interfaces;
 using API.Model;
 using API.RequestHandlers;
-using Microsoft.Extensions.Logging;
 
 namespace API.Services;
 public class BettingApi : IBettingApi

@@ -19,12 +19,17 @@ public class EventRepository : IEventRepository
         _context = context;
     }
 
+
+    #region CREATE
     // add a Event to the DB
     public void AddEvent(EventDB _event)
     {
         _context.DB_Events.Add(_event);
     }
 
+    #endregion
+
+    #region READ
     // get a ServerEmptyDTO by id
     public async Task<EventDisplayDto> GetEventAsync(int id)
     {
@@ -78,6 +83,23 @@ public class EventRepository : IEventRepository
                 eventParams.PageNumber, eventParams.PageSize,eventParams.FilterOptions2);
     }
 
+    // get EventDisplayDto list by paging
+    public async Task<EventDB> GetIdEventByParams(MatchDto startMatchDto)
+    {   
+        var result = _context.DB_Events
+            .Include(a => a.sport)
+            .Include(a => a.eventState)
+            .SingleOrDefaultAsync(e => e.Team1 == startMatchDto.Team1 &&
+                                       e.Team2 == startMatchDto.Team2 &&
+                                       e.sport.Description.Equals(startMatchDto.Sport));
+        
+        return await result;
+    }
+
+    #endregion
+
+    #region UPDATE
+
     public void Update(EventDB _event)
     {
         _context.Entry(_event).State = EntityState.Modified;
@@ -108,6 +130,10 @@ public class EventRepository : IEventRepository
 
         return check;
     }
+    #endregion
+
+    #region DELETE
+    #endregion
 
     // checkEventExistByIdAsync id exist
     public async Task<Boolean> checkEventExistByIdAsync(int id){

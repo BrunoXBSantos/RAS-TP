@@ -62,7 +62,7 @@ namespace API.BackgroundTask
             {
                 var observables = scope.ServiceProvider.GetRequiredService<IObservables>();
                 var _betRepository = scope.ServiceProvider.GetRequiredService<IBetRepository>();
-                //obtem os eventos que estão open
+                //obtem as apostas que estão open
                 var bets = await _betRepository.GetBetsOpen();
                 foreach(BetEmptyDto bet in bets){
                     EventObservable eventObservable = observables.GetEventObservableByIdEvent(bet._eventId);
