@@ -6,7 +6,7 @@ Sempre que alterarem os campos da BD têm que a remover e voltar a criar
 $ dotnet ef database drop
   Removam a pasta Migrations
 $ dotnet ef migrations add InitialCreate
-$ dotnet ef update database
+$ dotnet ef database update
    
 
  ROLES
