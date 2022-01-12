@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace API.DTOs;
 
+// maybe usada apenas para o login e devolver o token
 public class UserDto
 {
     //* App User Fields

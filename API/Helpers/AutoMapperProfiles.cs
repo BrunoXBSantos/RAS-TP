@@ -21,8 +21,8 @@ namespace API.Helpers
             CreateMap<RegisterDto, AppUser>();
             CreateMap<AppUser, RegisterDto>();
 
-            CreateMap<MemberSimpleDto, AppUser>();
-            CreateMap<AppUser, MemberSimpleDto>();
+            CreateMap<MemberDto, AppUser>();
+            CreateMap<AppUser, MemberDto>();
             
             CreateMap<UserUpdateDto, AppUser>();
             CreateMap<AppUser, UserUpdateDto>();
@@ -32,11 +32,16 @@ namespace API.Helpers
             CreateMap<AppUser, MemberDto>();
             CreateMap<MemberDto, AppUser>();
 
+            CreateMap<ActiveNotificationDto, AppUser>();
+            CreateMap<AppUser, ActiveNotificationDto>();
+            CreateMap<AppUser, ActiveNotificationSimpleDto>();
+
             CreateMap<AppUser, ChargeBalanceDTO>();
             #endregion
 
             #region Event
             CreateMap<EventDB, EventSimpleDto>();
+            CreateMap<EventDB, EventEmptyDto>();
             CreateMap<EventState, EventStateEmptyDto>();
             CreateMap<EventType, EventTypeEmptyDto>();
             CreateMap<EventDB, EventDisplayDto>()
@@ -48,6 +53,8 @@ namespace API.Helpers
             #region Bet
             CreateMap<Bet, BetEmptyDto>();
             CreateMap<CreateBetDTO, Bet>();
+            CreateMap<Bet, BetSimpleDto>();
+            CreateMap<BetState, BetStateEmptyDto>();
             #endregion
 
             #region Sport

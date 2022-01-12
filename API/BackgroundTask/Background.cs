@@ -1,17 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using API.DTOs;
 using API.Interfaces;
 using API.Model;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace API.BackgroundTask
 {
-     public class Background : IHostedService
+    public class Background : IHostedService
     {
         private readonly ILogger<Background> logger;
         private readonly IBettingApi bettingApi;
@@ -30,7 +23,8 @@ namespace API.BackgroundTask
         {
             // atualiza a lista que possui a lista dos observers 
             await updateObservables();
-            await updateObservers();
+            // para cada Evento(É um EventObservable), coloca as apostas
+            await updateObservers(_provider);
             await bettingApi.GetBetsAll(cancellationToken);
         }
 
@@ -57,7 +51,7 @@ namespace API.BackgroundTask
             }
         }
 
-        public async Task updateObservers(){
+        public async Task updateObservers(IServiceProvider provider){
             using (var scope = _provider.CreateScope())
             {
                 var observables = scope.ServiceProvider.GetRequiredService<IObservables>();
@@ -66,7 +60,7 @@ namespace API.BackgroundTask
                 var bets = await _betRepository.GetBetsOpen();
                 foreach(BetEmptyDto bet in bets){
                     EventObservable eventObservable = observables.GetEventObservableByIdEvent(bet._eventId);
-                    BetObserver betObserver = new BetObserver(bet.Id, bet._eventId, bet.appUserId);
+                    BetObserver betObserver = new BetObserver(bet.Id, bet._eventId, bet.appUserId, provider);
                     betObserver.Subscribe(eventObservable);
                 }
                 

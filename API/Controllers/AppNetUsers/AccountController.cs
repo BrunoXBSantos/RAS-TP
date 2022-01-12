@@ -62,7 +62,7 @@ public class AccountController : BaseApiController
 
         if (!result.Succeeded) return Unauthorized();
 
-        var userDtoResult = await _appUserRepository.GetUserAsync(user.UserName);
+        var userDtoResult = await _appUserRepository.GetUserDtoAsync(user.UserName);
         userDtoResult.Token = await _tokenService.CreateToken(user);
 
         return userDtoResult;

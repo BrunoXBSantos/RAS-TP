@@ -27,8 +27,21 @@ public class AppUserRepository : IAppUserRepository
 
     //C(reate) R(ead) U(pdate) D(elete)
 
-     //Read
-    public async Task<UserDto> GetUserAsync(string username)
+
+    #region CREATE
+    #endregion
+
+    #region READ
+    public async Task<MemberDto> GetUserAsync(string username)
+    {
+        return await _userManager.Users
+                                 .Where(x => x.UserName == username)
+                                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+                                 .SingleOrDefaultAsync();
+    }
+    
+    // Obtem o userDto, para o login
+    public async Task<UserDto> GetUserDtoAsync(string username)
     {
         return await _userManager.Users
                                  .Where(x => x.UserName == username)
@@ -36,40 +49,22 @@ public class AppUserRepository : IAppUserRepository
                                  .SingleOrDefaultAsync();
     }
 
-    public async Task<UserDto> GetByIdUserAsync(string id)
-    {
-        return await _userManager.Users
-                                 .Where(x => x.Id == int.Parse(id))
-                                 .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
-                                 .SingleOrDefaultAsync();
-    }
-
-    public async Task<PagedList<UserDto>> GetUsersAsync(AppUserParams userParams)
+    public async Task<PagedList<MemberDto>> GetUsersAsync(AppUserParams userParams)
     {
         var query = _userManager.Users
                         .OrderBy(u => u.Id)
-                        .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
+                        .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
                         .AsNoTracking();
 
-        return await PagedList<UserDto>.CreateAsync(query, userParams.PageNumber, userParams.PageSize, userParams.FilterOptions2);
+        return await PagedList<MemberDto>.CreateAsync(query, userParams.PageNumber, userParams.PageSize, userParams.FilterOptions2);
     }
 
-    public async Task<List<MemberSimpleDto>> GetListUsersAsync()
-    {
-        return await _context.DB_AppUser
-                             .ProjectTo<MemberSimpleDto>(_mapper.ConfigurationProvider)
-                             .ToListAsync();
-    }
-
-    public async Task<IEnumerable<UserDto>> SearchUserAsync(MemberDto user)
+     public async Task<MemberDto> GetByIdUserAsync(string id)
     {
         return await _userManager.Users
-                   .Where(x => x.UserName.Contains(user.username))
-                   .Where(x => x.Name.Contains(user.name))
-                   .Where(x => x.PhoneNumber.Contains(user.PhoneNumber))
-                   .Where(x => x.Email.Contains(user.email))
-                   .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
-                   .ToListAsync();
+                                 .Where(x => x.Id == int.Parse(id))
+                                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+                                 .SingleOrDefaultAsync();
     }
 
     public async Task<AppUser> GetUserByUsernameAsync(string UserName)
@@ -77,6 +72,33 @@ public class AppUserRepository : IAppUserRepository
         return await _context.DB_AppUser.SingleOrDefaultAsync(x => x.UserName == UserName);
     }
 
+    // obtem os dados da notificaçao. Se estao ativas e a port e o Ip
+    public async Task<ActiveNotificationSimpleDto> GetActiveNotificationSimpleDtoIdAsync(int id)
+    {
+        return await _userManager.Users
+                                 .Where(x => x.Id == id)
+                                 .ProjectTo<ActiveNotificationSimpleDto>(_mapper.ConfigurationProvider)
+                                 .SingleOrDefaultAsync();
+    }
+    #endregion
+
+    #region UPDATE
+    public void UpdateUser(AppUser appUser)
+    {
+        _context.Entry(appUser).State = EntityState.Modified;
+    }
+    #endregion
+
+    #region DELETE
+    #endregion
+     //Read
+    
+    //Functions
+    public async Task<bool> SaveAllAsync()
+    {
+        return await _context.SaveChangesAsync() > 0;
+    }
+    
     // Verifica se o saldo permite efetuar uma aposta de "balanceBet"
     public async Task<bool> checkBalanceById(int id, float balanceBet){
         var user = await _context.DB_AppUser
@@ -91,18 +113,45 @@ public class AppUserRepository : IAppUserRepository
             .AnyAsync(user => user.Id == int.Parse(id));
     }
 
+    // ver se as notificaçoes estao ativas
+    public async Task<bool> checkIpPortNotificationByUsernameAsync(string username){
+        var user = await _context.DB_AppUser
+            .SingleOrDefaultAsync(user => user.UserName == username);
+        if(user.IpNotification == null || user.PortNotification == 0)
+            return false;
+        return true;
+    }
+   
+
+    
+
+    public async Task<List<MemberDto>> GetListUsersAsync()
+    {
+        return await _context.DB_AppUser
+                             .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+                             .ToListAsync();
+    }
+
+    public async Task<IEnumerable<UserDto>> SearchUserAsync(MemberDto user)
+    {
+        return await _userManager.Users
+                   .Where(x => x.UserName.Contains(user.username))
+                   .Where(x => x.Name.Contains(user.name))
+                   .Where(x => x.PhoneNumber.Contains(user.PhoneNumber))
+                   .Where(x => x.Email.Contains(user.email))
+                   .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
+                   .ToListAsync();
+    }
+
+    
+
+    
+
     //Update
-    public void UpdateUser(AppUser appUser)
-    {
-        _context.Entry(appUser).State = EntityState.Modified;
-    }
+    
 
 
-    //Functions
-    public async Task<bool> SaveAllAsync()
-    {
-        return await _context.SaveChangesAsync() > 0;
-    }
+    
 
 
 

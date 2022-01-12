@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 namespace API.DTOs;
 public class BetSimpleDto : BetEmptyDto
 {
-    public UserDto appUser { get; set; }
+    public MemberDto appUser { get; set; }
     public BetStateEmptyDto betState { get; set; }
-    public EventSimpleDto _event { get; set; }
+    public EventEmptyDto _event { get; set; }
     
 }

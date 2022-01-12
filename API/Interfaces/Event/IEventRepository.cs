@@ -14,6 +14,7 @@ public interface IEventRepository
     public void Update(EventDB _event);
 
     public Task<EventDisplayDto> GetEventAsync(int id);
+    public Task<PagedList<EventDisplayDto>> GetEventsWithStateAsync(EventParams eventParams, int state);
 
     public Task<EventSimpleDto> GetEventDetailAsync(int id);
 

@@ -12,5 +12,8 @@ public class MemberDto
     public string username { get; set; }
     public string PhoneNumber { get; set; }
     public string email { get; set; }
+    public bool ActiveNotification { get; set; }
+    public string IpNotification { get; set; }
+    public int PortNotification { get; set; }
 
 }
