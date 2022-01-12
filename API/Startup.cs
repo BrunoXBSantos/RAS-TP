@@ -39,6 +39,9 @@ namespace API
             
             app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());//.WithOrigins("https://localhost:4200","https://192.168.1.88:4200","https://192.168.1.*"));
 
+            // ordem imortante
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -26,6 +26,9 @@ namespace API.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("ActiveNotification")
+                        .HasColumnType("INTEGER");
+
                     b.Property<float>("Balance")
                         .HasColumnType("REAL");
 
@@ -42,6 +45,9 @@ namespace API.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("IpNotification")
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
@@ -67,6 +73,9 @@ namespace API.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PortNotification")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("SecurityStamp")
@@ -97,13 +106,16 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("_eventId")
+                    b.Property<string>("Result")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("_eventId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("appUserId")
+                    b.Property<int>("appUserId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("betStateId")
+                    b.Property<int>("betStateId")
                         .HasColumnType("INTEGER");
 
                     b.Property<float>("value")
@@ -246,6 +258,10 @@ namespace API.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
@@ -261,6 +277,8 @@ namespace API.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRole<int>");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -336,11 +354,17 @@ namespace API.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUserRole<int>");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
@@ -362,22 +386,39 @@ namespace API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("API.Entities.AppRole", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole<int>");
+
+                    b.HasDiscriminator().HasValue("AppRole");
+                });
+
+            modelBuilder.Entity("API.Entities.AppUserRole", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserRole<int>");
+
+                    b.HasDiscriminator().HasValue("AppUserRole");
+                });
+
             modelBuilder.Entity("API.Model.Bet", b =>
                 {
                     b.HasOne("API.Model.EventDB", "_event")
                         .WithMany("bets")
                         .HasForeignKey("_eventId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.HasOne("API.Model.AppUser", "appUser")
                         .WithMany("bets")
                         .HasForeignKey("appUserId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
 
                     b.HasOne("API.Model.BetState", "betState")
                         .WithMany("bets")
                         .HasForeignKey("betStateId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("_event");
 
@@ -457,12 +498,6 @@ namespace API.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("API.Model.AppUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
@@ -474,8 +509,29 @@ namespace API.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("API.Entities.AppUserRole", b =>
+                {
+                    b.HasOne("API.Entities.AppRole", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Model.AppUser", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("API.Model.AppUser", b =>
                 {
+                    b.Navigation("UserRoles");
+
                     b.Navigation("bets");
                 });
 
@@ -507,6 +563,11 @@ namespace API.Migrations
             modelBuilder.Entity("API.Model.SportType", b =>
                 {
                     b.Navigation("sports");
+                });
+
+            modelBuilder.Entity("API.Entities.AppRole", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

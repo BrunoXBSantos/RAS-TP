@@ -43,9 +43,9 @@ public class AccountController : BaseApiController
 
         if (!result.Succeeded) return BadRequest(result.Errors);
 
-        //var roleResult = await _userManager.AddToRoleAsync(Userx, "Member");
+        var roleResult = await _userManager.AddToRoleAsync(Userx, "Member");
 
-        //if (!roleResult.Succeeded) BadRequest(result.Errors);
+        if (!roleResult.Succeeded) BadRequest(result.Errors);
 
         return Ok(_mapper.Map<RegisterDto>(Userx));
     }
@@ -62,8 +62,8 @@ public class AccountController : BaseApiController
 
         if (!result.Succeeded) return Unauthorized();
 
-        var userDtoResult = await _appUserRepository.GetUserAsync(user.UserName);
-        //userDtoResult.Token = await _tokenService.CreateToken(user);
+        var userDtoResult = await _appUserRepository.GetUserDtoAsync(user.UserName);
+        userDtoResult.Token = await _tokenService.CreateToken(user);
 
         return userDtoResult;
     }

@@ -22,25 +22,32 @@ public class BetRepository : IBetRepository
         _context = context;
     }
 
+    #region CREATE
+
     // add a bet to the DB
     public void AddBet(Bet bet)
     {
         _context.DB_Bet.Add(bet);
     }
+    #endregion
+
+    #region READ
 
     // get a Bet by id
     public async Task<Bet> GetBetByIdAsync(int id)
     {
         return await _context.DB_Bet
             .Where(x => x.Id == id)
+            // .Include(s => s.Warnings)
+            // .Include(s => s.Comments)
             .SingleOrDefaultAsync();
     }
 
     // get a BetEmptyDto by id
-    public async Task<BetEmptyDto> GetBetEmptyByIdAsync(string id)
+    public async Task<BetEmptyDto> GetBetEmptyByIdAsync(int id)
     {
         return await _context.DB_Bet
-            .Where(x => x.Id == int.Parse(id))
+            .Where(x => x.Id == id)
             // .Include(s => s.Warnings)
             // .Include(s => s.Comments)
             .ProjectTo<BetEmptyDto>(_mapper.ConfigurationProvider)
@@ -48,10 +55,10 @@ public class BetRepository : IBetRepository
     }
 
     // get a BetSimpleDto by id
-    public async Task<BetSimpleDto> GetBetSimpleByIdAsync(string id)
+    public async Task<BetSimpleDto> GetBetSimpleByIdAsync(int id)
     {
         return await _context.DB_Bet
-            .Where(x => x.Id == int.Parse(id))
+            .Where(x => x.Id == id)
             // .Include(s => s.Warnings)
             // .Include(s => s.Comments)
             .ProjectTo<BetSimpleDto>(_mapper.ConfigurationProvider)
@@ -59,21 +66,35 @@ public class BetRepository : IBetRepository
     }
 
     // get a list of BetSimpleDto by id User
-    public async Task<PagedList<BetSimpleDto>> GetBetSimpleByIdUserAsync(BetParams betParams, string appUserId)
+    public async Task<PagedList<BetEmptyDto>> GetBetsSimpleByIdAsync(BetParams paginationParams, int appUserId)
     {
         var query = _context.DB_Bet
-                .Where(x => x.appUserId == int.Parse(appUserId))
+                .Where(x => x.appUserId == appUserId)
                 // .Include(s => s.Warnings)
                 // .Include(s => s.Comments)
-                .ProjectTo<BetSimpleDto>(_mapper.ConfigurationProvider)
+                .ProjectTo<BetEmptyDto>(_mapper.ConfigurationProvider)
                 .AsNoTracking()
                 .AsQueryable();
 
-        return await PagedList<BetSimpleDto>.CreateAsync(query, 
-                    betParams.PageNumber, betParams.PageSize,betParams.FilterOptions2);
+        return await PagedList<BetEmptyDto>.CreateAsync(query, 
+                paginationParams.PageNumber, paginationParams.PageSize,paginationParams.FilterOptions2);
     }
 
-    // get Bets with state is open
+    // get Bets with state is == state
+    public async Task<PagedList<BetEmptyDto>> GetBetsWithState(PaginationParams paginationParams, int state)
+    {
+        var query = _context.DB_Bet
+            .Where(x => x.betStateId == state)
+            .ProjectTo<BetEmptyDto>(_mapper.ConfigurationProvider)
+            .AsNoTracking()
+            .AsQueryable();
+        
+        return await PagedList<BetEmptyDto>.CreateAsync(query, 
+                paginationParams.PageNumber, paginationParams.PageSize,paginationParams.FilterOptions2);
+
+    }
+
+    // get Bets with state is open to backgroud
     public async Task<List<BetEmptyDto>> GetBetsOpen()
     {
         var bets = await _context.DB_Bet
@@ -84,8 +105,21 @@ public class BetRepository : IBetRepository
         return bets;
     }
 
+    #endregion
+
+    #region UPDATE
+    public void UpdateBet(Bet bet)
+    {
+        _context.Entry(bet).State = EntityState.Modified;
+    }
+    #endregion
+
+    #region DELETE
+    #endregion
+
     public async Task<bool> SaveAllAsync()
     {
         return await _context.SaveChangesAsync() > 0;
     }
+
 }

@@ -9,7 +9,7 @@ namespace API.Model;
 public class EventObservable : IObservable<Notification>
 {
     // lista dos clientes que apostaram no evento idEvent
-    private List<IObserver<Notification>> observers;
+    public List<IObserver<Notification>> observers;
     public int idEvent {get ; set ; }
 
     public EventObservable(int idEvent)

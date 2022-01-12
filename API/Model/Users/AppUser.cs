@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using API.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace API.Model;
@@ -21,6 +18,12 @@ public class AppUser : IdentityUser<int>
     public string Contact { get; set; }
     public float Balance { get; set; }
 
+    // Ip e Port são para receber as notificaçoes
+    public bool ActiveNotification { get; set; }
+    public string IpNotification { get; set; }
+    public int PortNotification { get; set; }
+
     public ICollection<Bet> bets {get; set;}
+    public ICollection<AppUserRole> UserRoles { get; set; }
 
 }

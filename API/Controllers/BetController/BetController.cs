@@ -16,17 +16,21 @@ public class BetController : BaseApiController
     private readonly IAppUserRepository _appUserRepository;
     private readonly IObservables _observables;
     private readonly IEventRepository _eventRepository;
+
+    private readonly IServiceProvider _provider;
     public BetController(IBetRepository betRepository,
                          IEventRepository eventRepository,
                          IMapper mapper,
                          IAppUserRepository appUserRepository,
-                         IObservables observables)
+                         IObservables observables,
+                         IServiceProvider provider)
     {
         _eventRepository = eventRepository;
         _mapper = mapper;
         _appUserRepository = appUserRepository;
         _observables = observables;
         _betRepository = betRepository;
+        _provider = provider;
     }
 
     #region Create 
@@ -64,12 +68,10 @@ public class BetController : BaseApiController
         _betRepository.AddBet(bet);
 
         //crio o observer
-        BetObserver betObserver = new BetObserver(bet.Id, bet._eventId, bet.appUserId);
+        BetObserver betObserver = new BetObserver(bet.Id, bet._eventId, bet.appUserId, _provider);
         EventObservable eventObservable = _observables.GetEventObservableByIdEvent(bet._eventId);
         betObserver.Subscribe(eventObservable);
         
-        Console.WriteLine("Aqui metia a cena naquilo broooooo");
-
         if (await _betRepository.SaveAllAsync()) 
             return Ok(_mapper.Map<BetEmptyDto>(bet));
 
@@ -83,11 +85,11 @@ public class BetController : BaseApiController
     /// Get a especific BetEmptyDto by id.
     /// </summary>
     [HttpGet("{id}")]
-    public async Task<ActionResult<BetEmptyDto>> GetBetEmpty(string id)
+    public async Task<ActionResult<BetEmptyDto>> GetBetEmptyByIdAsync(int id)
     {
         var bet = new BetEmptyDto();
         bet = await _betRepository.GetBetEmptyByIdAsync(id);
-        if (bet == null) return BadRequest("Bet not found");
+        if (bet == null) return NotFound("Bet not found");
         return Ok(bet);
     }
 
@@ -95,27 +97,68 @@ public class BetController : BaseApiController
     /// Get a especific BetSimpleDto by id. Bet more detailed.
     /// </summary>
     [HttpGet("{id}/detailed")]
-    public async Task<ActionResult<BetSimpleDto>> GetBetSimple(string id)
+    public async Task<ActionResult<BetSimpleDto>> GetBetSimpleByIdAsync(int id)
     {
-        var bet = new BetSimpleDto();
-        bet = await _betRepository.GetBetSimpleByIdAsync(id);
+        var bet = await _betRepository.GetBetSimpleByIdAsync(id);
         if (bet == null) return BadRequest("Bet not found");
         return Ok(bet);
     }
 
     /// <summary>
-    /// Gets the list of bets from a given user id.
+    /// Gets the list of bets from a given username.
     /// </summary>
-    /// /// <response code="200">Returns list of comments</response>
-    /// <response code="400">If the item is null</response>
-    [HttpGet("User={idUser}")]
-    public async Task<ActionResult<IEnumerable<BetEmptyDto>>> GetBetsEmptyByUserId([FromQuery]BetParams betParams, string idUser)
+    [HttpGet("username")]
+    public async Task<ActionResult<IEnumerable<BetEmptyDto>>> GetBetsEmptyByUserId([FromQuery]BetParams betParams, string username)
     {   
         // verifica se o server existe
-        if(!(await _appUserRepository.checkUserExistByIdAsync(idUser)))
-            return NotFound("User Not Found");
-            
-        var bets = await _betRepository.GetBetSimpleByIdUserAsync(betParams, idUser);
+        var user = await _appUserRepository.GetUserByUsernameAsync(username);
+
+        if(user == null){
+            return NotFound("User not found");
+        }            
+        var bets = await _betRepository.GetBetsSimpleByIdAsync(betParams, user.Id);
+
+        Response.AddPaginationHeader(bets.CurrentPage, bets.PageSize, 
+            bets.TotalCount, bets.TotalPages);
+
+        return Ok(bets);
+    }
+
+    /// <summary>
+    /// Gets the list of bets with state is open.
+    /// </summary>
+    [HttpGet("Open")]
+    public async Task<ActionResult<IEnumerable<BetSimpleDto>>> GetBetsOpen([FromQuery]BetParams betParams)
+    {   
+        var bets = await _betRepository.GetBetsWithState(betParams, 1);
+
+        Response.AddPaginationHeader(bets.CurrentPage, bets.PageSize, 
+            bets.TotalCount, bets.TotalPages);
+
+        return Ok(bets);
+    }
+
+    /// <summary>
+    /// Gets the list of bets with state is Suspended.
+    /// </summary>
+    [HttpGet("Suspended")]
+    public async Task<ActionResult<IEnumerable<BetSimpleDto>>> GetBetsSuspended([FromQuery]BetParams betParams)
+    {   
+        var bets = await _betRepository.GetBetsWithState(betParams, 3);
+
+        Response.AddPaginationHeader(bets.CurrentPage, bets.PageSize, 
+            bets.TotalCount, bets.TotalPages);
+
+        return Ok(bets);
+    }
+
+    /// <summary>
+    /// Gets the list of bets with state is Suspended.
+    /// </summary>
+    [HttpGet("Finished")]
+    public async Task<ActionResult<IEnumerable<BetSimpleDto>>> GetBetsFinished([FromQuery]BetParams betParams)
+    {   
+        var bets = await _betRepository.GetBetsWithState(betParams, 2);
 
         Response.AddPaginationHeader(bets.CurrentPage, bets.PageSize, 
             bets.TotalCount, bets.TotalPages);

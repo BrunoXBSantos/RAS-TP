@@ -1,5 +1,6 @@
 using System.Text;
 using API.Data;
+using API.Entities;
 using API.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -21,10 +22,10 @@ public static class IdentityServiceExtensions
                 //  Must contain a digit.
                 opt.Password.RequireDigit = true;
         })
-        //.AddRoles<AppRole>()
-        //.AddRoleManager<RoleManager<AppRole>>()
+        .AddRoles<AppRole>()
+        .AddRoleManager<RoleManager<AppRole>>()
         .AddSignInManager<SignInManager<AppUser>>()
-        //.AddRoleValidator<RoleValidator<AppRole>>()
+        .AddRoleValidator<RoleValidator<AppRole>>()
         .AddEntityFrameworkStores<DataContext>();
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -39,11 +40,10 @@ public static class IdentityServiceExtensions
                     };
                 });
 
-        services.AddAuthorization(opt =>
+        services.AddAuthorization(opt => 
         {
-            opt.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
-            opt.AddPolicy("Moderator", policy => policy.RequireRole("Admin", "Moderator"));
-
+            opt.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+            opt.AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("Admin", "Moderator"));
         });
 
         return services;

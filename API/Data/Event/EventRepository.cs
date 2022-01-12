@@ -19,13 +19,27 @@ public class EventRepository : IEventRepository
         _context = context;
     }
 
+
+    #region CREATE
     // add a Event to the DB
     public void AddEvent(EventDB _event)
     {
         _context.DB_Events.Add(_event);
     }
 
-    // get a ServerEmptyDTO by id
+    #endregion
+
+    #region READ
+
+    // get a EventDB by id
+    public async Task<EventDB> GetEventDBAsync(int id)
+    {
+        return await _context.DB_Events
+            .Where(x => x.Id == id)
+            .SingleOrDefaultAsync();
+    }
+
+    // get a EventDisplayDto by id
     public async Task<EventDisplayDto> GetEventAsync(int id)
     {
         return await _context.DB_Events
@@ -78,6 +92,37 @@ public class EventRepository : IEventRepository
                 eventParams.PageNumber, eventParams.PageSize,eventParams.FilterOptions2);
     }
 
+    // get EventDisplayDto list by state
+    public async Task<PagedList<EventDisplayDto>> GetEventsWithStateAsync(EventParams eventParams, int state)
+    {
+        var query = _context.DB_Events
+            .Where(e => e.eventStateId == state)
+            .ProjectTo<EventDisplayDto>(_mapper.ConfigurationProvider)
+            .AsNoTracking()
+            .AsQueryable();
+
+        return await PagedList<EventDisplayDto>.CreateAsync(query, 
+                eventParams.PageNumber, eventParams.PageSize,eventParams.FilterOptions2);
+    }
+
+
+    // get EventDisplayDto list by paging
+    public async Task<EventDB> GetIdEventByParams(MatchDto startMatchDto)
+    {   
+        var result = _context.DB_Events
+            .Include(a => a.sport)
+            .Include(a => a.eventState)
+            .SingleOrDefaultAsync(e => e.Team1 == startMatchDto.Team1 &&
+                                       e.Team2 == startMatchDto.Team2 &&
+                                       e.sport.Description.Equals(startMatchDto.Sport));
+        
+        return await result;
+    }
+
+    #endregion
+
+    #region UPDATE
+
     public void Update(EventDB _event)
     {
         _context.Entry(_event).State = EntityState.Modified;
@@ -108,6 +153,10 @@ public class EventRepository : IEventRepository
 
         return check;
     }
+    #endregion
+
+    #region DELETE
+    #endregion
 
     // checkEventExistByIdAsync id exist
     public async Task<Boolean> checkEventExistByIdAsync(int id){

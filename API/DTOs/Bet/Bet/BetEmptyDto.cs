@@ -8,6 +8,7 @@ public class BetEmptyDto
 {
     public int Id { get; set; }
     public float value { get; set; }
+    public string Result { get; set; }
 
     // Table AppUser
     public int appUserId { get; set; }

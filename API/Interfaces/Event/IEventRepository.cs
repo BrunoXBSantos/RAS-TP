@@ -13,12 +13,17 @@ public interface IEventRepository
 
     public void Update(EventDB _event);
 
+    public Task<EventDB> GetEventDBAsync(int id);
+
     public Task<EventDisplayDto> GetEventAsync(int id);
+    public Task<PagedList<EventDisplayDto>> GetEventsWithStateAsync(EventParams eventParams, int state);
 
     public Task<EventSimpleDto> GetEventDetailAsync(int id);
 
     public Task<PagedList<EventDisplayDto>> GetEventsAsync(EventParams eventParams);
     public Task<List<EventSimpleDto>> GetEventsOpen();
+
+    public Task<EventDB> GetIdEventByParams(MatchDto startMatchDto);
 
     Task<bool> checkEvent(int type, int sport, string team1, string team2);
     public Task<Boolean> checkEventExistByIdAsync(int id);
