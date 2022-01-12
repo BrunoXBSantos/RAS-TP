@@ -10,5 +10,6 @@ public interface IObservables
     public List<EventObservable> getAllEventObservable();
 
     public void AddEventObservable(EventObservable eventObservable);
+    public void RemoveEventObservable(EventObservable eventObservable);
     public EventObservable GetEventObservableByIdEvent(int idEvent);
 }

@@ -33,6 +33,16 @@ public class BetRepository : IBetRepository
 
     #region READ
 
+    // get a Bet by id
+    public async Task<Bet> GetBetByIdAsync(int id)
+    {
+        return await _context.DB_Bet
+            .Where(x => x.Id == id)
+            // .Include(s => s.Warnings)
+            // .Include(s => s.Comments)
+            .SingleOrDefaultAsync();
+    }
+
     // get a BetEmptyDto by id
     public async Task<BetEmptyDto> GetBetEmptyByIdAsync(int id)
     {
@@ -98,6 +108,10 @@ public class BetRepository : IBetRepository
     #endregion
 
     #region UPDATE
+    public void UpdateBet(Bet bet)
+    {
+        _context.Entry(bet).State = EntityState.Modified;
+    }
     #endregion
 
     #region DELETE

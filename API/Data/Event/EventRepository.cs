@@ -30,7 +30,16 @@ public class EventRepository : IEventRepository
     #endregion
 
     #region READ
-    // get a ServerEmptyDTO by id
+
+    // get a EventDB by id
+    public async Task<EventDB> GetEventDBAsync(int id)
+    {
+        return await _context.DB_Events
+            .Where(x => x.Id == id)
+            .SingleOrDefaultAsync();
+    }
+
+    // get a EventDisplayDto by id
     public async Task<EventDisplayDto> GetEventAsync(int id)
     {
         return await _context.DB_Events

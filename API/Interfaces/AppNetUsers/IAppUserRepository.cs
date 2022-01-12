@@ -11,6 +11,7 @@ public interface IAppUserRepository
 {
     //C(reate) R(ead) U(pdate) D(elete)
     Task<MemberDto> GetUserAsync(string username);
+    public Task<AppUser> GetUserByIdAsync(int id);
     public Task<UserDto> GetUserDtoAsync(string username);
     Task<MemberDto> GetByIdUserAsync(string id);
     Task<PagedList<MemberDto>> GetUsersAsync(AppUserParams userParams);

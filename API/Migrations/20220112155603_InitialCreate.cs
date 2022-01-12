@@ -277,6 +277,7 @@ namespace API.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     value = table.Column<float>(type: "REAL", nullable: false),
+                    Result = table.Column<string>(type: "TEXT", nullable: true),
                     appUserId = table.Column<int>(type: "INTEGER", nullable: false),
                     betStateId = table.Column<int>(type: "INTEGER", nullable: false),
                     _eventId = table.Column<int>(type: "INTEGER", nullable: false)

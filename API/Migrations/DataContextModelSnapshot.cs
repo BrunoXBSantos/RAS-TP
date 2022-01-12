@@ -106,6 +106,9 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Result")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("_eventId")
                         .HasColumnType("INTEGER");
 
