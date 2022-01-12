@@ -12,9 +12,11 @@ public interface IBetRepository
     public void AddBet(Bet bet);
 
     public Task<bool> SaveAllAsync();
-    public Task<Bet> GetBetByIdAsync(int id);
-    public Task<BetSimpleDto> GetBetSimpleByIdAsync(string id);
-    public Task<BetEmptyDto> GetBetEmptyByIdAsync(string id);
+    public Task<BetSimpleDto> GetBetSimpleByIdAsync(int id);
+    public Task<BetEmptyDto> GetBetEmptyByIdAsync(int id);
+    public Task<PagedList<BetEmptyDto>> GetBetsWithState(PaginationParams paginationParams, int state);
+    public Task<PagedList<BetEmptyDto>> GetBetsSimpleByIdAsync(BetParams betParams, int appUserId);
+
     public Task<List<BetEmptyDto>> GetBetsOpen();
-    public Task<PagedList<BetSimpleDto>> GetBetSimpleByIdUserAsync(BetParams betParams, string appUserId);
+
 }

@@ -83,6 +83,20 @@ public class EventRepository : IEventRepository
                 eventParams.PageNumber, eventParams.PageSize,eventParams.FilterOptions2);
     }
 
+    // get EventDisplayDto list by state
+    public async Task<PagedList<EventDisplayDto>> GetEventsWithStateAsync(EventParams eventParams, int state)
+    {
+        var query = _context.DB_Events
+            .Where(e => e.eventStateId == state)
+            .ProjectTo<EventDisplayDto>(_mapper.ConfigurationProvider)
+            .AsNoTracking()
+            .AsQueryable();
+
+        return await PagedList<EventDisplayDto>.CreateAsync(query, 
+                eventParams.PageNumber, eventParams.PageSize,eventParams.FilterOptions2);
+    }
+
+
     // get EventDisplayDto list by paging
     public async Task<EventDB> GetIdEventByParams(MatchDto startMatchDto)
     {   

@@ -26,6 +26,9 @@ namespace API.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("ActiveNotification")
+                        .HasColumnType("INTEGER");
+
                     b.Property<float>("Balance")
                         .HasColumnType("REAL");
 
@@ -42,6 +45,9 @@ namespace API.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("IpNotification")
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
@@ -67,6 +73,9 @@ namespace API.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PortNotification")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("SecurityStamp")

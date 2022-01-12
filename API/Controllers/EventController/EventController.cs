@@ -61,6 +61,48 @@ public class EventController : BaseApiController
         return Ok(events);
     }
 
+    /// <summary>
+    /// Get the list of Events Finished. Only event information, EventDisplayDto. 
+    /// </summary>
+    [HttpGet("Finished")]
+    public async Task<ActionResult<IEnumerable<EventDisplayDto>>> GetEventsFinished([FromQuery]EventParams eventParams)
+    {
+        var events = await _eventRepository.GetEventsWithStateAsync(eventParams, 2);
+
+        Response.AddPaginationHeader(events.CurrentPage, events.PageSize, 
+            events.TotalCount, events.TotalPages);
+
+        return Ok(events);
+    }
+
+    /// <summary>
+    /// Get the list of Events Suspended. Only event information, EventDisplayDto. 
+    /// </summary>
+    [HttpGet("Suspended")]
+    public async Task<ActionResult<IEnumerable<EventDisplayDto>>> GetEventsSuspended([FromQuery]EventParams eventParams)
+    {
+        var events = await _eventRepository.GetEventsWithStateAsync(eventParams, 3);
+
+        Response.AddPaginationHeader(events.CurrentPage, events.PageSize, 
+            events.TotalCount, events.TotalPages);
+
+        return Ok(events);
+    }
+
+    /// <summary>
+    /// Get the list of Events Open. Only event information, EventDisplayDto. 
+    /// </summary>
+    [HttpGet("Open")]
+    public async Task<ActionResult<IEnumerable<EventDisplayDto>>> GetEventsOpen([FromQuery]EventParams eventParams)
+    {
+        var events = await _eventRepository.GetEventsWithStateAsync(eventParams, 1);
+
+        Response.AddPaginationHeader(events.CurrentPage, events.PageSize, 
+            events.TotalCount, events.TotalPages);
+
+        return Ok(events);
+    }
+
 
     #endregion
 
