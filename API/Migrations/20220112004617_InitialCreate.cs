@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API.Migrations
 {
-    public partial class teste : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,7 +17,8 @@ namespace API.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true)
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true),
+                    Discriminator = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -172,7 +173,8 @@ namespace API.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    RoleId = table.Column<int>(type: "INTEGER", nullable: false)
+                    RoleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Discriminator = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -272,9 +274,9 @@ namespace API.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     value = table.Column<float>(type: "REAL", nullable: false),
-                    appUserId = table.Column<int>(type: "INTEGER", nullable: true),
-                    betStateId = table.Column<int>(type: "INTEGER", nullable: true),
-                    _eventId = table.Column<int>(type: "INTEGER", nullable: true)
+                    appUserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    betStateId = table.Column<int>(type: "INTEGER", nullable: false),
+                    _eventId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

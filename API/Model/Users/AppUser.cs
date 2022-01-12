@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using API.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace API.Model;
@@ -22,5 +19,6 @@ public class AppUser : IdentityUser<int>
     public float Balance { get; set; }
 
     public ICollection<Bet> bets {get; set;}
+    public ICollection<AppUserRole> UserRoles { get; set; }
 
 }
