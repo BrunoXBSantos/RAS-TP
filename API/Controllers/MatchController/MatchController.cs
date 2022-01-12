@@ -10,15 +10,22 @@ namespace API.Controllers;
 public class MatchController : BaseApiController
 {
     private readonly IEventRepository _eventRepository;
-
+    private readonly IBetRepository _betRepository;
+    private readonly IAppUserRepository _appUserRepository;
     private readonly IServiceProvider _provider;
     private readonly IObservables _observables;
 
-    public MatchController(IEventRepository eventRepository, IServiceProvider provider, IObservables observables)
+    public MatchController(IEventRepository eventRepository,
+                            IBetRepository betRepository,
+                            IAppUserRepository appUserRepository,
+                            IServiceProvider provider, 
+                            IObservables observables)
     {
         _eventRepository = eventRepository;
         _provider = provider;
         _observables = observables;
+        _betRepository = betRepository;
+        _appUserRepository = appUserRepository;
     }
 
     [HttpPost("startmatch")]
@@ -68,7 +75,7 @@ public class MatchController : BaseApiController
     }
 
     [HttpPost("endmatch")]
-    public async Task<ActionResult<MatchDto>> EnfMatch(MatchDto endMatch)
+    public async Task<ActionResult<MatchDto>> EnfMatch(EndMatchDto endMatch)
     {   
         var eventDb = await _eventRepository.GetIdEventByParams(endMatch);
         // se evento null, é porque não existe
@@ -80,11 +87,16 @@ public class MatchController : BaseApiController
             return BadRequest("Event is over");
         }
 
-        var description = endMatch.Team1 + 
-                            " - " + endMatch.Team2 + 
-                            " End Match";
+        var description = endMatch.Team1 +
+                            " " + endMatch.Team1Goals + 
+                            " - " + endMatch.Team2Goals +
+                            endMatch.Team2 + 
+                            " END MATCH";
 
         SendNotification(description, eventDb);
+        if (!await calculateEarnings(eventDb, endMatch)){
+            return BadRequest("Error to calculate Earnings");
+        }
         Console.WriteLine("" + eventDb.Id + eventDb.sport.Description);
         return Ok(endMatch);
     }
@@ -120,6 +132,63 @@ public class MatchController : BaseApiController
         return Ok();
     }
 
+
+    [NonAction]
+    public async Task<bool> calculateEarnings(EventDB eventDB, EndMatchDto endMatch)
+    {
+        // vou buscar o eventObservable do Evento 
+        EventObservable eventObservable = _observables.GetEventObservableByIdEvent(eventDB.Id);
+
+        // a cada observer de eventObservable
+        foreach(BetObserver betObserver in eventObservable.observers){
+            var bet = await _betRepository.GetBetByIdAsync(betObserver.betId);
+            // coloca state da bet  = Finished
+            bet.betStateId = 2;
+            _betRepository.UpdateBet(bet);
+            if (!await _betRepository.SaveAllAsync())
+            {
+                return false;
+            }
+            //se ganhou a aposta
+            if( endMatch.Team1Goals>endMatch.Team2Goals && bet.Result.Equals("1") || 
+                endMatch.Team1Goals<endMatch.Team2Goals && bet.Result.Equals("2") ||
+                endMatch.Team1Goals==endMatch.Team2Goals && bet.Result.ToUpper().Equals("X")){
+                    float multiplied = 0;
+                    if(endMatch.Team1Goals>endMatch.Team2Goals)
+                        multiplied = eventDB.Home_Odd;
+                    else if(endMatch.Team1Goals<endMatch.Team2Goals)
+                        multiplied = eventDB.Away_Odd;
+                    else 
+                        multiplied = eventDB.Tie_Odd;
+                    var user = await _appUserRepository.GetUserByIdAsync(bet.appUserId);
+                    user.Balance = user.Balance + bet.value * multiplied;
+                    _appUserRepository.UpdateUser(user);
+                    if (!await _appUserRepository.SaveAllAsync())
+                    {
+                        return false;
+                    }
+
+                    string ip = user.IpNotification;
+                    int port = user.PortNotification;
+                    string description = "congratulations, you won " + bet.value;
+
+                    // SEND TO CLIENT
+                }
+
+
+        }
+        // atualiza o evento
+        eventDB.eventStateId = 2;
+        _eventRepository.Update(eventDB);
+        if (!await _eventRepository.SaveAllAsync())
+        {
+            return false;
+        }
+        //remove o eventObservable
+        _observables.RemoveEventObservable(eventObservable);
+
+        return true;
+    }
 
     [NonAction]
     public void SendNotification(string description, EventDB eventDB )

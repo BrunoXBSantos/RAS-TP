@@ -32,6 +32,12 @@ public class AppUserRepository : IAppUserRepository
     #endregion
 
     #region READ
+    public async Task<AppUser> GetUserByIdAsync(int id)
+    {
+        return await _userManager.Users
+                                 .Where(x => x.Id == id)
+                                 .SingleOrDefaultAsync();
+    }
     public async Task<MemberDto> GetUserAsync(string username)
     {
         return await _userManager.Users

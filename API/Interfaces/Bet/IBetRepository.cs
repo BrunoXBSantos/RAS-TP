@@ -10,12 +10,13 @@ namespace API.Interfaces;
 public interface IBetRepository
 {
     public void AddBet(Bet bet);
-
+    public Task<Bet> GetBetByIdAsync(int id);
     public Task<bool> SaveAllAsync();
     public Task<BetSimpleDto> GetBetSimpleByIdAsync(int id);
     public Task<BetEmptyDto> GetBetEmptyByIdAsync(int id);
     public Task<PagedList<BetEmptyDto>> GetBetsWithState(PaginationParams paginationParams, int state);
     public Task<PagedList<BetEmptyDto>> GetBetsSimpleByIdAsync(BetParams betParams, int appUserId);
+    public void UpdateBet(Bet bet);
 
     public Task<List<BetEmptyDto>> GetBetsOpen();
 

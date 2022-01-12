@@ -9,5 +9,4 @@ public class BetSimpleDto : BetEmptyDto
     public MemberDto appUser { get; set; }
     public BetStateEmptyDto betState { get; set; }
     public EventEmptyDto _event { get; set; }
-    
 }
