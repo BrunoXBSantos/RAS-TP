@@ -14,8 +14,8 @@ const redirectAuthenticated = (to, from, next) => {
   if (store.getters.isAuthenticated) {
     if (store.getters.isAdmin) {
       next('/admin')
-    } else if (store.getters.isUser) {
-      next('/user')
+    } else if (store.getters.isMember) {
+      next('/member')
     }
   } else {
     next()
@@ -27,20 +27,20 @@ const ifAuthenticatedAdmin = (to, from, next) => {
     if (store.getters.isAdmin) {
       next()
     } else {
-      next('/user')
+      next('/member')
     }
   } else {
     next('/login')
   }
 }
 
-const ifAuthenticatedUser = (to, from, next) => {
-  console.log('Testing if Authenticated User')
+const ifAuthenticatedMember = (to, from, next) => {
+  console.log('Testing if Authenticated Member')
   console.log(localStorage.getItem('user-token'))
   console.log(store.getters.isAuthenticated)
-  console.log(store.getters.isUser)
+  console.log(store.getters.isMember)
   if (store.getters.isAuthenticated) {
-    if (store.getters.isUser) {
+    if (store.getters.isMember) {
       next()
     } else {
       next('/admin')
@@ -85,10 +85,10 @@ export default new Router({
       beforeEnter: ifAuthenticatedAdmin
     },
     {
-      name: 'LoggedUser',
-      path: '/user',
-      component: () => import('@/views/LoggedUser'),
-      beforeEnter: ifAuthenticatedUser
+      name: 'LoggedMember',
+      path: '/member',
+      component: () => import('@/views/LoggedMember'),
+      beforeEnter: ifAuthenticatedMember
     },
     {
       path: '/404',

@@ -147,12 +147,12 @@ export default {
       // eslint-disable-next-line camelcase
       axios({ url: api_url + '/api/Account/register', data: { name, contact, phone, username, email, password }, method: 'POST' })
         .then(resp => {
-          console.log('Teste Register Sucess:')
+          console.log('TEST -> VIEWS/REGISTER.VUE -> SUCESS RESPONSE:')
           console.log(resp)
           this.$router.push({ path: '/' })
         })
         .catch(err => {
-          console.log('Teste Register Error:')
+          console.log('TEST -> VIEWS/REGISTER.VUE -> ERROR RESPONSE:')
           console.log(err)
           this.error = err
         })

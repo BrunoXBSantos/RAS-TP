@@ -79,10 +79,12 @@ export default {
       const { username, password } = this
       this.loaded++
       this.$store.dispatch(AUTH_REQUEST, { username, password }).then(resp => {
-        if (resp === 'admin') {
+        if (resp === 'Admin') {
           this.$router.push({ path: '/admin' })
-        } else if (resp === 'user') {
-          this.$router.push({ path: '/user' })
+        } else if (resp === 'Moderator') {
+          this.$router.push({ path: '/moderator' })
+        } else if (resp === 'Member') {
+          this.$router.push({ path: '/member' })
         } else {
           this.$router.push({ path: '/404' })
         }

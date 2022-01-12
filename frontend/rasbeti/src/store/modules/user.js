@@ -3,7 +3,7 @@ import { AUTH_LOGOUT } from '../actions/auth'
 
 const state = {
   status: '',
-  type: '',
+  role: '',
   name: '',
   id: '',
   email: ''
@@ -14,8 +14,9 @@ const getters = {
   getName: state => state.name,
   getId: state => state.id,
   getEmail: state => state.email,
-  isAdmin: state => state.type === 'admin',
-  isUser: state => state.type === 'user',
+  isAdmin: state => state.role === 'Admin',
+  isMember: state => state.role === 'Member',
+  isModerator: state => state.role === 'Moderator',
   isProfileLoaded: state => !!state.profile.name
 }
 
@@ -24,16 +25,16 @@ const actions = {
     commit(USER_REQUEST)
 
     var resp = {}
-    resp.type = token.type
+    resp.role = token.role
     resp.name = token.name
     resp.email = token.email
     resp.id = token.id
-    console.log('Teste User Request:')
+    console.log('TEST -> STORE/MODULES/USER.JS -> [USER_REQUEST]:')
     console.log(resp)
     console.log('user request ' + JSON.stringify(state))
     commit(USER_SUCCESS, resp)
     console.log('after user sucess ' + JSON.stringify(state))
-    if (resp.type !== 'user' && resp.type !== 'admin') {
+    if (resp.role !== 'Member' && resp.role !== 'Admin' && resp.role !== 'Moderator') {
       dispatch(AUTH_LOGOUT)
     }
     console.log('after logout ' + JSON.stringify(state))
@@ -46,7 +47,7 @@ const mutations = {
   },
   [USER_SUCCESS]: (state, resp) => {
     state.status = 'success'
-    state.type = resp.type
+    state.role = resp.role
     state.name = resp.name
     state.id = resp.id
     state.email = resp.email

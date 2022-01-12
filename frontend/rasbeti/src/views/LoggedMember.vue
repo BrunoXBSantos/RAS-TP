@@ -5,7 +5,7 @@
       <div class="column is-three-quarters">
         <div class="card" id="registercard">
           <div class="card-content">
-            <p class="title has-text-centered">Logged User</p>
+            <p class="title has-text-centered">Logged Member</p>
           </div>
         </div>
       </div>
@@ -21,7 +21,7 @@ import UserNavbar from '@/components/UserNavbar.vue'
 // import { url as api_url } from '@/assets/scripts/api'
 
 export default {
-  name: 'LoggedUser',
+  name: 'LoggedMember',
   components: {
     UserNavbar
   },

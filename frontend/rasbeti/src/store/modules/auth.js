@@ -7,7 +7,7 @@ import {
 import { USER_REQUEST } from '@/store/actions/user'
 import axios from 'axios'
 // eslint-disable-next-line camelcase
-// import jwt_decode from 'jwt-decode'
+import jwt_decode from 'jwt-decode'
 // eslint-disable-next-line camelcase
 import { url as api_url } from '@/assets/scripts/api'
 
@@ -27,19 +27,26 @@ const actions = {
   [AUTH_REQUEST]: ({ commit, dispatch }, user) => {
     return new Promise((resolve, reject) => {
       commit(AUTH_REQUEST)
-      console.log('AUTH_REQUEST: user data package:')
+      console.log('TEST -> STORE/MODULES/AUTH.JS -> [AUTH_REQUEST] (USER DATA PACKAGE):')
       console.log(user)
       // eslint-disable-next-line camelcase
       axios({ url: api_url + '/api/Account/login', data: user, method: 'POST' })
         .then(resp => {
+          console.log('TEST -> STORE/MODULES/AUTH.JS -> [AUTH_REQUEST] (RESPONSE FROM API):')
           console.log(resp)
-          var token = resp.data.id
+          console.log('TEST -> STORE/MODULES/AUTH.JS -> [AUTH_REQUEST] (RESPOONSE DATA FROM API):')
+          console.log(resp.data)
+          var token = resp.data.token
+          console.log('TEST -> STORE/MODULES/AUTH.JS -> [AUTH_REQUEST] (NEW USER TOKEN IS):')
+          console.log(token)
           localStorage.setItem('user-token', token)
           axios.defaults.headers.common.Authorization = `Bearer ${token}`
           commit(AUTH_SUCCESS, resp)
-          // var decoded = jwt_decode(token)
-          dispatch(USER_REQUEST, { type: 'user', name: resp.data.name, email: resp.data.email, id: resp.data.id })
-          resolve('user')
+          var decoded = jwt_decode(token)
+          console.log('TEST -> STORE/MODULES/AUTH.JS -> [AUTH_REQUEST] (DECODED):')
+          console.log(decoded)
+          dispatch(USER_REQUEST, { role: decoded.role, name: decoded.nameid, email: resp.data.email, id: resp.data.id })
+          resolve(decoded.role)
         })
         .catch(err => {
           commit(AUTH_ERROR, err)
