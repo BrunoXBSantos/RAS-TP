@@ -16,6 +16,8 @@ const redirectAuthenticated = (to, from, next) => {
       next('/admin')
     } else if (store.getters.isMember) {
       next('/member')
+    } else if (store.getters.isModerator) {
+      next('/moderator')
     }
   } else {
     next()
