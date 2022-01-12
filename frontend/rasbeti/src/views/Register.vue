@@ -6,7 +6,7 @@
       <div class="column is-three-quarters">
         <div class="card" id="registercard">
           <div class="card-content">
-            <p class="title has-text-centered">Register</p>
+            <p class="title has-text-centered">Welcome</p>
             <form class="register" @submit.prevent="register">
             <div class="columns is-multiline">
               <div class="column is-half">
@@ -106,7 +106,7 @@
 
               <div class="has-text-centered">
                     <button class="button is-danger" type="submit">
-                <strong>Register</strong>
+                <strong>Sign Up</strong>
                 </button>
               </div>
               </div>
