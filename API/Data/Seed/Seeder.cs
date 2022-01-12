@@ -72,6 +72,11 @@ public class Seeder
             new AppRole{Name = "Moderator"},
         };
 
+        foreach (var role in roles)
+        {
+            await roleManager.CreateAsync(role);
+        }
+
         var i = 0;
         foreach (var user in users)
         {
