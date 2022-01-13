@@ -74,6 +74,14 @@ public class DataContext : IdentityDbContext<
             .OnDelete(DeleteBehavior.NoAction);
         #endregion
 
+        #region Wallet
+        builder.Entity<Wallet>()
+            .HasOne(w => w.appUser)
+            .HasForeignKey(fk => fk.appUserId)
+            .OnDelete(DeleteBehavior.ClientCascade);
+        #endregion
+
+
     }
 
     #region EventDB
@@ -95,6 +103,11 @@ public class DataContext : IdentityDbContext<
     public DbSet<Bet> DB_Bet { get; set; }
     public DbSet<BetState> DB_BetState { get; set; }
     #endregion
+
+    #region Wallet
+    public DbSet<Wallet> DB_Wallet { get; set; }
+    #endregion
+
 
     // #region EventDB
     // #endregion

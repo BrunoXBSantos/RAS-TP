@@ -88,7 +88,13 @@ public class AppUserController : BaseApiController
         if (user != null)
         {
 
-            user.Balance += chargeBalanceDTO.Balance;
+            user.wallet.eur += chargeBalanceDTO.wallet.eur;
+            user.wallet.usd += chargeBalanceDTO.wallet.usd;
+            user.wallet.gbp += chargeBalanceDTO.wallet.gbp;
+            user.wallet.cnh += chargeBalanceDTO.wallet.cnh;
+            user.wallet.jpy += chargeBalanceDTO.wallet.jpy;
+            user.wallet.ada += chargeBalanceDTO.wallet.ada;
+            user.wallet.btc += chargeBalanceDTO.wallet.btc;
             _appUserRepository.UpdateUser(user);
             if (await _appUserRepository.SaveAllAsync())
             {

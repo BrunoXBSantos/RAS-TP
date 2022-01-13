@@ -5,11 +5,14 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.DTOs;
-public class ChargeBalanceDTO
+public class AddMoneyWalletDTO
 {
+    
     [Required]
-    public string UserName { get; set; }
+    public float val { get; set; }
     [Required]
-    public Wallet wallet { get; set; }
+    public float type { get; set; }
+    [Required]
+    public string userName { get; set; }
 
 }

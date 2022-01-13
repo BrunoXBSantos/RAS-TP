@@ -7,6 +7,7 @@ namespace API.Model
 {
     public class Wallet{
 
+        public int id { get; set; }
         public float eur { get; set; }
         public float usd { get; set; }
         public float gbp { get; set; }
@@ -15,6 +16,7 @@ namespace API.Model
         public float ada { get; set; }
         public float btc { get; set; }
 
+        /*
         public Wallet()
         {
             this.eur = 0.0;
@@ -112,5 +114,6 @@ namespace API.Model
                 return c;
             }
         }
+        */
     }
 }
