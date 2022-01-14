@@ -1,7 +1,37 @@
 [
     {
-        "Id": ,
-        "Balance": ,
-        "AppUserID": 
+        "Balance": 5000.0,
+        "appUserID": 1,
+        "coinID": 1 
+    },
+    {
+        "Balance": 0.0,
+        "appUserID": 1,
+        "coinID": 2 
+    },
+    {
+        "Balance": 0.0,
+        "appUserID": 1,
+        "coinID": 3 
+    },
+    {
+        "Balance": 0.0,
+        "appUserID": 1,
+        "coinID": 4 
+    },
+    {
+        "Balance": 0.0,
+        "appUserID": 1,
+        "coinID": 4 
+    },
+    {
+        "Balance": 0.0,
+        "appUserID": 1,
+        "coinID": 6 
+    },
+    {
+        "Balance": 0.0,
+        "appUserID": 1,
+        "coinID": 7 
     }
 ]

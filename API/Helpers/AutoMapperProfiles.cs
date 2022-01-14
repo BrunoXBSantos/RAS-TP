@@ -60,6 +60,14 @@ namespace API.Helpers
             #region Sport
             CreateMap<Sport, SportEmptyDto>();
             #endregion
+
+            #region Wallet
+            CreateMap<Coin, CoinDto>();
+            CreateMap<WalletCoin, WalletCoinEmptyDto>();
+            CreateMap<LoadWalletCoinDto, WalletCoin>();
+            CreateMap<WalletCoin, WalletCoinDisplayDto>()
+                .ForMember(wcd => wcd.CoinName, op => op.MapFrom(wc => wc.Coin.Name));
+            #endregion
             
         }
     }
