@@ -8,20 +8,10 @@ namespace API.DTOs;
 public class WalletDTO
 {
     [Required]
-    public int id { get; set; }
+    public int CoinID { get; set; }
     [Required]
-    public float eur { get; set; }
+    public float Montante { get; set; }
     [Required]
-    public float usd { get; set; }
-    [Required]
-    public float gbp { get; set; }
-    [Required]
-    public float cnh { get; set; }
-    [Required]
-    public float jpy { get; set; }
-    [Required]
-    public float ada { get; set; }
-    [Required]
-    public float btc { get; set; }
-
+    public int appUserID { get; set; }
+    
 }
