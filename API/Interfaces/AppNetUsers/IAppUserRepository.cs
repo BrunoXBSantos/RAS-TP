@@ -18,7 +18,7 @@ public interface IAppUserRepository
     Task<AppUser> GetUserByUsernameAsync(string UserName);
     void UpdateUser(AppUser appUser);
 
-    public Task<bool> checkBalanceById(int id, float balanceBet);
+    public Task<bool> checkBalanceById(int id, int type, float value);
     public Task<bool> checkUserExistByIdAsync(string id);
     Task<bool> SaveAllAsync();
     

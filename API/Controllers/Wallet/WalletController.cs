@@ -4,7 +4,7 @@ using API.Extensions;
 using API.Helpers;
 using API.Interfaces;
 using API.Model;
-using API.Constants;
+using API.Constants.WalletConstants;
 using API.Data;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
