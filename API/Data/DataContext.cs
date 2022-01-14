@@ -87,6 +87,21 @@ public class DataContext : IdentityDbContext<
             .OnDelete(DeleteBehavior.NoAction);
         #endregion
 
+        #region Wallet
+        // Coin
+        builder.Entity<WalletCoin>()
+            .HasOne(wc => wc.Coin)
+            .WithMany(c => c.WalletCoin)
+            .HasForeignKey(wc => wc.coinID)
+            .OnDelete(DeleteBehavior.ClientCascade);
+
+        // Coin
+        builder.Entity<WalletCoin>()
+            .HasOne(ap => ap.appUser)
+            .WithMany(wc => wc.WalletCoin)
+            .HasForeignKey(wc => wc.appUserID)
+            .OnDelete(DeleteBehavior.ClientCascade);
+        #endregion
     }
 
     #region EventDB
@@ -107,6 +122,11 @@ public class DataContext : IdentityDbContext<
     #region Bet
     public DbSet<Bet> DB_Bet { get; set; }
     public DbSet<BetState> DB_BetState { get; set; }
+    #endregion
+
+    #region Wallet
+    public DbSet<WalletCoin> DB_WalletCoin { get; set; }
+    public DbSet<Coin> DB_Coin { get; set; }
     #endregion
 
     // #region EventDB

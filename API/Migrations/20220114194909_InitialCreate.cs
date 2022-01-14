@@ -71,6 +71,20 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DB_Coin",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    ConvertionToEuro = table.Column<double>(type: "REAL", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DB_Coin", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DB_EventState",
                 columns: table => new
                 {
@@ -214,6 +228,31 @@ namespace API.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DB_WalletCoin",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Balance = table.Column<float>(type: "REAL", nullable: false),
+                    appUserID = table.Column<int>(type: "INTEGER", nullable: false),
+                    coinID = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DB_WalletCoin", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DB_WalletCoin_AspNetUsers_appUserID",
+                        column: x => x.appUserID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_DB_WalletCoin_DB_Coin_coinID",
+                        column: x => x.coinID,
+                        principalTable: "DB_Coin",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -373,6 +412,16 @@ namespace API.Migrations
                 name: "IX_DB_Sports_sportType_Id",
                 table: "DB_Sports",
                 column: "sportType_Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DB_WalletCoin_appUserID",
+                table: "DB_WalletCoin",
+                column: "appUserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DB_WalletCoin_coinID",
+                table: "DB_WalletCoin",
+                column: "coinID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -396,16 +445,22 @@ namespace API.Migrations
                 name: "DB_Bet");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "DB_WalletCoin");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "DB_BetState");
 
             migrationBuilder.DropTable(
                 name: "DB_Events");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "DB_Coin");
 
             migrationBuilder.DropTable(
                 name: "DB_EventState");

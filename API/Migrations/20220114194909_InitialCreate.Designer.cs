@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220112194505_InitialCreate")]
+    [Migration("20220114194909_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -148,6 +148,23 @@ namespace API.Migrations
                     b.ToTable("DB_BetState");
                 });
 
+            modelBuilder.Entity("API.Model.Coin", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("ConvertionToEuro")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DB_Coin");
+                });
+
             modelBuilder.Entity("API.Model.EventDB", b =>
                 {
                     b.Property<int>("Id")
@@ -248,6 +265,30 @@ namespace API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DB_SportType");
+                });
+
+            modelBuilder.Entity("API.Model.WalletCoin", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<float>("Balance")
+                        .HasColumnType("REAL");
+
+                    b.Property<int>("appUserID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("coinID")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("appUserID");
+
+                    b.HasIndex("coinID");
+
+                    b.ToTable("DB_WalletCoin");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
@@ -466,6 +507,25 @@ namespace API.Migrations
                     b.Navigation("sportType");
                 });
 
+            modelBuilder.Entity("API.Model.WalletCoin", b =>
+                {
+                    b.HasOne("API.Model.AppUser", "appUser")
+                        .WithMany("WalletCoin")
+                        .HasForeignKey("appUserID")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Model.Coin", "Coin")
+                        .WithMany("WalletCoin")
+                        .HasForeignKey("coinID")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.Navigation("Coin");
+
+                    b.Navigation("appUser");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
@@ -534,12 +594,19 @@ namespace API.Migrations
                 {
                     b.Navigation("UserRoles");
 
+                    b.Navigation("WalletCoin");
+
                     b.Navigation("bets");
                 });
 
             modelBuilder.Entity("API.Model.BetState", b =>
                 {
                     b.Navigation("bets");
+                });
+
+            modelBuilder.Entity("API.Model.Coin", b =>
+                {
+                    b.Navigation("WalletCoin");
                 });
 
             modelBuilder.Entity("API.Model.EventDB", b =>
