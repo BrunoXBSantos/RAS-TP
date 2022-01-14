@@ -36,6 +36,11 @@ public class Seeder
         await Seed_Tables<Sport>(_context, _context.DB_Sports, "Data/Seed/Sport/Sport.data.json");
         #endregion
 
+        #region Wallet Secondary Tables
+        await Seed_Tables<Coin>(_context, _context.DB_Coin, "Data/Seed/Wallet/Coin.data.json");
+        await Seed_Tables<WalletCoin>(_context, _context.DB_WalletCoin, "Data/Seed/Wallet/WalletCoin.data.json");
+        #endregion
+
         // await Seed_Tables<Server>(_context, _context.DB_Server, "Data/Seed/Server/Server.data.json");
         // await Seed_Warning(_context, "Data/Seed/Warnings/Warnings.data.json");
 

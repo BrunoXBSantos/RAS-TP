@@ -6,9 +6,12 @@ using API.Helpers;
 using API.Interfaces;
 using API.Model;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
+
+[Authorize]
 public class BetController : BaseApiController
 {
     private readonly IBetRepository _betRepository;

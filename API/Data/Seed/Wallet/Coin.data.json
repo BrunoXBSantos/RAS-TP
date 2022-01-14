@@ -1,0 +1,37 @@
+[
+  {
+    "Id": 1,
+    "Name": "Euro",
+    "ConvertionToEuro": 1.0
+  },
+  {
+    "Id": 2,
+    "Name": "Dollar",
+    "ConvertionToEuro": 0.8856816192
+  },
+  {
+    "Id": 3,
+    "Name": "Pound",
+    "ConvertionToEuro": 1.1733990436
+  },
+  {
+    "Id": 4,
+    "Name": "Yuan",
+    "ConvertionToEuro": 0.1290271552
+  },
+  {
+    "Id": 5,
+    "Name": "Iene",
+    "ConvertionToEuro": 0.0077877416
+  },
+  {
+    "Id": 6,
+    "Name": "Cardano",
+    "ConvertionToEuro": 1.1161337128
+  },
+  {
+    "Id": 7,
+    "Name": "Bitcoin",
+    "ConvertionToEuro": 43447.772177
+  }
+]

@@ -26,4 +26,6 @@ public class AppUser : IdentityUser<int>
     public ICollection<Bet> bets {get; set;}
     public ICollection<AppUserRole> UserRoles { get; set; }
 
+    public ICollection<WalletCoin> WalletCoin { get; set; }
+
 }
