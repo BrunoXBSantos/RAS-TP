@@ -77,7 +77,7 @@ namespace API.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
-                    ConvertionToEuro = table.Column<double>(type: "REAL", nullable: false)
+                    ConvertionToEuro = table.Column<float>(type: "REAL", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -316,6 +316,7 @@ namespace API.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     value = table.Column<float>(type: "REAL", nullable: false),
+                    coinID = table.Column<int>(type: "INTEGER", nullable: false),
                     Result = table.Column<string>(type: "TEXT", nullable: true),
                     appUserId = table.Column<int>(type: "INTEGER", nullable: false),
                     betStateId = table.Column<int>(type: "INTEGER", nullable: false),

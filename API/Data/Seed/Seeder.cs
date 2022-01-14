@@ -82,6 +82,14 @@ public class Seeder
             await roleManager.CreateAsync(role);
         }
 
+        var admin = new AppUser
+        {
+            UserName = "admin"
+        };
+
+        await userManager.CreateAsync(admin, "Pa$$w0rd");
+        await userManager.AddToRolesAsync(admin, new[] {"Admin", "Moderator"});
+
         var i = 0;
         foreach (var user in users)
         {
@@ -95,12 +103,6 @@ public class Seeder
             //    await userManager.AddToRoleAsync(user, "Member");
         }
 
-        var admin = new AppUser
-        {
-            UserName = "admin"
-        };
-
-        await userManager.CreateAsync(admin, "Pa$$w0rd");
-        await userManager.AddToRolesAsync(admin, new[] {"Admin", "Moderator"});
+        
     }
 }

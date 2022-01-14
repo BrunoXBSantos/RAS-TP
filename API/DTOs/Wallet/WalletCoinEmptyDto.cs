@@ -4,12 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.DTOs;
-public class CoinDto
+public class WalletCoinEmptyDto
 {
     public int Id { get; set; }
-
-    public string Name { get; set; }
-
-    public float ConvertionToEuro { get; set; }
-
+    public float Balance { get; set; }
+    public int appUserID { get; set; }
+    public int coinID { get; set; }
 }

@@ -87,19 +87,19 @@ public class DataContext : IdentityDbContext<
             .OnDelete(DeleteBehavior.NoAction);
         #endregion
 
-        #region Wallet
+        #region WalletCoin
+        // Coin
+        builder.Entity<WalletCoin>()
+            .HasOne(wc => wc.appUser)
+            .WithMany(ap => ap.WalletCoin)
+            .HasForeignKey(wc => wc.appUserID)
+            .OnDelete(DeleteBehavior.ClientCascade);
+
         // Coin
         builder.Entity<WalletCoin>()
             .HasOne(wc => wc.Coin)
             .WithMany(c => c.WalletCoin)
             .HasForeignKey(wc => wc.coinID)
-            .OnDelete(DeleteBehavior.ClientCascade);
-
-        // Coin
-        builder.Entity<WalletCoin>()
-            .HasOne(ap => ap.appUser)
-            .WithMany(wc => wc.WalletCoin)
-            .HasForeignKey(wc => wc.appUserID)
             .OnDelete(DeleteBehavior.ClientCascade);
         #endregion
     }

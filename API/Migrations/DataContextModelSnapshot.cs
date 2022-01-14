@@ -118,6 +118,9 @@ namespace API.Migrations
                     b.Property<int>("betStateId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("coinID")
+                        .HasColumnType("INTEGER");
+
                     b.Property<float>("value")
                         .HasColumnType("REAL");
 
@@ -152,7 +155,7 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("ConvertionToEuro")
+                    b.Property<float>("ConvertionToEuro")
                         .HasColumnType("REAL");
 
                     b.Property<string>("Name")

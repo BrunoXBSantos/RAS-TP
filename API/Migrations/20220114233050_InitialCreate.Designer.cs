@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220114194909_InitialCreate")]
+    [Migration("20220114233050_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -120,6 +120,9 @@ namespace API.Migrations
                     b.Property<int>("betStateId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("coinID")
+                        .HasColumnType("INTEGER");
+
                     b.Property<float>("value")
                         .HasColumnType("REAL");
 
@@ -154,7 +157,7 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("ConvertionToEuro")
+                    b.Property<float>("ConvertionToEuro")
                         .HasColumnType("REAL");
 
                     b.Property<string>("Name")

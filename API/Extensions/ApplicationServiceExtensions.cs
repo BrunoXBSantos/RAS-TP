@@ -41,7 +41,7 @@ namespace API.Extensions
             Services.AddScoped<IEventRepository, EventRepository>();
             Services.AddScoped<IBetRepository, BetRepository>();
             Services.AddScoped<ITokenService, TokenService>();
-
+            Services.AddScoped<IWalletRepository, WalletRepository>();
 
             return Services;
         }

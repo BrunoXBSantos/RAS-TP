@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-[Authorize]
+//[Authorize]
 public class BetController : BaseApiController
 {
     private readonly IBetRepository _betRepository;
@@ -19,18 +19,21 @@ public class BetController : BaseApiController
     private readonly IAppUserRepository _appUserRepository;
     private readonly IObservables _observables;
     private readonly IEventRepository _eventRepository;
+    private readonly IWalletRepository _walletRepository;
 
     private readonly IServiceProvider _provider;
     public BetController(IBetRepository betRepository,
                          IEventRepository eventRepository,
                          IMapper mapper,
                          IAppUserRepository appUserRepository,
+                         IWalletRepository walletRepository,
                          IObservables observables,
                          IServiceProvider provider)
     {
         _eventRepository = eventRepository;
         _mapper = mapper;
         _appUserRepository = appUserRepository;
+        _walletRepository = walletRepository;
         _observables = observables;
         _betRepository = betRepository;
         _provider = provider;
@@ -49,9 +52,6 @@ public class BetController : BaseApiController
             return BadRequest("Event does not Exist!");
         }
 
-        if(!(await _appUserRepository.checkBalanceById(createBetDTO.appUserId, createBetDTO.value)))
-            return Unauthorized("Insufficient funds.");
-
         var eventState = await _eventRepository.GetEventStateByIdAsync(createBetDTO._eventId);
         if(eventState != 1){  // Não dá para apostar
             if(eventState == 2){
@@ -64,6 +64,21 @@ public class BetController : BaseApiController
                 return BadRequest("Error checking event status");
         }
 
+        WalletCoin walletCoin = await _walletRepository.GetWalletCoinAsync(createBetDTO.appUserId, createBetDTO.coinID);
+        // verifica se tem money suficiente para apostar
+        if(walletCoin == null){
+            return NotFound("User does not have that currency.");
+        }
+        
+        if(createBetDTO.value > walletCoin.Balance)
+            return Unauthorized("Insufficient funds.");
+
+        // se existir atualizo
+        walletCoin.Balance -= createBetDTO.value;
+        _walletRepository.Update(walletCoin);
+        if (!await _walletRepository.SaveAllAsync()){ 
+            return BadRequest("Error processing bet");
+        }
 
         var bet = _mapper.Map<Bet>(createBetDTO);
         bet.betStateId = 1;
@@ -110,11 +125,17 @@ public class BetController : BaseApiController
     /// <summary>
     /// Gets the list of bets from a given username.
     /// </summary>
-    [HttpGet("username")]
-    public async Task<ActionResult<IEnumerable<BetEmptyDto>>> GetBetsEmptyByUserId([FromQuery]BetParams betParams, string username)
+    [HttpGet("user/idOrUsername")]
+    public async Task<ActionResult<IEnumerable<BetEmptyDto>>> GetBetsEmptyByUserName([FromQuery]BetParams betParams, string idOrUsername)
     {   
-        // verifica se o server existe
-        var user = await _appUserRepository.GetUserByUsernameAsync(username);
+        var user = new AppUser();
+        if (IsDigitsOnly(idOrUsername))
+        {
+            var userx = await _appUserRepository.GetByIdUserAsync(idOrUsername);
+            user = await _appUserRepository.GetUserByUsernameAsync(userx.username);
+        }
+        else { user = await _appUserRepository.GetUserByUsernameAsync(idOrUsername); }
+        
 
         if(user == null){
             return NotFound("User not found");
@@ -169,5 +190,18 @@ public class BetController : BaseApiController
         return Ok(bets);
     }
     #endregion
+
+
+    [NonAction]
+    bool IsDigitsOnly(string str)
+    {
+        foreach (char c in str)
+        {
+            if (c < '0' || c > '9')
+                return false;
+        }
+
+        return true;
+    }
         
 }
