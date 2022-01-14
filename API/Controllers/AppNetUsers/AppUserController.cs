@@ -82,19 +82,19 @@ public class AppUserController : BaseApiController
 
     //[Authorize]
     [HttpPut("ChargeBalance/{Username}")]
-    public async Task<ActionResult> ChargeBalance(ChargeBalanceDTO chargeBalanceDTO)
+    public async Task<ActionResult> ChargeBalance(WalletDTO chargeBalanceDTO)
     {
-        AppUser user = await _appUserRepository.GetUserByUsernameAsync(chargeBalanceDTO.UserName);
+        AppUser user = await _appUserRepository.GetUserByUsernameAsync(chargeBalanceDTO.Id);
         if (user != null)
         {
 
-            user.wallet.eur += chargeBalanceDTO.wallet.eur;
-            user.wallet.usd += chargeBalanceDTO.wallet.usd;
-            user.wallet.gbp += chargeBalanceDTO.wallet.gbp;
-            user.wallet.cnh += chargeBalanceDTO.wallet.cnh;
-            user.wallet.jpy += chargeBalanceDTO.wallet.jpy;
-            user.wallet.ada += chargeBalanceDTO.wallet.ada;
-            user.wallet.btc += chargeBalanceDTO.wallet.btc;
+            user.wallet.eur += walletDTO.eur;
+            user.wallet.usd += walletDTO.usd;
+            user.wallet.gbp += walletDTO.gbp;
+            user.wallet.cnh += walletDTO.cnh;
+            user.wallet.jpy += walletDTO.jpy;
+            user.wallet.ada += walletDTO.ada;
+            user.wallet.btc += walletDTO.btc;
             _appUserRepository.UpdateUser(user);
             if (await _appUserRepository.SaveAllAsync())
             {
@@ -102,7 +102,7 @@ public class AppUserController : BaseApiController
                 return Ok(chargeBalanceDTO);
             }
         }
-        return BadRequest("User " + chargeBalanceDTO.UserName + " not updated");
+        return BadRequest("User " + chargeBalanceDTO.Id + " not updated");
     }
     //[Authorize]
     [HttpPut("switchPW/{username}")]

@@ -16,5 +16,5 @@ public class MemberSimpleDto
     //IdentityUser Fields
     [Required]
     public string Email { get; set; }
-    public Wallet wallet { get; set; }
+    public WalletDTO wallet { get; set; }
 }

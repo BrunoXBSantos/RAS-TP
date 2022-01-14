@@ -2,7 +2,8 @@ namespace API.Model;
 public class Bet
 {
     public int Id { get; set; }
-    public Coin value { get; set; }
+    public float value { get; set; }
+    public int type { get; set; }
 
     // Table AppUser
     public AppUser appUser { get; set; }

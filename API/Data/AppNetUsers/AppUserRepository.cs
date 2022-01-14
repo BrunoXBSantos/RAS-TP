@@ -78,11 +78,8 @@ public class AppUserRepository : IAppUserRepository
     }
 
     // Verifica se o saldo permite efetuar uma aposta de "balanceBet"
-    public async Task<bool> checkBalanceById(int id, Coin balanceBet){
-        var user = await _context.DB_AppUser
-            .Where(x => x.Id == id)
-            .SingleOrDefaultAsync();
-        return WalletRepository.checkBalanceById(user.AppUserId,balanceBet);
+    public async Task<bool> checkBalanceById(int id, int type, float value){
+        return WalletRepository.checkWalletValue(user.AppUserId,type,value);
     }
 
     public async Task<bool> checkUserExistByIdAsync(string id){

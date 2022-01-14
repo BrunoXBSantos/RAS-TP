@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace API.DTOs;
 public class WalletDTO
 {
+    [Required]
     public int id { get; set; }
     [Required]
     public float eur { get; set; }
