@@ -132,31 +132,35 @@ public class WalletController : BaseApiController
         if(!(await _walletRepository.CheckCoinExistById(changeWalletCoinDto.coinIDTo)))
             return NotFound("Coin does not exist");
         
-        // vou buscar a walletCoin
+        // vou buscar a walletCoin por onde irá ser retirado dinheiro
         WalletCoin walletCoinFrom = await _walletRepository.GetWalletCoinAsync(changeWalletCoinDto.appUserID, changeWalletCoinDto.coinIDFrom);
 
         float eurosFrom = 0;
-        // vou buscar a taxa de conversao
+        // vou buscar a taxa de conversao para euros da moeda utilizada em walletCoinFrom
         var coinFrom = await _walletRepository.GetCoinByIdAsync(walletCoinFrom.coinID);
         // e vejo quantos euros tenho dessa moeda
         eurosFrom = coinFrom.ConvertionToEuro*walletCoinFrom.Balance;
         
-        // moeda a comprar/trocar    
-        // vou buscar a taxa de conversao
+           
+        // vou buscar a taxa de conversao para euras da moeda pretendida
         var coinTo = await _walletRepository.GetCoinByIdAsync(changeWalletCoinDto.coinIDTo);
-        // e vejo quantos euros dessa moeda quero comprar 
+        // e vejo quantos euros dessa moeda quero comprar/trocar
         float eurosTo = coinTo.ConvertionToEuro*changeWalletCoinDto.BalanceBuy; 
 
         if(eurosTo > eurosFrom)
             return Unauthorized("Insufficient funds");
         
+        // vou buscar a walletCoin por onde irá ser adicionado o valor comprado/trocado
         WalletCoin walletCoinTo = await _walletRepository.GetWalletCoinAsync(changeWalletCoinDto.appUserID, changeWalletCoinDto.coinIDTo);
 
         bool flagCreate = false;
+        // verifico se a walletCoin existe
         if(walletCoinTo == null)
             flagCreate = true;
         
+        // retiro o valor comprado/trocado utilizando o inverso da taxa de conversao da coinFrom
         walletCoinFrom.Balance -= changeWalletCoinDto.BalanceBuy/coinFrom.ConvertionToEuro;
+        // adiciono o valor comprado/trocado utilizando o inverso da taxa de conversao da coinTo
         walletCoinTo.Balance += changeWalletCoinDto.BalanceBuy/coinTo.ConvertionToEuro;
 
         _walletRepository.Update(walletCoinFrom);
