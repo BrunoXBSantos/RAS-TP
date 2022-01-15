@@ -24,6 +24,11 @@ public class WalletRepository : IWalletRepository
     {
         _context.DB_WalletCoin.Add(walletCoin);
     }
+
+    public void AddCoin(Coin coin)
+    {
+        _context.DB_Coin.Add(coin);
+    }
     #endregion
 
     #region READ

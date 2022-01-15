@@ -13,6 +13,8 @@ public interface IWalletRepository
 
     #region CREATE
     void AddWalletCoin(WalletCoin walletCoin);
+    void AddCoin(Coin coin);
+    
     #endregion
 
     #region READ
