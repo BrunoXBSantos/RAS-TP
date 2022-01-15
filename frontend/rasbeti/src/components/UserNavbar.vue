@@ -5,7 +5,7 @@
     aria-label='main navigation'
   >
     <div class='navbar-brand'>
-      <a class='navbar-item' href='/user'>
+      <a class='navbar-item' href='/member'>
         <img src='@/assets/img/logo2.png' width='100' height='200' />
       </a>
 
