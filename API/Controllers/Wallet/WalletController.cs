@@ -121,6 +121,58 @@ public class WalletController : BaseApiController
         }
         
     }
+
+
+    /// <summary>
+    /// Load wallet for a user Id .
+    /// </summary>
+    [HttpPut("{idUser}/changeCurrency")]
+    public async Task<ActionResult<CoinDto>> changeCurrency(ChangeWalletCoinDto changeWalletCoinDto, int idUser)
+    {
+        if(!(await _walletRepository.CheckCoinExistById(changeWalletCoinDto.coinIDTo)))
+            return NotFound("Coin dont exist");
+        
+        // vou buscar a walletCoin
+        WalletCoin walletCoinFrom = await _walletRepository.GetWalletCoinAsync(changeWalletCoinDto.appUserID, changeWalletCoinDto.coinIDFrom);
+
+        WalletCoin walletCoinTo = await _walletRepository.GetWalletCoinAsync(changeWalletCoinDto.appUserID, changeWalletCoinDto.coinIDTo);
+
+        bool flagCreate = false;
+        if(walletCoinTo == null)
+            flagCreate = true;
+
+        float eurosFrom = 0;
+        // vou buscar a taxa de conversao
+        var coinFrom = await _walletRepository.GetCoinByIdAsync(walletCoinFrom.coinID);
+        // e vejo quantos euros tenho dessa moeda
+        eurosFrom = coinFrom.ConvertionToEuro*walletCoinFrom.Balance;
+        
+        // moeda a comprar/trocar    
+        // vou buscar a taxa de conversao
+        var coinTo = await _walletRepository.GetCoinByIdAsync(walletCoinTo.coinID);
+        // e vejo quantos euros dessa moeda quero comprar 
+        float eurosTo = coinTo.ConvertionToEuro*changeWalletCoinDto.BalanceBuy; 
+        
+        // EMENDAR AQUI
+        
+        if(eurosTo > eurosFrom)
+            return Unauthorized("Insufficient funds");
+        walletCoinFrom.Balance -= changeWalletCoinDto.BalanceBuy;
+        walletCoinTo.Balance += changeWalletCoinDto.BalanceBuy;
+
+        _walletRepository.Update(walletCoinFrom);
+        if(flagCreate)
+            _walletRepository.AddWalletCoin(walletCoinTo);
+        else
+            _walletRepository.Update(walletCoinTo);
+
+        if (await _walletRepository.SaveAllAsync()){ 
+            var walletcoins = await _walletRepository.GetWalletCoinsByUser(idUser);
+            return Ok(walletcoins);
+        }
+        
+        return BadRequest("Error withdraw coin in wallet");
+    }
     #endregion
     
 }

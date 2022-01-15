@@ -44,11 +44,27 @@ public class WalletRepository : IWalletRepository
             .ToListAsync();
     }
 
-    // Get server by id 
+    // Get walletCoin by id 
     public async Task<WalletCoin> GetWalletCoinAsync(int appUserId, int coinId)
     {
         return await _context.DB_WalletCoin
             .Where(x => x.appUserID == appUserId && x.coinID == coinId)
+            .SingleOrDefaultAsync();
+    }
+
+     public async Task<WalletCoin> GetWalletCoinDetailedAsync(int appUserId, int coinId)
+    {
+        return await _context.DB_WalletCoin
+            .Where(x => x.appUserID == appUserId && x.coinID == coinId)
+            .Include(c => c.Coin)
+            .SingleOrDefaultAsync();
+    }
+
+    
+    public async Task<Coin> GetCoinByIdAsync(int coinId)
+    {
+        return await _context.DB_Coin
+            .Where(x => x.Id == coinId)
             .SingleOrDefaultAsync();
     }
 
@@ -85,5 +101,7 @@ public class WalletRepository : IWalletRepository
                 .SingleAsync(wc => wc.appUserID == appUserId && wc.coinID == coinId);
         return balance >= walletCoin.Balance;
     }
+
+    
     #endregion
 }

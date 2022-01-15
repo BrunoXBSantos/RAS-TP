@@ -34,6 +34,8 @@ public interface IWalletRepository
     #region FUNCTIONS
     Task<bool> CheckCoinExistById(int id);
     Task<bool> CheckBalance(int appUserId, int coinId, float balance);
+    Task<WalletCoin> GetWalletCoinDetailedAsync(int appUserId, int coinId);
+    Task<Coin> GetCoinByIdAsync(int coinId);
 
     #endregion
 }
