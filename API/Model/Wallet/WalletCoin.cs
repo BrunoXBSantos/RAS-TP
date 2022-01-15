@@ -11,5 +11,4 @@ public class WalletCoin{
     public int coinID { get; set; }
     public Coin Coin { get; set; }
 
-
 }

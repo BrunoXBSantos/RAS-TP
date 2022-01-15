@@ -46,7 +46,7 @@ public class WalletController : BaseApiController
         
         var walletcoins = await _walletRepository.GetWalletCoinsByUser(idUser); 
 
-        if (walletcoins == null) return BadRequest("User has no coins");
+        if (walletcoins == null) return BadRequest("User has no balance for any currency");
         return Ok(walletcoins);
     }
     #endregion  
@@ -59,7 +59,7 @@ public class WalletController : BaseApiController
     public async Task<ActionResult> LoadWallet(LoadWalletCoinDto loadWalletCoinDto, int idUser)
     {
         if(!(await _walletRepository.CheckCoinExistById(loadWalletCoinDto.coinID)))
-            return BadRequest("Coin dont exist");
+            return BadRequest("Coin does not exist");
         
         // vou buscar a walletCoin
         WalletCoin walletCoin = await _walletRepository.GetWalletCoinAsync(loadWalletCoinDto.appUserID, loadWalletCoinDto.coinID);
@@ -97,7 +97,7 @@ public class WalletController : BaseApiController
     public async Task<ActionResult> withdrawWallet(LoadWalletCoinDto withdrawWalletCoinDto, int idUser)
     {
         if(!(await _walletRepository.CheckCoinExistById(withdrawWalletCoinDto.coinID)))
-            return NotFound("Coin dont exist");
+            return NotFound("Coin does not exist");
         
         // vou buscar a walletCoin
         WalletCoin walletCoin = await _walletRepository.GetWalletCoinAsync(withdrawWalletCoinDto.appUserID, withdrawWalletCoinDto.coinID);
@@ -130,16 +130,10 @@ public class WalletController : BaseApiController
     public async Task<ActionResult<CoinDto>> changeCurrency(ChangeWalletCoinDto changeWalletCoinDto, int idUser)
     {
         if(!(await _walletRepository.CheckCoinExistById(changeWalletCoinDto.coinIDTo)))
-            return NotFound("Coin dont exist");
+            return NotFound("Coin does not exist");
         
         // vou buscar a walletCoin
         WalletCoin walletCoinFrom = await _walletRepository.GetWalletCoinAsync(changeWalletCoinDto.appUserID, changeWalletCoinDto.coinIDFrom);
-
-        WalletCoin walletCoinTo = await _walletRepository.GetWalletCoinAsync(changeWalletCoinDto.appUserID, changeWalletCoinDto.coinIDTo);
-
-        bool flagCreate = false;
-        if(walletCoinTo == null)
-            flagCreate = true;
 
         float eurosFrom = 0;
         // vou buscar a taxa de conversao
@@ -149,16 +143,21 @@ public class WalletController : BaseApiController
         
         // moeda a comprar/trocar    
         // vou buscar a taxa de conversao
-        var coinTo = await _walletRepository.GetCoinByIdAsync(walletCoinTo.coinID);
+        var coinTo = await _walletRepository.GetCoinByIdAsync(changeWalletCoinDto.coinIDTo);
         // e vejo quantos euros dessa moeda quero comprar 
         float eurosTo = coinTo.ConvertionToEuro*changeWalletCoinDto.BalanceBuy; 
-        
-        // EMENDAR AQUI
-        
+
         if(eurosTo > eurosFrom)
             return Unauthorized("Insufficient funds");
-        walletCoinFrom.Balance -= changeWalletCoinDto.BalanceBuy;
-        walletCoinTo.Balance += changeWalletCoinDto.BalanceBuy;
+        
+        WalletCoin walletCoinTo = await _walletRepository.GetWalletCoinAsync(changeWalletCoinDto.appUserID, changeWalletCoinDto.coinIDTo);
+
+        bool flagCreate = false;
+        if(walletCoinTo == null)
+            flagCreate = true;
+        
+        walletCoinFrom.Balance -= changeWalletCoinDto.BalanceBuy/coinFrom.ConvertionToEuro;
+        walletCoinTo.Balance += changeWalletCoinDto.BalanceBuy/coinTo.ConvertionToEuro;
 
         _walletRepository.Update(walletCoinFrom);
         if(flagCreate)
