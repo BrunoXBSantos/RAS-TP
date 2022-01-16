@@ -3,6 +3,7 @@
     <UserNavbar />
     <div class="columns is-centered is-vcentered" id="content">
       <div class="column is-three-fifths">
+        <div id="result"></div>
             <div class="columns is-multiline is-centered">
               <div class="column is-one-third-desktop">
                 <div v-for="h in column1" :key="h.id" class="block">
@@ -62,7 +63,10 @@
       </div>
       <div class="column is-one-quarter">
         <div class="card" id="makebetcard">
-          <div class="card-content">
+          <div class="card-top-second">
+            <div class="title is-5">Place Bet</div>
+          </div>
+          <div class="card-bot">
             <form class="placebet" @submit.prevent="placebet">
             <div class="columns is-multiline is-centered">
               <div class="column is-four-fifths">
@@ -123,11 +127,11 @@
               </div>
               <div class="column">
                 <div id="message" v-if="error != ''">
-                  <p class="help is-danger">Invalid Credentials!</p>
+                  <p class="help is-danger">Invalid Input: Please Try Again</p>
                 </div>
                 <div class="has-text-centered">
                   <button class="button is-danger" type="submit">
-                    <strong>Place Bet</strong>
+                    <strong>Submit</strong>
                   </button>
                 </div>
               </div>
@@ -156,13 +160,9 @@ export default {
   data () {
     return {
       allinfo: [{}],
-      queryParam: '',
       column1: [{}],
       column2: [{}],
       column3: [{}],
-      indiceatual: 0,
-      pages: 1,
-      total: 0,
       valuebet: 0,
       coinidbet: 0,
       resultbet: '',
@@ -174,23 +174,10 @@ export default {
   methods: {
     placebet: function () {
       const { valuebet, coinidbet, resultbet, useridbet, betidbet } = this
-      console.log('Trying to place bet:')
-      console.log('Bet id:')
-      console.log(betidbet)
-      console.log('User id:')
-      console.log(useridbet)
-      console.log('Coin Type:')
-      console.log(coinidbet)
-      console.log('Value of Bet:')
-      console.log(valuebet)
-      console.log('Result:')
-      console.log(resultbet)
       // eslint-disable-next-line camelcase
       axios({ url: api_url + '/api/Bet', data: { value: valuebet, coinID: coinidbet, result: resultbet, appUserId: useridbet, _eventId: betidbet }, method: 'POST' })
         .then(resp => {
-          console.log('TEST MAKEBET-> VIEWS/LOGGEDMEMBER -> SUCESS RESPONSE:')
-          console.log(resp)
-          // location.reload()
+          location.reload()
         })
         .catch(err => {
           console.log('TEST MAKEBET-> VIEWS/LOGGEDMEMBER -> ERROR RESPONSE:')
@@ -203,7 +190,6 @@ export default {
       this.column2 = []
       this.column3 = []
       var i
-      console.log('length: ' + this.allinfo.length)
       for (i = 0; i < this.allinfo.length; i = i + 3) {
         if (i < this.allinfo.length) {
           this.column1.push(this.allinfo[i])
@@ -215,32 +201,15 @@ export default {
           this.column3.push(this.allinfo[i + 2])
         }
       }
-    },
-    onChange (page) {
-      console.log(`Getting page ${page}`)
-      console.log(page)
     }
   },
   created () {
     this.allinfo = []
     // eslint-disable-next-line camelcase
-    axios.get(api_url + '/api/Event/Open')
+    axios.get(api_url + '/api/Event/Open?PageSize=1000')
       .then(resp => {
-        this.pages = Math.ceil(resp.data.length / 6)
-        console.log(resp.data.length)
-        console.log(this.pages)
-        console.log(resp.data)
         var i
         for (i = 0; i < resp.data.length; i++) {
-          console.log(resp.data[i].id)
-          console.log(resp.data[i].away_Odd)
-          console.log(resp.data[i].home_Odd)
-          console.log(resp.data[i].tie_Odd)
-          console.log(resp.data[i].sport)
-          console.log(resp.data[i].state)
-          console.log(resp.data[i].team1)
-          console.log(resp.data[i].team2)
-          console.log(resp.data[i].type)
           if (resp.data[i] != null) {
             const betobj = {
               id: resp.data[i].id,
@@ -258,11 +227,8 @@ export default {
         }
         this.fillColumns()
         if (this.allinfo.length === 0) {
-          document.getElementById('pagination').innerHTML = ''
-          document.getElementById('result').innerHTML = '<h1 class="title">No results found!</h1>'
+          document.getElementById('result').innerHTML = '<h1 class="title">Sorry, there are no open bets!</h1>'
         }
-        // console.log('TEST -> VIEWS/LOGGEDMEMBER.VUE -> GET BETS SUCESS RESPONSE:')
-        // console.log(resp)
       })
       .catch(err => {
         console.log('TEST -> VIEWS/LOGGEDMEMBER.VUE -> GET BETS ERROR RESPONSE:')
@@ -286,6 +252,15 @@ export default {
   padding: 6% 6% 6% 6%;
   text-transform: capitalize;
   background-color: brown;
+}
+
+.card-top-second {
+  pointer-events: none;
+  width: 100%;
+  height: 20%;
+  padding: 6% 6% 6% 6%;
+  text-transform: capitalize;
+  background-color: black;
 }
 
 .title {

@@ -88,6 +88,9 @@ export default {
         } else {
           this.$router.push({ path: '/404' })
         }
+      }).catch(err => {
+        console.log('TEST METHOD: LOGIN -> VIEWS/LOGIN.VUE -> ERROR RESPONSE:')
+        console.log(err)
       })
     }
   }

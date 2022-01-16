@@ -27,24 +27,14 @@ const actions = {
   [AUTH_REQUEST]: ({ commit, dispatch }, user) => {
     return new Promise((resolve, reject) => {
       commit(AUTH_REQUEST)
-      console.log('TEST -> STORE/MODULES/AUTH.JS -> [AUTH_REQUEST] (USER DATA PACKAGE):')
-      console.log(user)
       // eslint-disable-next-line camelcase
       axios({ url: api_url + '/api/Account/login', data: user, method: 'POST' })
         .then(resp => {
-          console.log('TEST -> STORE/MODULES/AUTH.JS -> [AUTH_REQUEST] (RESPONSE FROM API):')
-          console.log(resp)
-          console.log('TEST -> STORE/MODULES/AUTH.JS -> [AUTH_REQUEST] (RESPOONSE DATA FROM API):')
-          console.log(resp.data)
           var token = resp.data.token
-          console.log('TEST -> STORE/MODULES/AUTH.JS -> [AUTH_REQUEST] (NEW USER TOKEN IS):')
-          console.log(token)
           localStorage.setItem('user-token', token)
           axios.defaults.headers.common.Authorization = `Bearer ${token}`
           commit(AUTH_SUCCESS, resp)
           var decoded = jwt_decode(token)
-          console.log('TEST -> STORE/MODULES/AUTH.JS -> [AUTH_REQUEST] (DECODED):')
-          console.log(decoded)
           dispatch(USER_REQUEST, { role: decoded.role, name: decoded.nameid, email: resp.data.email, id: resp.data.id })
           resolve(decoded.role)
         })

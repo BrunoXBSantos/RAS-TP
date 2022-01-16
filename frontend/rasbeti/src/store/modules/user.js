@@ -23,21 +23,17 @@ const getters = {
 const actions = {
   [USER_REQUEST]: ({ commit, dispatch }, token) => {
     commit(USER_REQUEST)
-
     var resp = {}
     resp.role = token.role
     resp.name = token.name
     resp.email = token.email
     resp.id = token.id
-    console.log('TEST -> STORE/MODULES/USER.JS -> [USER_REQUEST]:')
-    console.log(resp)
-    console.log('user request ' + JSON.stringify(state))
     commit(USER_SUCCESS, resp)
-    console.log('after user sucess ' + JSON.stringify(state))
+    // console.log('after user sucess ' + JSON.stringify(state))
     if (resp.role !== 'Member' && resp.role !== 'Admin' && resp.role !== 'Moderator') {
       dispatch(AUTH_LOGOUT)
     }
-    console.log('after logout ' + JSON.stringify(state))
+    // console.log('after logout ' + JSON.stringify(state))
   }
 }
 

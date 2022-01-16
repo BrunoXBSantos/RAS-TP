@@ -3,6 +3,7 @@
     <UserNavbar />
     <div class="columns is-centered is-vcentered is-multiline" id="content">
       <div class="column is-three-fifths">
+          <div id="result"></div>
             <div class="columns is-multiline is-centered">
               <div class="column is-one-third-desktop">
                 <div v-for="h in column1" :key="h.betid" class="block">
@@ -117,44 +118,26 @@ export default {
           this.column3.push(this.allinfo[i + 2])
         }
       }
-    },
-    onChange (page) {
-      console.log(`Getting page ${page}`)
-      console.log(page)
     }
   },
   created () {
     const userid = this.useridbet
     this.allinfo = []
     // eslint-disable-next-line camelcase
-    axios.get(api_url + '/api/Bet/user/idOrUsername?idOrUsername=' + userid)
+    axios.get(api_url + '/api/Bet/user/idOrUsername?PageSize=1000&idOrUsername=' + userid)
       .then(res => {
         this.pages = Math.ceil(res.data.length / 6)
-        console.log(res.data.length)
-        console.log(this.pages)
-        console.log(res.data)
         var i
         for (i = 0; i < res.data.length; i++) {
           if (res.data[i] != null) {
-            console.log(res.data[i])
             const result = res.data[i].result
             const value = res.data[i].value
             const eventid = res.data[i]._eventId
             const betid = res.data[i].id
             // eslint-disable-next-line camelcase
-            console.log(api_url + '/api/Event/' + eventid)
             // eslint-disable-next-line camelcase
             axios.get(api_url + '/api/Event/' + eventid)
               .then(resp => {
-                console.log(resp.data.id)
-                console.log(resp.data.away_Odd)
-                console.log(resp.data.home_Odd)
-                console.log(resp.data.tie_Odd)
-                console.log(resp.data.sport)
-                console.log(resp.data.state)
-                console.log(resp.data.team1)
-                console.log(resp.data.team2)
-                console.log(resp.data.type)
                 if (resp.data != null) {
                   const betobj = {
                     id: resp.data.id,
@@ -181,10 +164,8 @@ export default {
               })
           }
         }
-        // this.fillColumns()
-        if (this.allinfo.length === 0) {
-          document.getElementById('pagination').innerHTML = ''
-          document.getElementById('result').innerHTML = '<h1 class="title">No results found!</h1>'
+        if (this.column1.length === 0) {
+          document.getElementById('result').innerHTML = '<h1 class="title">Place your bet first!</h1>'
         }
       })
       .catch(err => {
