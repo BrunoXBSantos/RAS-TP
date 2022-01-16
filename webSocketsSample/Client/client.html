@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>WebSocket JavaScript Client</title>
+</head>
+
+<body>
+    <h1>WebSocket JavaScript Client</h1>
+    <p id="stateLabel">Ready to connect</p>
+    <p id="connIDLabel">ConnID: N/a</p>
+    <div>
+        <label for="connectionUrl">WebSocket Server URL:</label>
+        <input id="connectionUrl" disabled />
+        <button id="connectButton" type="submit" disabled>Connect</button>
+        <button id="closeButton" disabled>Close Socket</button>
+    </div>
+    <p></p>
+    <div>
+        <label for="clientID">ID:</label>
+        <input id="clientID"  />
+        <button id="setID" >Set</button>
+    </div>
+    <p></p>
+    <h2>Communication Log</h2>
+    <table style="width: 800px">
+        <thead>
+            <tr>
+                <td>Notification</td>
+            </tr>
+        </thead>
+        <tbody id="commsLog">
+        </tbody>
+    </table>
+    <p></p>
+</body>
+<script>
+    var connectionUrl = document.getElementById("connectionUrl");
+    var connectButton = document.getElementById("connectButton");
+    var stateLabel = document.getElementById("stateLabel");
+
+    var clientID = document.getElementById("clientID");
+    var setID = document.getElementById("setID");
+    
+    var commsLog = document.getElementById("commsLog");
+    var closeButton = document.getElementById("closeButton");
+    var recipients = document.getElementById("recipients");
+    var connID = document.getElementById("connIDLabel");
+    
+
+    connectionUrl.value = "ws://localhost:5286"; //serve URL
+
+    connectButton.onclick = function () {
+        stateLabel.innerHTML = "Attempting to connect...";
+        socket = new WebSocket(connectionUrl.value);  //criado o socket
+        socket.onopen = function (event) {  //liga se
+            updateState();
+            commsLog.innerHTML += '<tr>' +
+                '<td colspan="3" class="commslog-data">Connection opened</td>' +
+                '</tr>';
+            sendIDfunc();
+            
+        };
+        socket.onclose = function (event) { //fecha
+            updateState();
+            commsLog.innerHTML += '<tr>' +
+                '<td colspan="3" class="commslog-data">Connection closed. Code: ' + htmlEscape(event.code) + '. Reason: ' + htmlEscape(event.reason) + '</td>' +
+                '</tr>';
+        };
+        socket.onerror = updateState; 
+
+        socket.onmessage = function (event) { //messagens
+            commsLog.innerHTML += '<tr>' +
+                //'<td class="commslog-server">Server</td>' +
+                //'<td class="commslog-client">Client</td>' +
+                '<td class="commslog-data">' + htmlEscape(event.data) + '</td></tr>';
+            //isConnID(event.data);
+        };
+    };
+
+    closeButton.onclick = function () {
+        if (!socket || socket.readyState !== WebSocket.OPEN) {
+            alert("socket not connected");
+        }
+        socket.close(1000, "Closing from client");
+    };
+
+    setID.onclick = function(){
+        if(clientID.value!=''){
+            connectionUrl.value = "ws://localhost:5286";
+            //connectionUrl.value = "ws://localhost:5286/?id="+clientID.value
+            connectButton.disabled = false;
+        }
+    }
+
+/*
+    sendButton.onclick = function () {
+        if (!socket || socket.readyState !== WebSocket.OPEN) {
+            alert("socket not connected");
+        }
+        var data = constructJSONPayload();
+        //var data = sendMessage.value;
+        socket.send(data);
+        commsLog.innerHTML += '<tr>' +
+            '<td class="commslog-client">Client</td>' +
+            '<td class="commslog-server">Server</td>' +
+            '<td class="commslog-data">' + htmlEscape(data) + '</td></tr>';
+    };
+*/
+
+    function sendIDfunc(){
+        setTimeout(() => { socket.send(clientID.value); }, 1000);
+        //socket.send(clientID.value);
+    }
+
+    function htmlEscape(str) {  //para converter carateres estranhos para htmal perceber
+        return str.toString()
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
+
+/*
+    function isConnID(str) {  //para definir o Client id no html
+        if (str.substring(0, 7) == "ConnID:")
+            connID.innerHTML = "ConnID: " + str.substring(8, 45);
+    }
+*/
+    function constructJSONPayload() {
+        return JSON.stringify({
+            "From": connID.innerHTML.substring(8, connID.innerHTML.length),
+            "To": recipients.value,
+            "Message": sendMessage.value
+        });
+    }
+
+
+    function updateState() {  //só para gestão dos butoes, só posso usar o close se tiver uma conecção, etc
+        function disable() {
+            clientID.disabled = false;
+            setID.disabled = false;
+            closeButton.disabled = true;
+            //recipients.disabled = true;
+
+        }
+        function enable() {
+            clientID.disabled = true;
+            setID.disabled = true;
+            closeButton.disabled = false;
+            //recipients.disabled = false;
+
+        }
+        connectionUrl.disabled = true;
+        connectButton.disabled = true;
+        if (!socket) {
+            disable();
+        } else {
+            switch (socket.readyState) {
+                case WebSocket.CLOSED:
+                    stateLabel.innerHTML = "Closed";
+                    connID.innerHTML = "ConnID: N/a"
+                    disable();
+                    connectionUrl.disabled = false;
+                    connectButton.disabled = false;
+                    break;
+                case WebSocket.CLOSING:
+                    stateLabel.innerHTML = "Closing...";
+                    disable();
+                    break;
+                case WebSocket.CONNECTING:
+                    stateLabel.innerHTML = "Connecting...";
+                    disable();
+                    break;
+                case WebSocket.OPEN:
+                    stateLabel.innerHTML = "Open";
+                    enable();
+                    break;
+                default:
+                    stateLabel.innerHTML = "Unknown WebSocket State: " + htmlEscape(socket.readyState);
+                    disable();
+                    break;
+            }
+        }
+    }
+</script>
+
+</html>
