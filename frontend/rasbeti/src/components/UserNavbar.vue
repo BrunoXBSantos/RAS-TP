@@ -25,11 +25,11 @@
       <div class='navbar-end'>
         <div class='navbar-item'>
           <div class='buttons'>
-            <a class='button navb' href='/user/mybets'>
-              <strong>Bets</strong>
+            <a class='button navb' href='/member/mybets'>
+              <strong>MyBets</strong>
             </a>
-            <a class='button navb' href='/user/mywallet'>
-              <strong>Wallet</strong>
+            <a class='button navb' href='/member/mywallet'>
+              <strong>MyWallet</strong>
             </a>
             <a v-on:click="logout" class='button navb'>
               <strong>Sign Out</strong>

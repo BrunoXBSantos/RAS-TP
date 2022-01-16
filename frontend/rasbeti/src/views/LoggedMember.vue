@@ -58,15 +58,6 @@
                   </a>
                 </div>
               </div>
-              <div class="column is-four-fifths">
-                <div class="block" id="pagination">
-                <pagination
-                  :selectedPage="1"
-                  :numberOfPages="pages"
-                >
-                </pagination>
-              </div>
-            </div>
             </div>
       </div>
       <div class="column is-one-quarter">
@@ -155,14 +146,12 @@ import UserNavbar from '@/components/UserNavbar.vue'
 import axios from 'axios'
 // eslint-disable-next-line camelcase
 import { url as api_url } from '@/assets/scripts/api'
-import Pagination from '@/components/Pagination.vue'
 import store from '@/store'
 
 export default {
   name: 'LoggedMember',
   components: {
-    UserNavbar,
-    Pagination
+    UserNavbar
   },
   data () {
     return {
@@ -215,7 +204,7 @@ export default {
       this.column3 = []
       var i
       console.log('length: ' + this.allinfo.length)
-      for (i = 0; i < 6; i = i + 3) {
+      for (i = 0; i < this.allinfo.length; i = i + 3) {
         if (i < this.allinfo.length) {
           this.column1.push(this.allinfo[i])
         }
@@ -235,7 +224,7 @@ export default {
   created () {
     this.allinfo = []
     // eslint-disable-next-line camelcase
-    axios.get(api_url + '/api/Event')
+    axios.get(api_url + '/api/Event/Open')
       .then(resp => {
         this.pages = Math.ceil(resp.data.length / 6)
         console.log(resp.data.length)

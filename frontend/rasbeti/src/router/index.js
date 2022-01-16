@@ -93,6 +93,18 @@ export default new Router({
       beforeEnter: ifAuthenticatedMember
     },
     {
+      name: 'MyWallet',
+      path: '/member/mywallet',
+      component: () => import('@/views/MyWallet'),
+      beforeEnter: ifAuthenticatedMember
+    },
+    {
+      name: 'MyBets',
+      path: '/member/mybets',
+      component: () => import('@/views/MyBets'),
+      beforeEnter: ifAuthenticatedMember
+    },
+    {
       path: '/404',
       component: () => import('@/views/NotFound')
     },
