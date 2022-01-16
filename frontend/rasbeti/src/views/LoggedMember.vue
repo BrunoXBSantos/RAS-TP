@@ -3,66 +3,145 @@
     <UserNavbar />
     <div class="columns is-centered is-vcentered" id="content">
       <div class="column is-three-fifths">
-            <div class="columns">
+            <div class="columns is-multiline is-centered">
               <div class="column is-one-third-desktop">
                 <div v-for="h in column1" :key="h.id" class="block">
+                  <a v-on:click="betidbet = h.id">
                   <div class="card">
                     <div class="card-top">
-                      <div class="title is-5"><teams>{{ h.team1 }} vs</teams></div>
+                      <div class="title is-5">{{ h.team1 }}</div>
                       <div class="title is-5">{{ h.team2 }}</div>
                     </div>
                     <div class="card-bot">
-                      <div class="subtitle is-7">Home Odd: {{ h.home_Odd }}</div>
-                      <div class="subtitle is-7">Tie Odd: {{ h.tie_Odd }}</div>
-                      <div class="subtitle is-7">Away Odd: {{ h.away_Odd }}</div>
+                      <div class="subtitle is-7"><b>Bet Id: {{ h.id }}</b></div>
+                      <div style="color:green;" class="subtitle is-7"><b>Home Odd: {{ h.home_Odd }}</b></div>
+                      <div style="color:orange;" class="subtitle is-7"><b>Tie Odd: {{ h.tie_Odd }}</b></div>
+                      <div style="color:red;" class="subtitle is-7"><b>Away Odd: {{ h.away_Odd }}</b></div>
                     </div>
                   </div>
+                  </a>
                 </div>
               </div>
               <div class="column is-one-third-desktop">
                 <div v-for="h in column2" :key="h.id" class="block">
+                  <a v-on:click="betidbet = h.id">
                   <div class="card">
                     <div class="card-top">
-                      <div class="title is-5">{{ h.team1 }} vs</div>
+                      <div class="title is-5">{{ h.team1 }}</div>
                       <div class="title is-5">{{ h.team2 }}</div>
                     </div>
                     <div class="card-bot">
-                      <div class="subtitle is-7">Home Odd: {{ h.home_Odd }}</div>
-                      <div class="subtitle is-7">Tie Odd: {{ h.tie_Odd }}</div>
-                      <div class="subtitle is-7">Away Odd: {{ h.away_Odd }}</div>
+                      <div class="subtitle is-7"><b>Bet Id: {{ h.id }}</b></div>
+                      <div style="color:green;" class="subtitle is-7"><b>Home Odd: {{ h.home_Odd }}</b></div>
+                      <div style="color:orange;" class="subtitle is-7"><b>Tie Odd: {{ h.tie_Odd }}</b></div>
+                      <div style="color:red;" class="subtitle is-7"><b>Away Odd: {{ h.away_Odd }}</b></div>
                     </div>
                   </div>
+                  </a>
                 </div>
               </div>
               <div class="column is-one-third-desktop">
                 <div v-for="h in column3" :key="h.id" class="block">
+                  <a v-on:click="betidbet = h.id">
                   <div class="card">
                     <div class="card-top">
-                      <p class="title is-4">Team 1: {{ h.team1 }}</p>
-                      <p class="title is-4">Team 2: {{ h.team2 }}</p>
-                      <p class="subtitle is-6">Sport: {{ h.sport }}</p>
+                      <div class="title is-5">{{ h.team1 }}</div>
+                      <div class="title is-5">{{ h.team2 }}</div>
                     </div>
                     <div class="card-bot">
-                      <p class="subtitle is-6">Home Odd: {{ h.home_Odd }}</p>
-                      <p class="subtitle is-6">Away Odd: {{ h.away_Odd }}</p>
-                      <p class="subtitle is-6">Tie Odd: {{ h.tie_Odd }}</p>
+                      <div class="subtitle is-7"><b>Bet Id: {{ h.id }}</b></div>
+                      <div style="color:green;" class="subtitle is-7"><b>Home Odd: {{ h.home_Odd }}</b></div>
+                      <div style="color:orange;" class="subtitle is-7"><b>Tie Odd: {{ h.tie_Odd }}</b></div>
+                      <div style="color:red;" class="subtitle is-7"><b>Away Odd: {{ h.away_Odd }}</b></div>
                     </div>
                   </div>
+                  </a>
                 </div>
               </div>
+              <div class="column is-four-fifths">
+                <div class="block" id="pagination">
+                <pagination
+                  :selectedPage="1"
+                  :numberOfPages="pages"
+                >
+                </pagination>
+              </div>
             </div>
-            <div class="block" id="pagination">
-              <pagination
-                :selectedPage="1"
-                :numberOfPages="pages"
-              >
-              </pagination>
             </div>
       </div>
       <div class="column is-one-quarter">
         <div class="card" id="makebetcard">
           <div class="card-content">
-            <p class="title has-text-centered">Make Bet</p>
+            <form class="placebet" @submit.prevent="placebet">
+            <div class="columns is-multiline is-centered">
+              <div class="column is-four-fifths">
+              <div class="field">
+                <label class="label">Bet Id</label>
+                <div class="control">
+                  <input
+                    class="input"
+                    type="betid"
+                    placeholder=betidbet
+                    required
+                    v-model="betidbet"
+                  />
+                </div>
+              </div>
+              </div>
+              <div class="column is-four-fifths">
+              <div class="field">
+                <label class="label">Result</label>
+                <div class="control">
+                  <input
+                    class="input"
+                    type="name"
+                    placeholder="1(home)/X(tie)/2(away)"
+                    required
+                    v-model="resultbet"
+                  />
+                </div>
+              </div>
+              </div>
+              <div class="column is-four-fifths">
+              <div class="field">
+                <label class="label">Currency Type</label>
+                <div class="control">
+                  <input
+                    class="input"
+                    type="currencytipe"
+                    placeholder="Currency Type ID"
+                    required
+                    v-model="coinidbet"
+                  />
+                </div>
+              </div>
+              </div>
+              <div class="column is-four-fifths">
+              <div class="field">
+                <label class="label">Value</label>
+                <div class="control">
+                  <input
+                    class="input"
+                    type="betvalue"
+                    placeholder=valuebet
+                    required
+                    v-model="valuebet"
+                  />
+                </div>
+              </div>
+              </div>
+              <div class="column">
+                <div id="message" v-if="error != ''">
+                  <p class="help is-danger">Invalid Credentials!</p>
+                </div>
+                <div class="has-text-centered">
+                  <button class="button is-danger" type="submit">
+                    <strong>Place Bet</strong>
+                  </button>
+                </div>
+              </div>
+            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -77,6 +156,7 @@ import axios from 'axios'
 // eslint-disable-next-line camelcase
 import { url as api_url } from '@/assets/scripts/api'
 import Pagination from '@/components/Pagination.vue'
+import store from '@/store'
 
 export default {
   name: 'LoggedMember',
@@ -93,10 +173,42 @@ export default {
       column3: [{}],
       indiceatual: 0,
       pages: 1,
-      total: 0
+      total: 0,
+      valuebet: 0,
+      coinidbet: 0,
+      resultbet: '',
+      useridbet: store.getters.getId,
+      betidbet: 0,
+      error: ''
     }
   },
   methods: {
+    placebet: function () {
+      const { valuebet, coinidbet, resultbet, useridbet, betidbet } = this
+      console.log('Trying to place bet:')
+      console.log('Bet id:')
+      console.log(betidbet)
+      console.log('User id:')
+      console.log(useridbet)
+      console.log('Coin Type:')
+      console.log(coinidbet)
+      console.log('Value of Bet:')
+      console.log(valuebet)
+      console.log('Result:')
+      console.log(resultbet)
+      // eslint-disable-next-line camelcase
+      axios({ url: api_url + '/api/Bet', data: { value: valuebet, coinID: coinidbet, result: resultbet, appUserId: useridbet, _eventId: betidbet }, method: 'POST' })
+        .then(resp => {
+          console.log('TEST MAKEBET-> VIEWS/LOGGEDMEMBER -> SUCESS RESPONSE:')
+          console.log(resp)
+          // location.reload()
+        })
+        .catch(err => {
+          console.log('TEST MAKEBET-> VIEWS/LOGGEDMEMBER -> ERROR RESPONSE:')
+          console.log(err)
+          this.error = err
+        })
+    },
     fillColumns () {
       this.column1 = []
       this.column2 = []
@@ -148,8 +260,8 @@ export default {
               tie_Odd: resp.data[i].tie_Odd,
               sport: resp.data[i].sport,
               state: resp.data[i].state,
-              team1: resp.data[i].team1.substring(0, 15),
-              team2: resp.data[i].team2.substring(0, 15),
+              team1: resp.data[i].team1.substring(0, 20),
+              team2: resp.data[i].team2.substring(0, 20),
               type: resp.data[i].type
             }
             this.allinfo.push(betobj)
@@ -187,7 +299,7 @@ export default {
   background-color: brown;
 }
 
-.teams {
+.title {
   color:white;
 }
 
@@ -195,6 +307,6 @@ export default {
   width: 100%;
   height: 80%;
   padding: 6% 6% 6% 6%;
-}
+  }
 
 </style>
