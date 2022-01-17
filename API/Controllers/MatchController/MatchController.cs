@@ -15,17 +15,21 @@ public class MatchController : BaseApiController
     private readonly IServiceProvider _provider;
     private readonly IObservables _observables;
 
+    private readonly IWalletRepository _walletRepository;
+
     public MatchController(IEventRepository eventRepository,
                             IBetRepository betRepository,
                             IAppUserRepository appUserRepository,
                             IServiceProvider provider, 
-                            IObservables observables)
+                            IObservables observables,
+                            IWalletRepository walletRepository)
     {
         _eventRepository = eventRepository;
         _provider = provider;
         _observables = observables;
         _betRepository = betRepository;
         _appUserRepository = appUserRepository;
+        _walletRepository = walletRepository;
     }
 
     [HttpPost("startmatch")]
@@ -75,7 +79,7 @@ public class MatchController : BaseApiController
     }
 
     [HttpPost("endmatch")]
-    public async Task<ActionResult<MatchDto>> EnfMatch(EndMatchDto endMatch)
+    public async Task<ActionResult<MatchDto>> EndMatch(EndMatchDto endMatch)
     {   
         var eventDb = await _eventRepository.GetIdEventByParams(endMatch);
         // se evento null, é porque não existe
@@ -141,7 +145,8 @@ public class MatchController : BaseApiController
 
         // a cada observer de eventObservable
         foreach(BetObserver betObserver in eventObservable.observers){
-            var bet = await _betRepository.GetBetByIdAsync(betObserver.betId);
+            // vou buscar a bet do observer
+            Bet bet = await _betRepository.GetBetByIdAsync(betObserver.betId);
             // coloca state da bet  = Finished
             bet.betStateId = 2;
             _betRepository.UpdateBet(bet);
@@ -153,6 +158,13 @@ public class MatchController : BaseApiController
             if( endMatch.Team1Goals>endMatch.Team2Goals && bet.Result.Equals("1") || 
                 endMatch.Team1Goals<endMatch.Team2Goals && bet.Result.Equals("2") ||
                 endMatch.Team1Goals==endMatch.Team2Goals && bet.Result.ToUpper().Equals("X")){
+                    // Vou buscar dados da Coin que apostei
+                    Coin coin = await _walletRepository.GetCoinByIdAsync(bet.coinID);
+
+                    // converter o valor apostado para euros
+                    var value2Euros = (float) bet.value * coin.ConvertionToEuro;
+
+                    // qual a odd vencedora (empate, derrota ou vitoria)
                     float multiplied = 0;
                     if(endMatch.Team1Goals>endMatch.Team2Goals)
                         multiplied = eventDB.Home_Odd;
@@ -160,17 +172,26 @@ public class MatchController : BaseApiController
                         multiplied = eventDB.Away_Odd;
                     else 
                         multiplied = eventDB.Tie_Odd;
-                    var user = await _appUserRepository.GetUserByIdAsync(bet.appUserId);
-                    user.Balance = user.Balance + bet.value * multiplied;
-                    _appUserRepository.UpdateUser(user);
+
+                    // o valor que ganhou em euros
+                    var winnerValueEuro = value2Euros * multiplied;
+
+                    // converter para a coin que apostou
+                    var winnerValueEuro2Coin = winnerValueEuro / coin.ConvertionToEuro;
+
+                    // vou buscar a walletCoin do user
+                    WalletCoin walletCoin = await _walletRepository.GetWalletCoinAsync(bet.appUserId, bet.coinID);
+                    walletCoin.Balance += winnerValueEuro2Coin;
+
+                    _walletRepository.Update(walletCoin);
                     if (!await _appUserRepository.SaveAllAsync())
                     {
                         return false;
                     }
 
-                    string ip = user.IpNotification;
-                    int port = user.PortNotification;
-                    string description = "congratulations, you won " + bet.value;
+                    // string ip = user.IpNotification;
+                    // int port = user.PortNotification;
+                    // string description = "congratulations, you won " + bet.value;
 
                     // FILIPE AQUI TAMBEMMMMMMMM
                 }
