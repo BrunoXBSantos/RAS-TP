@@ -278,10 +278,14 @@ export default {
         })
     },
     exchange: function () {
-      const { selectedcurrencytype, selectedcurrencytypeto, amountl, useridbet } = this
+      const { selectedcurrencytype, selectedcurrencytypeto, amountc, useridbet } = this
       const selectfrom = parseInt(selectedcurrencytype)
       const selectto = parseInt(selectedcurrencytypeto)
-      const newbal = parseInt(amountl)
+      const newbal = parseInt(amountc)
+      console.log('App User Id:' + useridbet)
+      console.log('Select from:' + selectfrom)
+      console.log('Select to:' + selectto)
+      console.log('Balance: ' + newbal)
       // eslint-disable-next-line camelcase
       axios({ url: api_url + '/api/Wallet/' + useridbet + '/changeCurrency', data: { appUserID: useridbet, balanceBuy: newbal, coinIDFrom: selectfrom, coinIDTo: selectto }, method: 'PUT' })
         .then(resp => {
