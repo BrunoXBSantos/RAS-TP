@@ -10,6 +10,6 @@ public class CoinDto
 
     public string Name { get; set; }
 
-    public float ConvertionToEuro { get; set; }
+    public double ConvertionToEuro { get; set; }
 
 }

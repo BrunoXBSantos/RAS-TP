@@ -8,7 +8,7 @@ namespace API.Entities.Weather
     public class Wind
     {
         public int Id { get; set; }
-        public float speed { get; set; }
-        public float deg { get; set; }
+        public double speed { get; set; }
+        public double deg { get; set; }
     }
 }

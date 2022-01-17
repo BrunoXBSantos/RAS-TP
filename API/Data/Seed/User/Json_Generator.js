@@ -8,7 +8,7 @@
     contact: '{{street()}} {{city()}}',
     UserName: '{{firstName()}}',
     Email: '{{email([random])}}',
-    Balance: '{{floating([0], [100])}}',
+    Balance: '{{doubleing([0], [100])}}',
     PhoneNumber: '{{integer([900000000], [999999999] )}}'   
   }
 ]

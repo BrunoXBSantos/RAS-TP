@@ -8,7 +8,7 @@ public class WalletCoinDTO
 {
     public int Id { get; set; }
 
-    public float Balance { get; set; }
+    public double Balance { get; set; }
 
     // Table AppUser
     public int AppUserID { get; set; }

@@ -162,7 +162,7 @@ public class MatchController : BaseApiController
                     Coin coin = await _walletRepository.GetCoinByIdAsync(bet.coinID);
 
                     // qual a odd vencedora (empate, derrota ou vitoria)
-                    float multiplied = 0;
+                    double multiplied = 0;
                     if(endMatch.Team1Goals>endMatch.Team2Goals)
                         multiplied = eventDB.Home_Odd;
                     else if(endMatch.Team1Goals<endMatch.Team2Goals)

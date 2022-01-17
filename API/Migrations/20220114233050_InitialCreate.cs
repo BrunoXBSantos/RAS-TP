@@ -33,7 +33,7 @@ namespace API.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Contact = table.Column<string>(type: "TEXT", nullable: true),
-                    Balance = table.Column<float>(type: "REAL", nullable: false),
+                    Balance = table.Column<double>(type: "REAL", nullable: false),
                     ActiveNotification = table.Column<bool>(type: "INTEGER", nullable: false),
                     IpNotification = table.Column<string>(type: "TEXT", nullable: true),
                     PortNotification = table.Column<int>(type: "INTEGER", nullable: false),
@@ -77,7 +77,7 @@ namespace API.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
-                    ConvertionToEuro = table.Column<float>(type: "REAL", nullable: false)
+                    ConvertionToEuro = table.Column<double>(type: "REAL", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -236,7 +236,7 @@ namespace API.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Balance = table.Column<float>(type: "REAL", nullable: false),
+                    Balance = table.Column<double>(type: "REAL", nullable: false),
                     appUserID = table.Column<int>(type: "INTEGER", nullable: false),
                     coinID = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -282,9 +282,9 @@ namespace API.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Team1 = table.Column<string>(type: "TEXT", nullable: true),
                     Team2 = table.Column<string>(type: "TEXT", nullable: true),
-                    Home_Odd = table.Column<float>(type: "REAL", nullable: false),
-                    Tie_Odd = table.Column<float>(type: "REAL", nullable: false),
-                    Away_Odd = table.Column<float>(type: "REAL", nullable: false),
+                    Home_Odd = table.Column<double>(type: "REAL", nullable: false),
+                    Tie_Odd = table.Column<double>(type: "REAL", nullable: false),
+                    Away_Odd = table.Column<double>(type: "REAL", nullable: false),
                     eventTypeId = table.Column<int>(type: "INTEGER", nullable: false),
                     sportId = table.Column<int>(type: "INTEGER", nullable: false),
                     eventStateId = table.Column<int>(type: "INTEGER", nullable: false)
@@ -315,7 +315,7 @@ namespace API.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    value = table.Column<float>(type: "REAL", nullable: false),
+                    value = table.Column<double>(type: "REAL", nullable: false),
                     coinID = table.Column<int>(type: "INTEGER", nullable: false),
                     Result = table.Column<string>(type: "TEXT", nullable: true),
                     appUserId = table.Column<int>(type: "INTEGER", nullable: false),

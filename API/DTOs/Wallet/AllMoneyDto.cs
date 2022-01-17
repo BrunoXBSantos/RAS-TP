@@ -7,5 +7,5 @@ namespace API.DTOs;
 public class AllMoneyDto
 {
     public string coinName { get; set; }
-    public float balance { get; set; }
+    public double balance { get; set; }
 }

@@ -7,7 +7,7 @@ namespace API.DTOs;
 
 public class LoadWalletCoinDto
 {
-    public float Balance { get; set; }
+    public double Balance { get; set; }
     public int appUserID { get; set; }
     public int coinID { get; set; }
 }

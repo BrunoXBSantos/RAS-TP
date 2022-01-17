@@ -29,7 +29,7 @@ namespace API.Migrations
                     b.Property<bool>("ActiveNotification")
                         .HasColumnType("INTEGER");
 
-                    b.Property<float>("Balance")
+                    b.Property<double>("Balance")
                         .HasColumnType("REAL");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -121,7 +121,7 @@ namespace API.Migrations
                     b.Property<int>("coinID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<float>("value")
+                    b.Property<double>("value")
                         .HasColumnType("REAL");
 
                     b.HasKey("Id");
@@ -155,7 +155,7 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<float>("ConvertionToEuro")
+                    b.Property<double>("ConvertionToEuro")
                         .HasColumnType("REAL");
 
                     b.Property<string>("Name")
@@ -172,10 +172,10 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<float>("Away_Odd")
+                    b.Property<double>("Away_Odd")
                         .HasColumnType("REAL");
 
-                    b.Property<float>("Home_Odd")
+                    b.Property<double>("Home_Odd")
                         .HasColumnType("REAL");
 
                     b.Property<string>("Team1")
@@ -184,7 +184,7 @@ namespace API.Migrations
                     b.Property<string>("Team2")
                         .HasColumnType("TEXT");
 
-                    b.Property<float>("Tie_Odd")
+                    b.Property<double>("Tie_Odd")
                         .HasColumnType("REAL");
 
                     b.Property<int>("eventStateId")
@@ -274,7 +274,7 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<float>("Balance")
+                    b.Property<double>("Balance")
                         .HasColumnType("REAL");
 
                     b.Property<int>("appUserID")

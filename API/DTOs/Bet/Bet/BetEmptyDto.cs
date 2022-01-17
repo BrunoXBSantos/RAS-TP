@@ -7,7 +7,7 @@ namespace API.DTOs;
 public class BetEmptyDto
 {
     public int Id { get; set; }
-    public float value { get; set; }
+    public double value { get; set; }
     public string Result { get; set; }
 
     // Table AppUser

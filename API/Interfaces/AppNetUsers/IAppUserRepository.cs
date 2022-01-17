@@ -21,7 +21,7 @@ public interface IAppUserRepository
     public Task<ActiveNotificationSimpleDto> GetActiveNotificationSimpleDtoIdAsync(int id);
     void UpdateUser(AppUser appUser);
 
-    public Task<bool> checkBalanceById(int id, float balanceBet);
+    public Task<bool> checkBalanceById(int id, double balanceBet);
     public Task<bool> checkUserExistByIdAsync(string id);
     public Task<bool> checkIpPortNotificationByUsernameAsync(string username);
     Task<bool> SaveAllAsync();

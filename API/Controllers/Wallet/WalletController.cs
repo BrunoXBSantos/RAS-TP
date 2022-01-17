@@ -46,7 +46,7 @@ public class WalletController : BaseApiController
         
         var walletCoins = await _walletRepository.GetAllWalletCoinByUsers(idUser); 
 
-        float sum = (float) walletCoins.Sum(e => (float) e.Balance * e.Coin.ConvertionToEuro);
+        double sum = (double) walletCoins.Sum(e => (double) e.Balance * e.Coin.ConvertionToEuro);
 
         AllMoneyDto allMoneyDto = new AllMoneyDto();
         allMoneyDto.coinName = "Euro";
@@ -164,14 +164,14 @@ public class WalletController : BaseApiController
         // vou converter em euros o que eu quero comprar
         //// vou ao valor pretendido e converto para euro
         // se a moeda de destino for euros, nao converto, senao converto para euros
-        float coinTo2Euros = changeWalletCoinDto.BalanceBuy;
+        double coinTo2Euros = changeWalletCoinDto.BalanceBuy;
         if(coinTo.Id != 1)
             coinTo2Euros = changeWalletCoinDto.BalanceBuy * coinTo.ConvertionToEuro;
 
         // se a moeda de origem é euros, não converto, senao converto para euros
         var coinTo2Euros2CoinFrom = coinTo2Euros;
         if(coinFrom.Id != 1)
-            coinTo2Euros2CoinFrom = (float) coinTo2Euros / coinFrom.ConvertionToEuro;
+            coinTo2Euros2CoinFrom = (double) coinTo2Euros / coinFrom.ConvertionToEuro;
         // converto para a moeda que quero vender
          
 
@@ -188,7 +188,7 @@ public class WalletController : BaseApiController
             flagCreate = true;
         
         // retiro o valor comprado/trocado
-        walletCoinFrom.Balance -= (float) coinTo2Euros2CoinFrom;
+        walletCoinFrom.Balance -= (double) coinTo2Euros2CoinFrom;
         // adiciono o valor que pretendo comprar
         if(walletCoinTo == null){
             walletCoinTo = new WalletCoin();
@@ -197,7 +197,7 @@ public class WalletController : BaseApiController
             walletCoinTo.Balance = changeWalletCoinDto.BalanceBuy;
         }
         else
-            walletCoinTo.Balance += (float) changeWalletCoinDto.BalanceBuy;
+            walletCoinTo.Balance += (double) changeWalletCoinDto.BalanceBuy;
 
         _walletRepository.Update(walletCoinFrom);
         if (!await _walletRepository.SaveAllAsync()){ 

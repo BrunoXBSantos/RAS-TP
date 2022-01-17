@@ -110,7 +110,7 @@ public class WalletRepository : IWalletRepository
     }
 
     // Check Coin Exist By Id
-    public async Task<bool> CheckBalance(int appUserId, int coinId, float balance)
+    public async Task<bool> CheckBalance(int appUserId, int coinId, double balance)
     {
         WalletCoin walletCoin =  await _context.DB_WalletCoin
                 .SingleAsync(wc => wc.appUserID == appUserId && wc.coinID == coinId);

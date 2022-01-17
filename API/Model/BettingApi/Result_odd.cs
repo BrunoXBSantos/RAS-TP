@@ -4,9 +4,9 @@ namespace API.Model;
 public class Result_odd
 {
     [JsonPropertyName("home")]
-    public float home { get; set; }
+    public double home { get; set; }
     [JsonPropertyName("tie")]
-    public float tie { get; set; }
+    public double tie { get; set; }
     [JsonPropertyName("away")]
-    public float away { get; set; }
+    public double away { get; set; }
 }

@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 namespace API.DTOs;
 public class WalletCoinDisplayDto
 {
-    public float Balance { get; set; }
+    public double Balance { get; set; }
     public string CoinName { get; set; }
 }

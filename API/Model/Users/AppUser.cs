@@ -16,7 +16,7 @@ public class AppUser : IdentityUser<int>
 
     // User Contact
     public string Contact { get; set; }
-    public float Balance { get; set; }
+    public double Balance { get; set; }
 
     // Ip e Port são para receber as notificaçoes
     public bool ActiveNotification { get; set; }

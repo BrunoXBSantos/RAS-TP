@@ -10,9 +10,9 @@ public class EventDisplayDto
     public string Team1 { get; set; }
     public string Team2 { get; set; }
 
-    public float Home_Odd { get; set; }
-    public float Tie_Odd { get; set; }
-    public float Away_Odd { get; set; }
+    public double Home_Odd { get; set; }
+    public double Tie_Odd { get; set; }
+    public double Away_Odd { get; set; }
 
     // Table EventType
     public string type { get; set; }

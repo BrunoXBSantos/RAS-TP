@@ -10,6 +10,6 @@ public class ChargeBalanceDTO
     [Required]
     public string UserName { get; set; }
     [Required]
-    public float Balance { get; set; }
+    public double Balance { get; set; }
 
 }

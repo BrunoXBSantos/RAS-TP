@@ -8,8 +8,8 @@ namespace API.Entities.Bet
     public class Result_odd
     {
         public int Id { get; set; }
-        public float home { get; set; }
-        public float tie { get; set; }
-        public float away { get; set; }
+        public double home { get; set; }
+        public double tie { get; set; }
+        public double away { get; set; }
     }
 }
