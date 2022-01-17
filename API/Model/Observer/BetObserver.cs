@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Data.AppNetUsers;
 using API.Interfaces;
+using API.WebSocketManager;
 
 namespace API.Model;
 public class BetObserver : IObserver<Notification>
@@ -33,22 +34,22 @@ public class BetObserver : IObserver<Notification>
         throw new NotImplementedException();
     }
 
-    public async void OnNext(Notification value)
+    public async void OnNext(Notification sms)
     {
         using (var scope = _provider.CreateScope())
         {
             var _appUserRepository = scope.ServiceProvider.GetRequiredService<IAppUserRepository>();
             var activeNotificationSimpleDto = await _appUserRepository.GetActiveNotificationSimpleDtoIdAsync(this.userId);
-            // Só se as notificaçoes estiverem ativas!!!!!!!!!
-            if(activeNotificationSimpleDto.ActiveNotification){
-                string Ip = activeNotificationSimpleDto.IpNotification;
-                int port = activeNotificationSimpleDto.PortNotification;
-                Console.WriteLine("NOTIFICACAO " +
-                                        "  Ip: " +  Ip+
-                                        "  Port: " + port
-                                        + "\n\t" + value.description);
-                ////// FALAPE COCOCAS AQUI O TEU CODIGO
-            }
+            
+            var dict_sockets = scope.ServiceProvider.GetRequiredService<WebSocketServerConnectionManager>();
+
+            await dict_sockets.SendMessageAsync(sms.description, userId.ToString());
+
+            // // Só se as notificaçoes estiverem ativas!!!!!!!!!
+            // if(activeNotificationSimpleDto.ActiveNotification){
+                
+            //     ////// FALAPE COCOCAS AQUI O TEU CODIGO
+            // }
 
         }
         

@@ -20,6 +20,7 @@ namespace API
             services.AddSwagger(Configuration);
             services.AddControllers();
             services.AddCors();
+            services.AddWebSocketServerConnectionManager();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -27,8 +28,12 @@ namespace API
         {
             app.UseMiddleware<ExceptionMiddleware>();
             app.UseSwagger();
+
             app.UseCustomSwagger();
 
+            app.UseWebSockets();
+            app.UseWebSocketServer();
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();
