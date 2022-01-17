@@ -134,21 +134,32 @@ public class WalletController : BaseApiController
         
         // vou buscar a walletCoin por onde irá ser retirado dinheiro
         WalletCoin walletCoinFrom = await _walletRepository.GetWalletCoinAsync(changeWalletCoinDto.appUserID, changeWalletCoinDto.coinIDFrom);
-
-        float eurosFrom = 0;
-        // vou buscar a taxa de conversao para euros da moeda utilizada em walletCoinFrom
-        var coinFrom = await _walletRepository.GetCoinByIdAsync(walletCoinFrom.coinID);
-        // e vejo quantos euros tenho dessa moeda
-        eurosFrom = coinFrom.ConvertionToEuro*walletCoinFrom.Balance;
         
-           
-        // vou buscar a taxa de conversao para euras da moeda pretendida
-        var coinTo = await _walletRepository.GetCoinByIdAsync(changeWalletCoinDto.coinIDTo);
-        // e vejo quantos euros dessa moeda quero comprar/trocar
-        float eurosTo = coinTo.ConvertionToEuro*changeWalletCoinDto.BalanceBuy; 
-
-        if(eurosTo > eurosFrom)
+        // Nao tenho a moeda que quero trocar
+        if(walletCoinFrom == null)
             return Unauthorized("Insufficient funds");
+
+        // vou buscar a taxa de conversao para euros da moeda pretendida
+        var coinTo = await _walletRepository.GetCoinByIdAsync(changeWalletCoinDto.coinIDTo);
+        var coinFrom = await _walletRepository.GetCoinByIdAsync(changeWalletCoinDto.coinIDFrom);
+
+        // vou converter em euros o que eu quero comprar
+        //// vou ao valor pretendido e converto para euro
+        // se a moeda de destino for euros, nao converto, senao converto para euros
+        float coinTo2Euros = changeWalletCoinDto.BalanceBuy;
+        if(coinTo.Id != 1)
+            coinTo2Euros = changeWalletCoinDto.BalanceBuy * coinTo.ConvertionToEuro;
+
+        // se a moeda de origem é euros, não converto, senao converto para euros
+        var coinTo2Euros2CoinFrom = coinTo2Euros;
+        if(coinFrom.Id != 1)
+            coinTo2Euros2CoinFrom = (float) coinTo2Euros / coinFrom.ConvertionToEuro;
+        // converto para a moeda que quero vender
+         
+
+        if(coinTo2Euros2CoinFrom > walletCoinFrom.Balance)
+            return Unauthorized("Insufficient funds");
+        
         
         // vou buscar a walletCoin por onde irá ser adicionado o valor comprado/trocado
         WalletCoin walletCoinTo = await _walletRepository.GetWalletCoinAsync(changeWalletCoinDto.appUserID, changeWalletCoinDto.coinIDTo);
@@ -158,12 +169,23 @@ public class WalletController : BaseApiController
         if(walletCoinTo == null)
             flagCreate = true;
         
-        // retiro o valor comprado/trocado utilizando o inverso da taxa de conversao da coinFrom
-        walletCoinFrom.Balance -= changeWalletCoinDto.BalanceBuy/coinFrom.ConvertionToEuro;
-        // adiciono o valor comprado/trocado utilizando o inverso da taxa de conversao da coinTo
-        walletCoinTo.Balance += changeWalletCoinDto.BalanceBuy/coinTo.ConvertionToEuro;
+        // retiro o valor comprado/trocado
+        walletCoinFrom.Balance -= (float) coinTo2Euros2CoinFrom;
+        // adiciono o valor que pretendo comprar
+        if(walletCoinTo == null){
+            walletCoinTo = new WalletCoin();
+            walletCoinTo.appUserID = changeWalletCoinDto.appUserID;
+            walletCoinTo.coinID = changeWalletCoinDto.coinIDTo;
+            walletCoinTo.Balance = changeWalletCoinDto.BalanceBuy;
+        }
+        else
+            walletCoinTo.Balance += (float) changeWalletCoinDto.BalanceBuy;
 
         _walletRepository.Update(walletCoinFrom);
+        if (!await _walletRepository.SaveAllAsync()){ 
+            return BadRequest("Error");
+        }
+
         if(flagCreate)
             _walletRepository.AddWalletCoin(walletCoinTo);
         else
@@ -173,8 +195,7 @@ public class WalletController : BaseApiController
             var walletcoins = await _walletRepository.GetWalletCoinsByUser(idUser);
             return Ok(walletcoins);
         }
-        
-        return BadRequest("Error withdraw coin in wallet");
+        return BadRequest("Error");
     }
     #endregion
     

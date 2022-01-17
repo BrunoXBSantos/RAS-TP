@@ -15,16 +15,18 @@ public class AccountController : BaseApiController
     private readonly UserManager<AppUser> _userManager;
     private readonly SignInManager<AppUser> _signInManager;
     public readonly IAppUserRepository _appUserRepository;
+    public readonly IWalletRepository _walletRepository;
 
 
 
-    public AccountController(IAppUserRepository appUserRepository, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper)
+    public AccountController(IAppUserRepository appUserRepository, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper, IWalletRepository walletRepository)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _mapper = mapper;
         _tokenService = tokenService;
         _appUserRepository = appUserRepository;
+        _walletRepository = walletRepository;
     }
 
 
@@ -47,7 +49,18 @@ public class AccountController : BaseApiController
 
         if (!roleResult.Succeeded) BadRequest(result.Errors);
 
-        return Ok(_mapper.Map<RegisterDto>(Userx));
+        var appUser = await _appUserRepository.GetUserByUsernameAsync(registerDto.UserName);
+
+        // 
+        WalletCoin walletCoin = new WalletCoin();
+        walletCoin.appUserID = appUser.Id;
+        walletCoin.coinID = 1;
+        walletCoin.Balance = 0;
+
+        _walletRepository.AddWalletCoin(walletCoin);
+        if(await _walletRepository.SaveAllAsync())
+            return Ok(_mapper.Map<RegisterDto>(Userx));
+        return BadRequest("Error to register the User");
     }
     
 
