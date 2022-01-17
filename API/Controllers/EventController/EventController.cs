@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-[Authorize]
+//[Authorize]
 public class EventController : BaseApiController
 {
     private readonly IMapper _mapper;

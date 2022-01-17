@@ -41,13 +41,23 @@ public class WalletRepository : IWalletRepository
     }
 
     // Get all walletCoins from user 
-    public async Task<List<WalletCoinDisplayDto>> GetWalletCoinsByUser(int idUser)
+    public async Task<List<WalletCoinDisplayDto>> GetAllWalletCoinDisplayByUser(int idUser)
     {
         return await _context.DB_WalletCoin
             .Where(wc => wc.appUserID == idUser)
             .ProjectTo<WalletCoinDisplayDto>(_mapper.ConfigurationProvider)
             .ToListAsync();
     }
+
+    // Get all walletCoins from user 
+    public async Task<List<WalletCoin>> GetAllWalletCoinByUsers(int idUser)
+    {
+        return await _context.DB_WalletCoin
+            .Where(wc => wc.appUserID == idUser)
+            .Include(e => e.Coin)
+            .ToListAsync();
+    }
+
 
     // Get walletCoin by id 
     public async Task<WalletCoin> GetWalletCoinAsync(int appUserId, int coinId)

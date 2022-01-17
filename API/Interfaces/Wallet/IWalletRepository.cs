@@ -20,7 +20,9 @@ public interface IWalletRepository
     #region READ
     Task<List<CoinDto>> GetCoins();
     Task<WalletCoin> GetWalletCoinAsync(int appUserId, int coinId);
-    Task<List<WalletCoinDisplayDto>> GetWalletCoinsByUser(int idUser);
+    Task<List<WalletCoinDisplayDto>> GetAllWalletCoinDisplayByUser(int idUser);
+
+    Task<List<WalletCoin>> GetAllWalletCoinByUsers(int idUser);
 
     #endregion
 

@@ -161,9 +161,6 @@ public class MatchController : BaseApiController
                     // Vou buscar dados da Coin que apostei
                     Coin coin = await _walletRepository.GetCoinByIdAsync(bet.coinID);
 
-                    // converter o valor apostado para euros
-                    var value2Euros = (float) bet.value * coin.ConvertionToEuro;
-
                     // qual a odd vencedora (empate, derrota ou vitoria)
                     float multiplied = 0;
                     if(endMatch.Team1Goals>endMatch.Team2Goals)
@@ -172,16 +169,14 @@ public class MatchController : BaseApiController
                         multiplied = eventDB.Away_Odd;
                     else 
                         multiplied = eventDB.Tie_Odd;
-
-                    // o valor que ganhou em euros
-                    var winnerValueEuro = value2Euros * multiplied;
-
-                    // converter para a coin que apostou
-                    var winnerValueEuro2Coin = winnerValueEuro / coin.ConvertionToEuro;
-
+                    
+                    // valor ganho
+                    var wonValue = bet.value * multiplied;
+                    
                     // vou buscar a walletCoin do user
+                    // e a atualizo
                     WalletCoin walletCoin = await _walletRepository.GetWalletCoinAsync(bet.appUserId, bet.coinID);
-                    walletCoin.Balance += winnerValueEuro2Coin;
+                    walletCoin.Balance += wonValue;
 
                     _walletRepository.Update(walletCoin);
                     if (!await _appUserRepository.SaveAllAsync())

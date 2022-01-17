@@ -38,13 +38,31 @@ public class WalletController : BaseApiController
     }
 
     /// <summary>
+    /// Get all money in euros.
+    /// </summary>
+    [HttpGet("/{idUser}/allMoney")]
+    public async Task<ActionResult<AllMoneyDto>> GetAllMoneyEuros(int idUser)
+    {
+        
+        var walletCoins = await _walletRepository.GetAllWalletCoinByUsers(idUser); 
+
+        float sum = (float) walletCoins.Sum(e => (float) e.Balance * e.Coin.ConvertionToEuro);
+
+        AllMoneyDto allMoneyDto = new AllMoneyDto();
+        allMoneyDto.coinName = "Euro";
+        allMoneyDto.balance = sum;
+
+        return Ok(allMoneyDto);
+    }
+
+    /// <summary>
     /// Get list of coins by user id.
     /// </summary>
     [HttpGet("{idUser}")]
     public async Task<ActionResult<CoinDto>> GetCoinsByUser(int idUser)
     {
         
-        var walletcoins = await _walletRepository.GetWalletCoinsByUser(idUser); 
+        var walletcoins = await _walletRepository.GetAllWalletCoinDisplayByUser(idUser); 
 
         if (walletcoins == null) return BadRequest("User has no balance for any currency");
         return Ok(walletcoins);
@@ -192,7 +210,7 @@ public class WalletController : BaseApiController
             _walletRepository.Update(walletCoinTo);
 
         if (await _walletRepository.SaveAllAsync()){ 
-            var walletcoins = await _walletRepository.GetWalletCoinsByUser(idUser);
+            var walletcoins = await _walletRepository.GetAllWalletCoinDisplayByUser(idUser);
             return Ok(walletcoins);
         }
         return BadRequest("Error");
