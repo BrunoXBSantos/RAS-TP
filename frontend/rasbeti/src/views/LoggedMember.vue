@@ -15,6 +15,7 @@
                     </div>
                     <div class="card-bot">
                       <div class="subtitle is-7"><b>Bet Id: {{ h.id }}</b></div>
+                      <div class="subtitle is-7"><b>State: {{ h.state }}</b></div>
                       <div style="color:green;" class="subtitle is-7"><b>Home Odd: {{ h.home_Odd }}</b></div>
                       <div style="color:orange;" class="subtitle is-7"><b>Tie Odd: {{ h.tie_Odd }}</b></div>
                       <div style="color:red;" class="subtitle is-7"><b>Away Odd: {{ h.away_Odd }}</b></div>
@@ -33,6 +34,7 @@
                     </div>
                     <div class="card-bot">
                       <div class="subtitle is-7"><b>Bet Id: {{ h.id }}</b></div>
+                      <div class="subtitle is-7"><b>State: {{ h.state }}</b></div>
                       <div style="color:green;" class="subtitle is-7"><b>Home Odd: {{ h.home_Odd }}</b></div>
                       <div style="color:orange;" class="subtitle is-7"><b>Tie Odd: {{ h.tie_Odd }}</b></div>
                       <div style="color:red;" class="subtitle is-7"><b>Away Odd: {{ h.away_Odd }}</b></div>
@@ -51,6 +53,7 @@
                     </div>
                     <div class="card-bot">
                       <div class="subtitle is-7"><b>Bet Id: {{ h.id }}</b></div>
+                      <div class="subtitle is-7"><b>State: {{ h.state }}</b></div>
                       <div style="color:green;" class="subtitle is-7"><b>Home Odd: {{ h.home_Odd }}</b></div>
                       <div style="color:orange;" class="subtitle is-7"><b>Tie Odd: {{ h.tie_Odd }}</b></div>
                       <div style="color:red;" class="subtitle is-7"><b>Away Odd: {{ h.away_Odd }}</b></div>
@@ -206,7 +209,7 @@ export default {
   created () {
     this.allinfo = []
     // eslint-disable-next-line camelcase
-    axios.get(api_url + '/api/Event/Open?PageSize=1000')
+    axios.get(api_url + '/api/Event/NotFinished?PageSize=1000')
       .then(resp => {
         var i
         for (i = 0; i < resp.data.length; i++) {
