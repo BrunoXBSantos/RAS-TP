@@ -17,6 +17,7 @@ public interface IEventRepository
 
     public Task<EventDisplayDto> GetEventAsync(int id);
     public Task<PagedList<EventDisplayDto>> GetEventsWithStateAsync(EventParams eventParams, int state);
+    Task<PagedList<EventDisplayDto>> GetEventsWithStateNotFinishedAsync(EventParams eventParams);
 
     public Task<EventSimpleDto> GetEventDetailAsync(int id);
 

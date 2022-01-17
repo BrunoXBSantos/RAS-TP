@@ -106,6 +106,20 @@ public class EventController : BaseApiController
         return Ok(events);
     }
 
+    /// <summary>
+    /// Get the list of Events Not Finished. Only event information, EventDisplayDto. 
+    /// </summary>
+    [HttpGet("NotFinished")]
+    public async Task<ActionResult<IEnumerable<EventDisplayDto>>> GetEventsNotFinished([FromQuery]EventParams eventParams)
+    {
+        var events = await _eventRepository.GetEventsWithStateNotFinishedAsync(eventParams);
+
+        Response.AddPaginationHeader(events.CurrentPage, events.PageSize, 
+            events.TotalCount, events.TotalPages);
+
+        return Ok(events);
+    }
+
 
     #endregion
 
