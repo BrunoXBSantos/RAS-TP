@@ -109,7 +109,7 @@ public class EventRepository : IEventRepository
     public async Task<PagedList<EventDisplayDto>> GetEventsWithStateNotFinishedAsync(EventParams eventParams)
     {
         var query = _context.DB_Events
-            .Where(e => e.eventStateId != 3)
+            .Where(e => e.eventStateId != 2)
             .ProjectTo<EventDisplayDto>(_mapper.ConfigurationProvider)
             .AsNoTracking()
             .AsQueryable();
