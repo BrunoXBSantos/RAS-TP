@@ -48,19 +48,21 @@ public class AccountController : BaseApiController
         var roleResult = await _userManager.AddToRoleAsync(Userx, "Member");
 
         if (!roleResult.Succeeded) BadRequest(result.Errors);
+        
+        return Ok(_mapper.Map<RegisterDto>(Userx));
 
-        var appUser = await _appUserRepository.GetUserByUsernameAsync(registerDto.UserName);
+        // var appUser = await _appUserRepository.GetUserByUsernameAsync(registerDto.UserName);
 
-        // 
-        WalletCoin walletCoin = new WalletCoin();
-        walletCoin.appUserID = appUser.Id;
-        walletCoin.coinID = 1;
-        walletCoin.Balance = 0;
+        // // 
+        // WalletCoin walletCoin = new WalletCoin();
+        // walletCoin.appUserID = appUser.Id;
+        // walletCoin.coinID = 1;
+        // walletCoin.Balance = 0;
 
-        _walletRepository.AddWalletCoin(walletCoin);
-        if(await _walletRepository.SaveAllAsync())
-            return Ok(_mapper.Map<RegisterDto>(Userx));
-        return BadRequest("Error to register the User");
+        // _walletRepository.AddWalletCoin(walletCoin);
+        // if(await _walletRepository.SaveAllAsync())
+        //     return Ok(_mapper.Map<RegisterDto>(Userx));
+        // return BadRequest("Error to register the User");
     }
     
 
