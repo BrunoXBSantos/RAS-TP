@@ -110,6 +110,44 @@ public class EventController : BaseApiController
     #endregion
 
     #region Update 
+
+    /// <summary>
+    /// Colocar um dado evento no estado suspenso. 
+    /// </summary>
+    [HttpGet("{id}/suspend")]
+    public async Task<ActionResult<EventSimpleDto>> updateEvent2suspend(int id)
+    {   
+        // 3 - Suspended      1 - Open
+        var eventDB = await _eventRepository.GetEventDBAsync(id);
+        if (eventDB != null){ 
+            eventDB.eventStateId = 3;
+            _eventRepository.Update(eventDB);
+            if(await _eventRepository.SaveAllAsync())
+                return Ok(_mapper.Map<EventSimpleDto>(eventDB));
+            return BadRequest("Error to suspense the event");
+        }
+        return NotFound("Event not found");
+    }
+
+    /// <summary>
+    /// Colocar um dado evento no estado open. 
+    /// </summary>
+    [HttpGet("{id}/open")]
+    public async Task<ActionResult<EventSimpleDto>> updateEvent2open(int id)
+    {   
+        // 3 - Suspended      1 - Open
+        var eventDB = await _eventRepository.GetEventDBAsync(id);
+        if (eventDB != null){ 
+            eventDB.eventStateId = 1;
+            _eventRepository.Update(eventDB);
+            if(await _eventRepository.SaveAllAsync())
+                return Ok(_mapper.Map<EventSimpleDto>(eventDB));
+            return BadRequest("Error to open the event");
+        }
+        return NotFound("Event not found");
+    }
+
+
     #endregion
 
     #region Delete 
