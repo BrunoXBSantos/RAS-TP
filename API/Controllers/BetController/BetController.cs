@@ -216,9 +216,9 @@ public class BetController : BaseApiController
 
         EventObservable eventObservable = _observables.GetEventObservableByIdEvent(bet._eventId);
         BetObserver betObserver = eventObservable.observers.First(e => e.betId == idBet);
-
+        
         if(betObserver != null){
-            betObserver.Unsubscribe();
+            eventObservable.observers.Remove(betObserver);
         }
 
 

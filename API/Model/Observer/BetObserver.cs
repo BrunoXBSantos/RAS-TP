@@ -46,8 +46,6 @@ public class BetObserver
                 
             //     ////// FALAPE COCOCAS AQUI O TEU CODIGO
             // }
-
-        
     }
 
     public virtual void Subscribe(EventObservable eventObservable)
