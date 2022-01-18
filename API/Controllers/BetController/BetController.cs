@@ -53,15 +53,12 @@ public class BetController : BaseApiController
         }
 
         var eventState = await _eventRepository.GetEventStateByIdAsync(createBetDTO._eventId);
-        if(eventState != 1){  // Não dá para apostar
-            if(eventState == 2){
-                return Unauthorized("Event has already ended.");
-            }
-            else if(eventState == 3){
-                return Unauthorized("Event is suspended.");
-            }
-            else 
-                return BadRequest("Error checking event status");
+         // Não dá para apostar
+        if(eventState == 2){
+            return Unauthorized("Event has already ended.");
+        }
+        else if(eventState == 3){
+            return Unauthorized("Event is suspended.");
         }
 
         WalletCoin walletCoin = await _walletRepository.GetWalletCoinAsync(createBetDTO.appUserId, createBetDTO.coinID);
