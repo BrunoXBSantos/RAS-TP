@@ -18,6 +18,7 @@
                       <div class="subtitle is-7"><b>Register Id: {{ h.betid }}</b></div>
                       <div class="subtitle is-7"><b>Result: {{ h.pickedresult }}</b></div>
                       <div class="subtitle is-7"><b>Value: {{ h.pickedvalue }}</b></div>
+                      <div class="subtitle is-7"><b>State: {{ h.state }}</b></div>
                       <div style="color:green;" class="subtitle is-7"><b>Home Odd: {{ h.home_Odd }}</b></div>
                       <div style="color:orange;" class="subtitle is-7"><b>Tie Odd: {{ h.tie_Odd }}</b></div>
                       <div style="color:red;" class="subtitle is-7"><b>Away Odd: {{ h.away_Odd }}</b></div>
@@ -39,6 +40,7 @@
                       <div class="subtitle is-7"><b>Register Id: {{ h.betid }}</b></div>
                       <div class="subtitle is-7"><b>Result: {{ h.pickedresult }}</b></div>
                       <div class="subtitle is-7"><b>Value: {{ h.pickedvalue }}</b></div>
+                      <div class="subtitle is-7"><b>State: {{ h.state }}</b></div>
                       <div style="color:green;" class="subtitle is-7"><b>Home Odd: {{ h.home_Odd }}</b></div>
                       <div style="color:orange;" class="subtitle is-7"><b>Tie Odd: {{ h.tie_Odd }}</b></div>
                       <div style="color:red;" class="subtitle is-7"><b>Away Odd: {{ h.away_Odd }}</b></div>
@@ -60,6 +62,7 @@
                       <div class="subtitle is-7"><b>Register Id: {{ h.betid }}</b></div>
                       <div class="subtitle is-7"><b>Result: {{ h.pickedresult }}</b></div>
                       <div class="subtitle is-7"><b>Value: {{ h.pickedvalue }}</b></div>
+                      <div class="subtitle is-7"><b>State: {{ h.state }}</b></div>
                       <div style="color:green;" class="subtitle is-7"><b>Home Odd: {{ h.home_Odd }}</b></div>
                       <div style="color:orange;" class="subtitle is-7"><b>Tie Odd: {{ h.tie_Odd }}</b></div>
                       <div style="color:red;" class="subtitle is-7"><b>Away Odd: {{ h.away_Odd }}</b></div>
