@@ -41,7 +41,7 @@ The following software is required to be installed on your system:
 
 - [:.NET 6.0](https://dotnet.microsoft.com/en-us/)
 
-### :hammer: backendDevelopment 
+### :hammer: Development 
 
 Start backend side. In the folder Ras-TP/API
 
