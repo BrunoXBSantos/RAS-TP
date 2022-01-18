@@ -73,7 +73,7 @@ public class EventRepository : IEventRepository
     public async Task<List<EventSimpleDto>> GetEventsOpen()
     {
         var _events = await _context.DB_Events
-            .Where(x => x.eventStateId == 1)
+            .Where(x => x.eventStateId == 1 || x.eventStateId == 4)
             .ProjectTo<EventSimpleDto>(_mapper.ConfigurationProvider)
             .ToListAsync();
 

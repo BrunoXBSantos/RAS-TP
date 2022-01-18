@@ -94,11 +94,11 @@ public class BetRepository : IBetRepository
 
     }
 
-    // get Bets with state is open to backgroud
+    // get Bets with state is open or started to backgroud
     public async Task<List<BetEmptyDto>> GetBetsOpen()
     {
         var bets = await _context.DB_Bet
-            .Where(x => x.betStateId == 1)
+            .Where(x => x.betStateId == 1 || x.betStateId == 4)
             .ProjectTo<BetEmptyDto>(_mapper.ConfigurationProvider)
             .ToListAsync();
 
