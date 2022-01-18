@@ -39,6 +39,4 @@ public class Observables : IObservables
         return eventObservable;
     }
 
-
-
 }

@@ -45,6 +45,12 @@ public class MatchController : BaseApiController
             return BadRequest("Event is over");
         }
 
+        // evento iniciado
+        eventDb.eventStateId = 4;
+        _eventRepository.Update(eventDb);
+        if(!await _eventRepository.SaveAllAsync())
+            return BadRequest("Error to update event");
+
         var description = startMatchDto.Team1 + 
                             " - " + startMatchDto.Team2 + 
                             " Started";

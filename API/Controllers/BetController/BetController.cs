@@ -191,6 +191,51 @@ public class BetController : BaseApiController
     }
     #endregion
 
+ #region Delete
+    /// <summary>
+    /// Apagar uma bet de um user
+    /// </summary>
+    [HttpDelete("/{idUser}/{idBet}")]
+    public async Task<ActionResult> DeleteServer(int idUser, int idBet)
+    {
+        var bet = await _betRepository.GetBetByIdAsync(idBet);
+        if(bet == null)
+            return NotFound("Bet Not Found.");
+
+        var eventDB = await _eventRepository.GetEventDBAsync(bet._eventId);
+        if(eventDB == null)
+            return NotFound("Bet Not Found.");
+        
+        if(eventDB.eventStateId == 2){
+            return BadRequest("Event is over.");
+        }
+        // se o jogo já começou
+        if(eventDB.eventStateId == 4){
+            return Unauthorized("Event has already started. You cannot cancel the bet.");
+        }
+
+        EventObservable eventObservable = _observables.GetEventObservableByIdEvent(bet._eventId);
+
+        // deposito 0,75% do dinheiro apostado
+        WalletCoin walletCoin = await _walletRepository.GetWalletCoinAsync(bet.appUserId, bet.coinID);
+        walletCoin.Balance = walletCoin.Balance + bet.value*0.75;
+
+        _walletRepository.Update(walletCoin);
+        if(! await _walletRepository.SaveAllAsync()){
+            return BadRequest("Problem deleting the bet");
+        }
+
+        // colocar bet terminada
+        bet.betStateId = 2;
+        _betRepository.UpdateBet(bet);
+        if(! await _betRepository.SaveAllAsync()){
+            return BadRequest("Problem deleting the bet");
+        }
+
+        return NoContent();
+    }
+    #endregion
+
 
     [NonAction]
     bool IsDigitsOnly(string str)
