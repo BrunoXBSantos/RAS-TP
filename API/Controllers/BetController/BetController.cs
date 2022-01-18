@@ -191,16 +191,19 @@ public class BetController : BaseApiController
     }
     #endregion
 
- #region Delete
+    #region Delete
     /// <summary>
     /// Apagar uma bet de um user
     /// </summary>
     [HttpDelete("/{idUser}/{idBet}")]
-    public async Task<ActionResult> DeleteServer(int idUser, int idBet)
+    public async Task<ActionResult> DeleteBet(int idUser, int idBet)
     {
         var bet = await _betRepository.GetBetByIdAsync(idBet);
         if(bet == null)
             return NotFound("Bet Not Found.");
+
+        if(bet.betStateId == 2)
+            return Unauthorized("Bet closed.");
 
         var eventDB = await _eventRepository.GetEventDBAsync(bet._eventId);
         if(eventDB == null)
