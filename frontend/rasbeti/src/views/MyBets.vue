@@ -18,7 +18,8 @@
                       <div class="subtitle is-7"><b>Register Id: {{ h.betid }}</b></div>
                       <div class="subtitle is-7"><b>Result: {{ h.pickedresult }}</b></div>
                       <div class="subtitle is-7"><b>Value: {{ h.pickedvalue }}</b></div>
-                      <div class="subtitle is-7"><b>State: {{ h.state }}</b></div>
+                      <div class="subtitle is-7"><b>Event State: {{ h.state }}</b></div>
+                      <div class="subtitle is-7"><b>Bet State: {{ h.betstateid }}</b></div>
                       <div style="color:green;" class="subtitle is-7"><b>Home Odd: {{ h.home_Odd }}</b></div>
                       <div style="color:orange;" class="subtitle is-7"><b>Tie Odd: {{ h.tie_Odd }}</b></div>
                       <div style="color:red;" class="subtitle is-7"><b>Away Odd: {{ h.away_Odd }}</b></div>
@@ -40,7 +41,8 @@
                       <div class="subtitle is-7"><b>Register Id: {{ h.betid }}</b></div>
                       <div class="subtitle is-7"><b>Result: {{ h.pickedresult }}</b></div>
                       <div class="subtitle is-7"><b>Value: {{ h.pickedvalue }}</b></div>
-                      <div class="subtitle is-7"><b>State: {{ h.state }}</b></div>
+                      <div class="subtitle is-7"><b>Event State: {{ h.state }}</b></div>
+                      <div class="subtitle is-7"><b>Bet State: {{ h.betstateid }}</b></div>
                       <div style="color:green;" class="subtitle is-7"><b>Home Odd: {{ h.home_Odd }}</b></div>
                       <div style="color:orange;" class="subtitle is-7"><b>Tie Odd: {{ h.tie_Odd }}</b></div>
                       <div style="color:red;" class="subtitle is-7"><b>Away Odd: {{ h.away_Odd }}</b></div>
@@ -62,7 +64,8 @@
                       <div class="subtitle is-7"><b>Register Id: {{ h.betid }}</b></div>
                       <div class="subtitle is-7"><b>Result: {{ h.pickedresult }}</b></div>
                       <div class="subtitle is-7"><b>Value: {{ h.pickedvalue }}</b></div>
-                      <div class="subtitle is-7"><b>State: {{ h.state }}</b></div>
+                      <div class="subtitle is-7"><b>Event State: {{ h.state }}</b></div>
+                      <div class="subtitle is-7"><b>Bet State: {{ h.betstateid }}</b></div>
                       <div style="color:green;" class="subtitle is-7"><b>Home Odd: {{ h.home_Odd }}</b></div>
                       <div style="color:orange;" class="subtitle is-7"><b>Tie Odd: {{ h.tie_Odd }}</b></div>
                       <div style="color:red;" class="subtitle is-7"><b>Away Odd: {{ h.away_Odd }}</b></div>
@@ -76,7 +79,7 @@
       <div class="column is-one-quarter">
         <div class="card" id="makebetcard">
           <div class="card-top-second">
-            <div class="title is-5">Place Bet</div>
+            <div class="title is-5">Cancel Bet</div>
           </div>
           <div class="card-bot">
             <form class="cancelbet" @submit.prevent="cancelbet">
@@ -189,6 +192,7 @@ export default {
             const value = res.data[i].value
             const eventid = res.data[i]._eventId
             const betid = res.data[i].id
+            const betstateid = res.data[i].betStateId
             // eslint-disable-next-line camelcase
             // eslint-disable-next-line camelcase
             axios.get(api_url + '/api/Event/' + eventid)
@@ -206,7 +210,8 @@ export default {
                     type: resp.data.type,
                     pickedresult: result,
                     pickedvalue: value,
-                    betid: betid
+                    betid: betid,
+                    betstateid: betstateid
                   }
                   this.allinfo.push(betobj)
                 }
@@ -245,6 +250,15 @@ export default {
   padding: 6% 6% 6% 6%;
   text-transform: capitalize;
   background-color: brown;
+}
+
+.card-top-second {
+  pointer-events: none;
+  width: 100%;
+  height: 20%;
+  padding: 6% 6% 6% 6%;
+  text-transform: capitalize;
+  background-color: black;
 }
 
 .title {
