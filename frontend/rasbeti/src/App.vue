@@ -41,7 +41,8 @@ export default {
       4000)
     },
     setConnection: function () {
-      if ((store.getters.getId !== '' && this.connection === null) || this.connection.readyState !== this.connection.OPEN) {
+      console.log(store.getters.getId)
+      if (this.connection === null && store.getters.isAuthenticated) {
         console.log('Starting connection to WebSocket Server')
         this.connection = new WebSocket('ws://localhost:5000')
         this.flag = 1
