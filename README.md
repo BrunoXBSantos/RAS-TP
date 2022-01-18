@@ -57,7 +57,9 @@ dotnet watch run
 
 Start client side. In the folder Ras-TP/frontend
 
-...........
+```
+npm run serve
+```
 
 ```
 bin/format
