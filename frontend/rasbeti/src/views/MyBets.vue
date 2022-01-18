@@ -18,6 +18,8 @@
                       <div class="subtitle is-7"><b>Register Id: {{ h.betid }}</b></div>
                       <div class="subtitle is-7"><b>Result: {{ h.pickedresult }}</b></div>
                       <div class="subtitle is-7"><b>Value: {{ h.pickedvalue }}</b></div>
+                      <div class="subtitle is-7"><b>Event State: {{ h.state }}</b></div>
+                      <div class="subtitle is-7"><b>Bet State: {{ h.betstateid }}</b></div>
                       <div style="color:green;" class="subtitle is-7"><b>Home Odd: {{ h.home_Odd }}</b></div>
                       <div style="color:orange;" class="subtitle is-7"><b>Tie Odd: {{ h.tie_Odd }}</b></div>
                       <div style="color:red;" class="subtitle is-7"><b>Away Odd: {{ h.away_Odd }}</b></div>
@@ -39,6 +41,8 @@
                       <div class="subtitle is-7"><b>Register Id: {{ h.betid }}</b></div>
                       <div class="subtitle is-7"><b>Result: {{ h.pickedresult }}</b></div>
                       <div class="subtitle is-7"><b>Value: {{ h.pickedvalue }}</b></div>
+                      <div class="subtitle is-7"><b>Event State: {{ h.state }}</b></div>
+                      <div class="subtitle is-7"><b>Bet State: {{ h.betstateid }}</b></div>
                       <div style="color:green;" class="subtitle is-7"><b>Home Odd: {{ h.home_Odd }}</b></div>
                       <div style="color:orange;" class="subtitle is-7"><b>Tie Odd: {{ h.tie_Odd }}</b></div>
                       <div style="color:red;" class="subtitle is-7"><b>Away Odd: {{ h.away_Odd }}</b></div>
@@ -60,6 +64,8 @@
                       <div class="subtitle is-7"><b>Register Id: {{ h.betid }}</b></div>
                       <div class="subtitle is-7"><b>Result: {{ h.pickedresult }}</b></div>
                       <div class="subtitle is-7"><b>Value: {{ h.pickedvalue }}</b></div>
+                      <div class="subtitle is-7"><b>Event State: {{ h.state }}</b></div>
+                      <div class="subtitle is-7"><b>Bet State: {{ h.betstateid }}</b></div>
                       <div style="color:green;" class="subtitle is-7"><b>Home Odd: {{ h.home_Odd }}</b></div>
                       <div style="color:orange;" class="subtitle is-7"><b>Tie Odd: {{ h.tie_Odd }}</b></div>
                       <div style="color:red;" class="subtitle is-7"><b>Away Odd: {{ h.away_Odd }}</b></div>
@@ -69,6 +75,43 @@
                 </div>
               </div>
             </div>
+      </div>
+      <div class="column is-one-quarter">
+        <div class="card" id="makebetcard">
+          <div class="card-top-second">
+            <div class="title is-5">Cancel Bet</div>
+          </div>
+          <div class="card-bot">
+            <form class="cancelbet" @submit.prevent="cancelbet">
+            <div class="columns is-multiline is-centered">
+              <div class="column is-four-fifths">
+              <div class="field">
+                <label class="label">Bet Id</label>
+                <div class="control">
+                  <input
+                    class="input"
+                    type="betid"
+                    placeholder=betid
+                    required
+                    v-model="betid"
+                  />
+                </div>
+              </div>
+              </div>
+              <div class="column">
+                <div id="message" v-if="errorc != ''">
+                  <p class="help is-danger">Invalid Input: Please Try Again</p>
+                </div>
+                <div class="has-text-centered">
+                  <button class="button is-danger" type="submit">
+                    <strong>Submit</strong>
+                  </button>
+                </div>
+              </div>
+            </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -95,12 +138,27 @@ export default {
       column2: [{}],
       column3: [{}],
       indiceatual: 0,
+      errorc: '',
       pages: 1,
       total: 0,
-      useridbet: store.getters.getId
+      useridbet: store.getters.getId,
+      betid: 0
     }
   },
   methods: {
+    cancelbet: function () {
+      const { useridbet, betid } = this
+      // eslint-disable-next-line camelcase
+      axios({ url: api_url + '/' + useridbet + '/' + betid, method: 'DELETE' })
+        .then(resp => {
+          location.reload()
+        })
+        .catch(err => {
+          console.log('TEST MAKEBET-> VIEWS/LOGGEDMEMBER -> ERROR RESPONSE:')
+          console.log(err)
+          this.errorc = err
+        })
+    },
     fillColumns () {
       this.column1 = []
       this.column2 = []
@@ -134,6 +192,7 @@ export default {
             const value = res.data[i].value
             const eventid = res.data[i]._eventId
             const betid = res.data[i].id
+            const betstateid = res.data[i].betStateId
             // eslint-disable-next-line camelcase
             // eslint-disable-next-line camelcase
             axios.get(api_url + '/api/Event/' + eventid)
@@ -151,7 +210,8 @@ export default {
                     type: resp.data.type,
                     pickedresult: result,
                     pickedvalue: value,
-                    betid: betid
+                    betid: betid,
+                    betstateid: betstateid
                   }
                   this.allinfo.push(betobj)
                 }
@@ -190,6 +250,15 @@ export default {
   padding: 6% 6% 6% 6%;
   text-transform: capitalize;
   background-color: brown;
+}
+
+.card-top-second {
+  pointer-events: none;
+  width: 100%;
+  height: 20%;
+  padding: 6% 6% 6% 6%;
+  text-transform: capitalize;
+  background-color: black;
 }
 
 .title {

@@ -340,7 +340,24 @@ export default {
         console.log(err)
         this.error4 = err
       })
-      // eslint-disable-next-line camelcase
+    // eslint-disable-next-line camelcase
+    axios.get(api_url + '/' + userid + '/allMoney/')
+      .then(resp => {
+        if (resp.data != null) {
+          const betobj = {
+            balance: resp.data.balance,
+            coinName: 'Total: ' + resp.data.coinName
+          }
+          this.userinfo.push(betobj)
+        }
+        this.fillColumnsUser()
+      })
+      .catch(err => {
+        console.log('TEST -> VIEWS/MYWALLET.VUE -> GET BETS ERROR RESPONSE:')
+        console.log(err)
+        this.error5 = err
+      })
+    // eslint-disable-next-line camelcase
     axios.get(api_url + '/api/Wallet/ValueEnxanges')
       .then(resp => {
         var i
