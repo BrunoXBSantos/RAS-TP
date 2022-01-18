@@ -73,6 +73,43 @@
               </div>
             </div>
       </div>
+      <div class="column is-one-quarter">
+        <div class="card" id="makebetcard">
+          <div class="card-top-second">
+            <div class="title is-5">Place Bet</div>
+          </div>
+          <div class="card-bot">
+            <form class="cancelbet" @submit.prevent="cancelbet">
+            <div class="columns is-multiline is-centered">
+              <div class="column is-four-fifths">
+              <div class="field">
+                <label class="label">Bet Id</label>
+                <div class="control">
+                  <input
+                    class="input"
+                    type="betid"
+                    placeholder=betid
+                    required
+                    v-model="betid"
+                  />
+                </div>
+              </div>
+              </div>
+              <div class="column">
+                <div id="message" v-if="errorc != ''">
+                  <p class="help is-danger">Invalid Input: Please Try Again</p>
+                </div>
+                <div class="has-text-centered">
+                  <button class="button is-danger" type="submit">
+                    <strong>Submit</strong>
+                  </button>
+                </div>
+              </div>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -98,12 +135,27 @@ export default {
       column2: [{}],
       column3: [{}],
       indiceatual: 0,
+      errorc: '',
       pages: 1,
       total: 0,
-      useridbet: store.getters.getId
+      useridbet: store.getters.getId,
+      betid: 0
     }
   },
   methods: {
+    cancelbet: function () {
+      const { useridbet, betid } = this
+      // eslint-disable-next-line camelcase
+      axios({ url: api_url + '/' + useridbet + '/' + betid, method: 'DELETE' })
+        .then(resp => {
+          location.reload()
+        })
+        .catch(err => {
+          console.log('TEST MAKEBET-> VIEWS/LOGGEDMEMBER -> ERROR RESPONSE:')
+          console.log(err)
+          this.errorc = err
+        })
+    },
     fillColumns () {
       this.column1 = []
       this.column2 = []
