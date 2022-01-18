@@ -55,7 +55,7 @@ To see all endpoints in swagger
 dotnet watch run
 ```
 
-Start client side. In the folder Ras-TP/frontend
+Start client side. In the folder Ras-TP/frontend/rasbeti
 
 ```
 npm run serve
