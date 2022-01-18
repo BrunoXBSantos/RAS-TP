@@ -14,8 +14,8 @@
                       <div class="title is-5">{{ h.team2 }}</div>
                     </div>
                     <div class="card-bot">
-                      <div class="subtitle is-7"><b>Bet Id: {{ h.id }}</b></div>
-                      <div class="subtitle is-7"><b>State: {{ h.state }}</b></div>
+                      <div class="subtitle is-7"><b>Event Id: {{ h.id }}</b></div>
+                      <div class="subtitle is-7"><b>Event State: {{ h.state }}</b></div>
                       <div style="color:green;" class="subtitle is-7"><b>Home Odd: {{ h.home_Odd }}</b></div>
                       <div style="color:orange;" class="subtitle is-7"><b>Tie Odd: {{ h.tie_Odd }}</b></div>
                       <div style="color:red;" class="subtitle is-7"><b>Away Odd: {{ h.away_Odd }}</b></div>
@@ -33,8 +33,8 @@
                       <div class="title is-5">{{ h.team2 }}</div>
                     </div>
                     <div class="card-bot">
-                      <div class="subtitle is-7"><b>Bet Id: {{ h.id }}</b></div>
-                      <div class="subtitle is-7"><b>State: {{ h.state }}</b></div>
+                      <div class="subtitle is-7"><b>Event Id: {{ h.id }}</b></div>
+                      <div class="subtitle is-7"><b>Event State: {{ h.state }}</b></div>
                       <div style="color:green;" class="subtitle is-7"><b>Home Odd: {{ h.home_Odd }}</b></div>
                       <div style="color:orange;" class="subtitle is-7"><b>Tie Odd: {{ h.tie_Odd }}</b></div>
                       <div style="color:red;" class="subtitle is-7"><b>Away Odd: {{ h.away_Odd }}</b></div>
@@ -52,8 +52,8 @@
                       <div class="title is-5">{{ h.team2 }}</div>
                     </div>
                     <div class="card-bot">
-                      <div class="subtitle is-7"><b>Bet Id: {{ h.id }}</b></div>
-                      <div class="subtitle is-7"><b>State: {{ h.state }}</b></div>
+                      <div class="subtitle is-7"><b>Event Id: {{ h.id }}</b></div>
+                      <div class="subtitle is-7"><b>Event State: {{ h.state }}</b></div>
                       <div style="color:green;" class="subtitle is-7"><b>Home Odd: {{ h.home_Odd }}</b></div>
                       <div style="color:orange;" class="subtitle is-7"><b>Tie Odd: {{ h.tie_Odd }}</b></div>
                       <div style="color:red;" class="subtitle is-7"><b>Away Odd: {{ h.away_Odd }}</b></div>
@@ -74,7 +74,7 @@
             <div class="columns is-multiline is-centered">
               <div class="column is-four-fifths">
               <div class="field">
-                <label class="label">Bet Id</label>
+                <label class="label">Event Id</label>
                 <div class="control">
                   <input
                     class="input"

@@ -21,10 +21,10 @@
 
 </div>
 
-Uma dada empresa pretende criar um produto informático de suporte a apostas desportivas, para
-vender a casas de apostas. As funcionalidades do produto não foram ainda definidas em detalhe 
-(sêlo-ão durante as próximas semanas por cada equipa). No entanto, existe uma visão do que é
-pretendido, que deverá ser suficiente para criar uma primeira versão do sistema. 
+A given company wants to create a computer product to support sports betting, to sell bookmakers. 
+The product's functionalities have not yet been equipped in detail (sold over the next few weeks by each). 
+However, there is a system view created, which should be a first version of what is enough.
+
 ## Project Organization
 
 
@@ -41,9 +41,9 @@ The following software is required to be installed on your system:
 
 - [:.NET 6.0](https://dotnet.microsoft.com/en-us/)
 
-### :hammer: backendDevelopment 
+### :hammer: Development 
 
-Start backend side. In the folder Ras-TP/API
+Start backend side. In the folder RAS-TP/API
 
 ```
 dotnet run
@@ -55,9 +55,11 @@ To see all endpoints in swagger
 dotnet watch run
 ```
 
-Start client side. In the folder Ras-TP/frontend
+Start client side. In the folder Ras-TP/frontend/rasbeti
 
-...........
+```
+npm run serve
+```
 
 ```
 bin/format
