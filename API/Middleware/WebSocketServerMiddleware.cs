@@ -43,7 +43,6 @@ namespace API.Middleware
                             Console.WriteLine($"Message: {Encoding.UTF8.GetString(buffer, 0, result.Count)}");
                             _manager.AddSocket(webSocket, Encoding.UTF8.GetString(buffer, 0, result.Count));//adicionada ao dicionário
                             //await RouteJSONMessageAsync(Encoding.UTF8.GetString(buffer, 0, result.Count));
-                            await SendMessageAsync("olá", Encoding.UTF8.GetString(buffer, 0, result.Count));
                             return;
                         }
                         else
@@ -54,17 +53,17 @@ namespace API.Middleware
                             Console.WriteLine($"Receive->Close");
 
                             //_manager.GetAllSockets().Remove(id, out WebSocket sock);
-                            _manager.GetAllSockets().Remove(id, out WebSocket sock);
+                            if(id!=null){
+                                _manager.GetAllSockets().Remove(id, out WebSocket sock);
                             Console.WriteLine(
                                 "Managed Connections: " + _manager.GetAllSockets().Count.ToString()
                             );
-
                             await sock.CloseAsync(
                                 result.CloseStatus.Value,
                                 result.CloseStatusDescription,
                                 CancellationToken.None
                             );
-
+                            }
                             return;
                         }
                     }
