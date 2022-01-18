@@ -14,8 +14,8 @@
                       <div class="title is-5">{{ h.team2 }}</div>
                     </div>
                     <div class="card-bot">
-                      <div class="subtitle is-7"><b>Bet Id: {{ h.id }}</b></div>
-                      <div class="subtitle is-7"><b>Register Id: {{ h.betid }}</b></div>
+                      <div class="subtitle is-7"><b>Event Id: {{ h.id }}</b></div>
+                      <div class="subtitle is-7"><b>Bet Id: {{ h.betid }}</b></div>
                       <div class="subtitle is-7"><b>Result: {{ h.pickedresult }}</b></div>
                       <div class="subtitle is-7"><b>Value: {{ h.pickedvalue }}</b></div>
                       <div class="subtitle is-7"><b>Event State: {{ h.state }}</b></div>
@@ -37,8 +37,8 @@
                       <div class="title is-5">{{ h.team2 }}</div>
                     </div>
                     <div class="card-bot">
-                      <div class="subtitle is-7"><b>Bet Id: {{ h.id }}</b></div>
-                      <div class="subtitle is-7"><b>Register Id: {{ h.betid }}</b></div>
+                      <div class="subtitle is-7"><b>Event Id: {{ h.id }}</b></div>
+                      <div class="subtitle is-7"><b>Bet Id: {{ h.betid }}</b></div>
                       <div class="subtitle is-7"><b>Result: {{ h.pickedresult }}</b></div>
                       <div class="subtitle is-7"><b>Value: {{ h.pickedvalue }}</b></div>
                       <div class="subtitle is-7"><b>Event State: {{ h.state }}</b></div>
@@ -60,8 +60,8 @@
                       <div class="title is-5">{{ h.team2 }}</div>
                     </div>
                     <div class="card-bot">
-                      <div class="subtitle is-7"><b>Bet Id: {{ h.id }}</b></div>
-                      <div class="subtitle is-7"><b>Register Id: {{ h.betid }}</b></div>
+                      <div class="subtitle is-7"><b>Event Id: {{ h.id }}</b></div>
+                      <div class="subtitle is-7"><b>Bet Id: {{ h.betid }}</b></div>
                       <div class="subtitle is-7"><b>Result: {{ h.pickedresult }}</b></div>
                       <div class="subtitle is-7"><b>Value: {{ h.pickedvalue }}</b></div>
                       <div class="subtitle is-7"><b>Event State: {{ h.state }}</b></div>
