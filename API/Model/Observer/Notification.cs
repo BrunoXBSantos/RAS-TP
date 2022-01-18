@@ -9,10 +9,12 @@ namespace API.Model;
 public class Notification
 {
     public string description { get; set; }
+    public IServiceProvider provider { get; set; }
 
-    public Notification(string description)
+    public Notification(string description, IServiceProvider provider)
     {
         this.description = description;
+        this.provider = provider;
     }
     
     

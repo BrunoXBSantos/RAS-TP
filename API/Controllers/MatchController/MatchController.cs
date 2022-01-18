@@ -220,8 +220,8 @@ public class MatchController : BaseApiController
         //         var observables = scope.ServiceProvider.GetRequiredService<IObservables>();
         //     }
         EventObservable eventObservable = _observables.GetEventObservableByIdEvent(eventDB.Id);
-
-        eventObservable.update(description);
+        var info = new Notification(description, _provider);
+        eventObservable.update(info);
     }
 
 }

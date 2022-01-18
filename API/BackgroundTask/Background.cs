@@ -60,7 +60,7 @@ namespace API.BackgroundTask
                 var bets = await _betRepository.GetBetsOpen();
                 foreach(BetEmptyDto bet in bets){
                     EventObservable eventObservable = observables.GetEventObservableByIdEvent(bet._eventId);
-                    BetObserver betObserver = new BetObserver(bet.Id, bet._eventId, bet.appUserId, provider);
+                    BetObserver betObserver = new BetObserver(bet.Id, bet._eventId, bet.appUserId);
                     betObserver.Subscribe(eventObservable);
                 }
                 

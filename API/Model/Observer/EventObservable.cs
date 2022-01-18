@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 namespace API.Model;
 
 // Cada evento com state = 1 é criado um objeto desta classe
-public class EventObservable : IObservable<Notification>
+public class EventObservable
 {
     // lista dos clientes que apostaram no evento idEvent
-    public List<IObserver<Notification>> observers;
+    public List<BetObserver> observers;
     public int idEvent {get ; set ; }
 
     public EventObservable(int idEvent)
     {
-        observers = new List<IObserver<Notification>>();
+        observers = new List<BetObserver>();
         this.idEvent = idEvent;
     }
 
     // Apostadores que pretendem receber notificaçoes 
-    public IDisposable Subscribe(IObserver<Notification> observer)
+    public IDisposable Subscribe(BetObserver observer)
     {
         // Check whether observer is already registered. If not, add it
         if (!observers.Contains(observer)) {
@@ -31,11 +31,10 @@ public class EventObservable : IObservable<Notification>
         return new Unsubscriber<Notification>(observers, observer);
     }
     
-    public void update(string description){
+    public void update(Notification description){
         if(description != null){
-            var info = new Notification(description);
             foreach(var observer in observers){
-                observer.OnNext(info);
+                observer.OnNext(description);
             }
         }
     }
@@ -43,10 +42,10 @@ public class EventObservable : IObservable<Notification>
 
 internal class Unsubscriber<Notification> : IDisposable
 {
-   private List<IObserver<Notification>> _observers;
-   private IObserver<Notification> _observer;
+   private List<BetObserver> _observers;
+   private BetObserver _observer;
 
-   internal Unsubscriber(List<IObserver<Notification>> observers, IObserver<Notification> observer)
+   internal Unsubscriber(List<BetObserver> observers, BetObserver observer)
    {
       this._observers = observers;
       this._observer = observer;

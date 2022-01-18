@@ -83,7 +83,7 @@ public class BetController : BaseApiController
         _betRepository.AddBet(bet);
 
         //crio o observer
-        BetObserver betObserver = new BetObserver(bet.Id, bet._eventId, bet.appUserId, _provider);
+        BetObserver betObserver = new BetObserver(bet.Id, bet._eventId, bet.appUserId);
         EventObservable eventObservable = _observables.GetEventObservableByIdEvent(bet._eventId);
         betObserver.Subscribe(eventObservable);
         
@@ -215,6 +215,12 @@ public class BetController : BaseApiController
         }
 
         EventObservable eventObservable = _observables.GetEventObservableByIdEvent(bet._eventId);
+        BetObserver betObserver = eventObservable.observers.First(e => e.betId == idBet);
+
+        if(betObserver != null){
+            betObserver.Unsubscribe();
+        }
+
 
         // deposito 0,75% do dinheiro apostado
         WalletCoin walletCoin = await _walletRepository.GetWalletCoinAsync(bet.appUserId, bet.coinID);
