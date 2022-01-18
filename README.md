@@ -58,17 +58,11 @@ dotnet watch run
 Start client side. In the folder Ras-TP/frontend/rasbeti
 
 ```
+npm install
+```
+
+```
 npm run serve
-```
-
-```
-bin/format
-```
-
-........
-
-```
-bin/lint
 ```
 
 ### :hammer_and_wrench: Tools
