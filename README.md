@@ -58,7 +58,7 @@ dotnet watch run
 Start client side. In the folder Ras-TP/frontend/rasbeti
 
 ```
-npm run serve
+npm install
 ```
 
 ```
