@@ -61,16 +61,6 @@ Start client side. In the folder Ras-TP/frontend/rasbeti
 npm run serve
 ```
 
-```
-bin/format
-```
-
-........
-
-```
-bin/lint
-```
-
 ### :hammer_and_wrench: Tools
 
 The recommended Development Environment is [Visual studio Code](https://code.visualstudio.com/).
