@@ -43,6 +43,13 @@ public class BetRepository : IBetRepository
             .SingleOrDefaultAsync();
     }
 
+    // get number bets
+    public int GetNumberBets()
+    {
+        return _context.DB_Bet
+            .Max(e => e.Id);
+    }
+
     // get a BetEmptyDto by id
     public async Task<BetEmptyDto> GetBetEmptyByIdAsync(int id)
     {

@@ -14,6 +14,7 @@ public interface IBetRepository
     public Task<bool> SaveAllAsync();
     public Task<BetSimpleDto> GetBetSimpleByIdAsync(int id);
     public Task<BetEmptyDto> GetBetEmptyByIdAsync(int id);
+    int GetNumberBets();
     public Task<PagedList<BetEmptyDto>> GetBetsWithState(PaginationParams paginationParams, int state);
     public Task<PagedList<BetEmptyDto>> GetBetsSimpleByIdAsync(BetParams betParams, int appUserId);
     public void UpdateBet(Bet bet);

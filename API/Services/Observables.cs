@@ -17,7 +17,6 @@ public class Observables : IObservables
     public Observables()
     {
         this.eventObservables = new List<EventObservable>();
-        Console.WriteLine("teaaaaaaaaaaaaaaa");
     }
 
     public List<EventObservable> getAllEventObservable(){
@@ -35,7 +34,7 @@ public class Observables : IObservables
     // Obter o EventObserble do respetivo eventId
     public EventObservable GetEventObservableByIdEvent(int idEvent){
         EventObservable eventObservable = null;
-        eventObservable = this.eventObservables.Find(e => e.idEvent == idEvent);
+        eventObservable = this.eventObservables.First(e => e.idEvent == idEvent);
         return eventObservable;
     }
 

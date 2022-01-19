@@ -81,16 +81,17 @@ public class BetController : BaseApiController
         bet.betStateId = 1;
 
         _betRepository.AddBet(bet);
+        if (!await _betRepository.SaveAllAsync()) 
+            return BadRequest("Failed to create Bet");
+
+        int lastBet =  _betRepository.GetNumberBets();    
 
         //crio o observer
-        BetObserver betObserver = new BetObserver(bet.Id, bet._eventId, bet.appUserId);
+        BetObserver betObserver = new BetObserver(lastBet, bet._eventId, bet.appUserId);
         EventObservable eventObservable = _observables.GetEventObservableByIdEvent(bet._eventId);
         betObserver.Subscribe(eventObservable);
         
-        if (await _betRepository.SaveAllAsync()) 
-            return Ok(_mapper.Map<BetEmptyDto>(bet));
-
-        return BadRequest("Failed to create Bet");
+        return Ok(_mapper.Map<BetEmptyDto>(bet));
 
     }
     #endregion

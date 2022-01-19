@@ -151,8 +151,16 @@ public class MatchController : BaseApiController
         // a cada observer de eventObservable
         foreach(BetObserver betObserver in eventObservable.observers){
             if(betObserver != null ){
-                // vou buscar a bet do observer
+                // vou buscar a bet do observer  
+                Console.WriteLine("betObserver " +betObserver.betId);  
+                Console.WriteLine("betObserverUser " +betObserver.userId); 
+                Console.WriteLine("eventObservable " +eventObservable.idEvent);               
                 Bet bet = await _betRepository.GetBetByIdAsync(betObserver.betId);
+                if(bet == null){
+                    Console.WriteLine(bet + "antes "+ betObserver.betId);
+                    bet = await _betRepository.GetBetByIdAsync(betObserver.betId);
+                    Console.WriteLine(bet + "Depois "+ betObserver.betId);
+                }
                 // coloca state da bet  = Finished
                 bet.betStateId = 2;
                 _betRepository.UpdateBet(bet);
