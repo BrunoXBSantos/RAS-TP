@@ -87,16 +87,15 @@ public class MatchController : BaseApiController
     [HttpPost("endmatch")]
     public async Task<ActionResult<MatchDto>> EndMatch(EndMatchDto endMatch)
     {   
+        
         var eventDb = await _eventRepository.GetIdEventByParams(endMatch);
         // se evento null, é porque não existe
         if(eventDb == null){
             return NotFound("Event Not Found");
         }
-
         if(eventDb.eventState.Description.Equals("Finished")){
             return BadRequest("Event is over");
         }
-
         var description = endMatch.Team1 +
                             " " + endMatch.Team1Goals + 
                             " - " + endMatch.Team2Goals +
@@ -104,6 +103,7 @@ public class MatchController : BaseApiController
                             " END MATCH";
 
         SendNotification(description, eventDb);
+        
         if (!await calculateEarnings(eventDb, endMatch)){
             return BadRequest("Error to calculate Earnings");
         }
@@ -148,55 +148,55 @@ public class MatchController : BaseApiController
     {
         // vou buscar o eventObservable do Evento 
         EventObservable eventObservable = _observables.GetEventObservableByIdEvent(eventDB.Id);
-
         // a cada observer de eventObservable
         foreach(BetObserver betObserver in eventObservable.observers){
-            // vou buscar a bet do observer
-            Bet bet = await _betRepository.GetBetByIdAsync(betObserver.betId);
-            // coloca state da bet  = Finished
-            bet.betStateId = 2;
-            _betRepository.UpdateBet(bet);
-            if (!await _betRepository.SaveAllAsync())
-            {
-                return false;
-            }
-            //se ganhou a aposta
-            if( endMatch.Team1Goals>endMatch.Team2Goals && bet.Result.Equals("1") || 
-                endMatch.Team1Goals<endMatch.Team2Goals && bet.Result.Equals("2") ||
-                endMatch.Team1Goals==endMatch.Team2Goals && bet.Result.ToUpper().Equals("X")){
-                    // Vou buscar dados da Coin que apostei
-                    Coin coin = await _walletRepository.GetCoinByIdAsync(bet.coinID);
-
-                    // qual a odd vencedora (empate, derrota ou vitoria)
-                    double multiplied = 0;
-                    if(endMatch.Team1Goals>endMatch.Team2Goals)
-                        multiplied = eventDB.Home_Odd;
-                    else if(endMatch.Team1Goals<endMatch.Team2Goals)
-                        multiplied = eventDB.Away_Odd;
-                    else 
-                        multiplied = eventDB.Tie_Odd;
-                    
-                    // valor ganho
-                    var wonValue = bet.value * multiplied;
-                    
-                    // vou buscar a walletCoin do user
-                    // e a atualizo
-                    WalletCoin walletCoin = await _walletRepository.GetWalletCoinAsync(bet.appUserId, bet.coinID);
-                    walletCoin.Balance += wonValue;
-
-                    _walletRepository.Update(walletCoin);
-                    if (!await _appUserRepository.SaveAllAsync())
-                    {
-                        return false;
-                    }
-
-                    // string ip = user.IpNotification;
-                    // int port = user.PortNotification;
-                    // string description = "congratulations, you won " + bet.value;
-
-                    // FILIPE AQUI TAMBEMMMMMMMM
+            if(betObserver != null ){
+                // vou buscar a bet do observer
+                Bet bet = await _betRepository.GetBetByIdAsync(betObserver.betId);
+                // coloca state da bet  = Finished
+                bet.betStateId = 2;
+                _betRepository.UpdateBet(bet);
+                if (!await _betRepository.SaveAllAsync())
+                {
+                    return false;
                 }
+                //se ganhou a aposta
+                if( endMatch.Team1Goals>endMatch.Team2Goals && bet.Result.Equals("1") || 
+                    endMatch.Team1Goals<endMatch.Team2Goals && bet.Result.Equals("2") ||
+                    endMatch.Team1Goals==endMatch.Team2Goals && bet.Result.ToUpper().Equals("X")){
+                        // Vou buscar dados da Coin que apostei
+                        Coin coin = await _walletRepository.GetCoinByIdAsync(bet.coinID);
 
+                        // qual a odd vencedora (empate, derrota ou vitoria)
+                        double multiplied = 0;
+                        if(endMatch.Team1Goals>endMatch.Team2Goals)
+                            multiplied = eventDB.Home_Odd;
+                        else if(endMatch.Team1Goals<endMatch.Team2Goals)
+                            multiplied = eventDB.Away_Odd;
+                        else 
+                            multiplied = eventDB.Tie_Odd;
+                        
+                        // valor ganho
+                        var wonValue = bet.value * multiplied;
+                        
+                        // vou buscar a walletCoin do user
+                        // e a atualizo
+                        WalletCoin walletCoin = await _walletRepository.GetWalletCoinAsync(bet.appUserId, bet.coinID);
+                        walletCoin.Balance += wonValue;
+
+                        _walletRepository.Update(walletCoin);
+                        if (!await _appUserRepository.SaveAllAsync())
+                        {
+                            return false;
+                        }
+
+                        // string ip = user.IpNotification;
+                        // int port = user.PortNotification;
+                        // string description = "congratulations, you won " + bet.value;
+
+                        // FILIPE AQUI TAMBEMMMMMMMM
+                    }
+            }
 
         }
         // atualiza o evento
