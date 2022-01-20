@@ -48,6 +48,17 @@ public class EventRepository : IEventRepository
             .SingleOrDefaultAsync();
     }
 
+    // Obter o evento dando o tipo(p.e. full time), o sport(soccer) e as equipas
+    public async Task<EventDB> GetEventToBettingApiAsync(int idType, int idSport, string team1, string team2)
+    {
+        return await _context.DB_Events
+            .Where(e => e.eventTypeId == idType &&
+                        e.sportId == idSport &&
+                        e.Team1.Equals(team1) &&
+                        e.Team2.Equals(team2))
+            .SingleOrDefaultAsync();
+    }
+
     // get a event detailed by id
     public async Task<EventSimpleDto> GetEventDetailAsync(int id)
     {

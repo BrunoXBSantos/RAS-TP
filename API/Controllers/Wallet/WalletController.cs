@@ -23,6 +23,25 @@ public class WalletController : BaseApiController
         _walletRepository = walletRepository;
     }
 
+    #region CREATE
+
+    /// <summary>
+    /// Add Coin to the system.
+    /// </summary>
+    [HttpPost()]
+    public async Task<ActionResult<CreateCoinDto>> createCoin(CreateCoinDto createCoinDto)
+    {   
+        
+        Coin coin = new Coin();
+        _mapper.Map(createCoinDto, coin);
+        _walletRepository.AddCoin(coin);
+        if(!await _walletRepository.SaveAllAsync())
+            return BadRequest("Error to create coin.");
+        return Ok(createCoinDto);
+
+    }
+    #endregion
+
     #region READ
     /// <summary>
     /// Get list of coins.
@@ -190,6 +209,14 @@ public class WalletController : BaseApiController
         // retiro o valor comprado/trocado
         walletCoinFrom.Balance -= (double) coinTo2Euros2CoinFrom;
         // adiciono o valor que pretendo comprar
+
+        // TAXAR!!!
+        //// Se a moeda de destino for euros, fico com 1%
+        if(coinTo.Id == 1){
+            changeWalletCoinDto.BalanceBuy *= 0.99;
+        }
+
+
         if(walletCoinTo == null){
             walletCoinTo = new WalletCoin();
             walletCoinTo.appUserID = changeWalletCoinDto.appUserID;

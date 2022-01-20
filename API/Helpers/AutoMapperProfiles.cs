@@ -63,6 +63,7 @@ namespace API.Helpers
 
             #region Wallet
             CreateMap<Coin, CoinDto>();
+            CreateMap<CreateCoinDto, Coin>();
             CreateMap<WalletCoin, WalletCoinEmptyDto>();
             CreateMap<LoadWalletCoinDto, WalletCoin>();
             CreateMap<WalletCoin, WalletCoinDisplayDto>()

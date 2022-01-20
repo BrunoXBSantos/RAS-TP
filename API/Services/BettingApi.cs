@@ -58,12 +58,29 @@ public class BettingApi : IBettingApi
                 if(_events._event.type.Equals("full time"))
                     eventDB.eventTypeId = 1;
 
+                // verifica se o evento existe
                 var check = await _eventRepository.checkEvent(eventDB.eventTypeId, eventDB.sportId, eventDB.Team1, eventDB.Team2);
 
                 if(check){
-                    // _eventRepository.Update(eventDB);
-                    // if (await _eventRepository.SaveAllAsync()) 
-                    //     _logger.LogInformation("Error to update event!");
+
+                    EventDB eventDB1 = await _eventRepository.GetEventToBettingApiAsync(eventDB.eventTypeId, eventDB.sportId, eventDB.Team1, eventDB.Team2);
+                    if(eventDB1 != null){
+
+                        if( eventDB1.Home_Odd != eventDB.Home_Odd ||
+                            eventDB1.Tie_Odd != eventDB.Tie_Odd ||
+                            eventDB1.Away_Odd != eventDB.Away_Odd){
+
+                            eventDB1.Home_Odd = eventDB.Home_Odd;
+                            eventDB1.Tie_Odd = eventDB.Tie_Odd;
+                            eventDB1.Away_Odd = eventDB.Away_Odd;
+
+                            _eventRepository.Update(eventDB1);
+                            if (await _eventRepository.SaveAllAsync()){
+                                Console.WriteLine("Eventos atualizados");
+                            }
+                        }
+                        
+                    }
                 }
                 else { // se o evento nao existir na base de dados
                     eventDB.eventStateId = 1;

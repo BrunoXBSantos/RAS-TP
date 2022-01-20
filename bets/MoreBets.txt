@@ -1,0 +1,108 @@
+{
+	"listEventsAll": [
+	  {
+			"event": {
+				"sport": "soccer",
+				"type": "full time",
+				"team1": "barcelona",
+				"team2": "benfica",
+				"result_odd": {
+					"home": 1.6,
+					"tie": 4.1,
+					"away": 5.2
+				}
+			}
+		},
+		{
+			"event": {
+				"sport": "soccer",
+				"type": "full time",
+				"team1": "villareal",
+				"team2": "mancherter united",
+				"result_odd": {
+					"home": 2.9,
+					"tie": 3.4,
+					"away": 2.4
+				}
+			}
+		},
+		{
+			"event": {
+				"sport": "soccer",
+				"type": "full time",
+				"team1": "Braga",
+				"team2": "Chelsea",
+				"result_odd": {
+					"home": 6,
+					"tie": 4.5,
+					"away": 2
+				}
+			}
+		},
+		{
+			"event": {
+				"sport": "soccer",
+				"type": "full time",
+				"team1": "Gil Vicente",
+				"team2": "Moreirense",
+				"result_odd": {
+					"home": 2.2,
+					"tie": 3.6,
+					"away": 1.85
+				}
+			}
+		},
+		{
+			"event": {
+				"sport": "soccer",
+				"type": "full time",
+				"team1": "Boavista",
+				"team2": "Estoril",
+				"result_odd": {
+					"home": 2.2,
+					"tie": 3.6,
+					"away": 1.85
+				}
+			}
+		},
+		{
+			"event": {
+				"sport": "soccer",
+				"type": "full time",
+				"team1": "Arouca",
+				"team2": "Benfica",
+				"result_odd": {
+					"home": 2.2,
+					"tie": 3.6,
+					"away": 1.85
+				}
+			}
+		},
+		{
+			"event": {
+				"sport": "soccer",
+				"type": "full time",
+				"team1": "Tondela",
+				"team2": "Vizela",
+				"result_odd": {
+					"home": 2.2,
+					"tie": 3.6,
+					"away": 1.85
+				}
+			}
+		},
+		{
+			"event": {
+				"sport": "soccer",
+				"type": "full time",
+				"team1": "Maritimo",
+				"team2": "Nacional",
+				"result_odd": {
+					"home": 2.2,
+					"tie": 3.6,
+					"away": 1.85
+				}
+			}
+		}
+	]
+}
