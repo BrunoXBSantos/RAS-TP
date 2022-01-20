@@ -213,7 +213,7 @@ public class WalletController : BaseApiController
         // TAXAR!!!
         //// Se a moeda de destino for euros, fico com 1%
         if(coinTo.Id == 1){
-            changeWalletCoinDto.BalanceBuy *= 0.99;
+            changeWalletCoinDto.BalanceBuy = changeWalletCoinDto.BalanceBuy*0.99;
         }
 
 
