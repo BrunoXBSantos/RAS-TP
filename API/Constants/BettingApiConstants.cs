@@ -10,7 +10,7 @@ namespace API.Constants
         // two bets
         public const string url = "https://pastebin.com/raw/NeSfs0d0";
         // Four bets
-        //public const string url = "https://pastebin.com/raw/SKceFbUg";
+        //public const string url = "https://pastebin.com/raw/gzk0cmmX";
         // Change Odds bets
         //public const string url2 = "https://pastebin.com/raw/ifJGV341";
         public const string UserAgent = "User-Agent";
