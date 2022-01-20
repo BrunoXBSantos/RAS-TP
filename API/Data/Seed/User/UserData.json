@@ -94,5 +94,21 @@
     "Email": "jonievans@telequiet.com",
     "Balance": 59.3676,
     "PhoneNumber": "905051000"
+  },
+  {
+    "Name": "Utilizador2",
+    "contact": "Utilizador Place Sutton",
+    "UserName": "Utilizador2",
+    "Email": "Utilizador2@fawf.com",
+    "Balance": 59.3676,
+    "PhoneNumber": "905052000"
+  },
+  {
+    "Name": "Utilizadorr3",
+    "contact": "Utilizador3",
+    "UserName": "Utilizador3",
+    "Email": "Utilizador3@telequiet.com",
+    "Balance": 59.3676,
+    "PhoneNumber": "915051000"
   }
 ]
