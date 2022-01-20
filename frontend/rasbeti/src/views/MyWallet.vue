@@ -250,7 +250,7 @@ export default {
     withdrawal: function () {
       const { selectedcurrencytype, amount, useridbet } = this
       const select = parseInt(selectedcurrencytype)
-      const newbal = parseInt(amount)
+      const newbal = parseFloat(amount)
       // eslint-disable-next-line camelcase
       axios({ url: api_url + '/api/Wallet/withdraw/' + useridbet, data: { balance: newbal, appUserID: useridbet, coinID: select }, method: 'PUT' })
         .then(resp => {
@@ -265,7 +265,7 @@ export default {
     load: function () {
       const { selectedcurrencytype, amountl, useridbet } = this
       const select = parseInt(selectedcurrencytype)
-      const newbal = parseInt(amountl)
+      const newbal = parseFloat(amountl)
       // eslint-disable-next-line camelcase
       axios({ url: api_url + '/api/Wallet/load/' + useridbet, data: { balance: newbal, appUserID: useridbet, coinID: select }, method: 'PUT' })
         .then(resp => {
@@ -281,7 +281,7 @@ export default {
       const { selectedcurrencytype, selectedcurrencytypeto, amountc, useridbet } = this
       const selectfrom = parseInt(selectedcurrencytype)
       const selectto = parseInt(selectedcurrencytypeto)
-      const newbal = parseInt(amountc)
+      const newbal = parseFloat(amountc)
       console.log('App User Id:' + useridbet)
       console.log('Select from:' + selectfrom)
       console.log('Select to:' + selectto)
